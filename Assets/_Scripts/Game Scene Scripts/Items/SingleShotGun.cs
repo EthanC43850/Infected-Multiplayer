@@ -47,7 +47,7 @@ public class SingleShotGun : Gun
 
             if(player != null)
             {
-                player.DisplayFloatingText(((GunInfo)itemInfo).damage);
+                player.worldSpaceUI.DisplayFloatingText(((GunInfo)itemInfo).damage);
             }
 
             Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
