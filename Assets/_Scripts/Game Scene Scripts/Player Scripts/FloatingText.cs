@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class FloatingText : MonoBehaviour
 {
-    //Origin point in canvas is (5, -136, -1)
-    //[SerializeField] Transform floatingTextTransform;
+
     public Vector3 randomizeIntensity = new Vector3(50, 90, 0);
 
     private void Start()

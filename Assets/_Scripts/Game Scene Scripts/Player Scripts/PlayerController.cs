@@ -33,17 +33,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     [Header("Object Assignments:")]
     [SerializeField] CharacterController controller;
+    [SerializeField] GameObject playerUI;
     [SerializeField] Transform cam;
     [SerializeField] Transform groundCheck;
 
 
     [Header("Scripts")]
     public WorldSpacePlayerUI worldSpaceUI;
+    public GameObject objectPooler;
     private PlayerManager playerManager;
+    
 
 
-    [HideInInspector]
-    public PhotonView PV;
+
+    [HideInInspector] public PhotonView PV;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity = 1f;
     private Vector3 moveInput;
@@ -60,6 +63,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public void Awake()
     {
         PV = GetComponent<PhotonView>();
+
         if (!debugMode)
         {
             playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -83,6 +87,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);     //Ensure that each player is using their correct camera
 
             Destroy(GetComponentInChildren<PlayerInput>());                             //Allows controllers to work when multiple people connect  
+
+            Destroy(objectPooler);
+
+            Destroy(playerUI);
+
+
+
         }
 
     } // END Start

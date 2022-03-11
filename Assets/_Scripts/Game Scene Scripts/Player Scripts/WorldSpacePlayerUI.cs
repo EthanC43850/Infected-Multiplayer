@@ -87,7 +87,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
         {
             if (isDamaged)
             {
-                GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.identity, worldCanvas.transform);
+                GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.Euler(0, 0, 0), worldCanvas.transform);
                 TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
                 textAttributes.text = damageTaken.ToString();
                 if (damageTaken >= 40)
@@ -95,7 +95,6 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
                     textAttributes.color = Color.red;
                 }
 
-                _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
                 Destroy(_floatingText, 1.0f);
                 isDamaged = false;
@@ -210,17 +209,23 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
         damageTaken = damage;
 
 
-        /*///////////////////////////////////////// 
-        For testing different positions of floating numbers
+        ///////////////////////////////////////// 
+        //For testing different positions of floating numbers
         GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.identity, worldCanvas.transform);
+        
         TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
         textAttributes.text = damageTaken.ToString();
         if (damageTaken >= 40)
         {
             textAttributes.color = Color.red;
         }
-        Destroy(_floatingText, 1.0f);
-        ///////////////////////////////////////////*/
+        Debug.Log("CHANGE ROTATION OF " + _floatingText.name);
+        _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        Destroy(_floatingText, 1.5f);
+        ///////////////////////////////////////////
+        
+
     } // END DisplayFloatingText
+
 
 }
