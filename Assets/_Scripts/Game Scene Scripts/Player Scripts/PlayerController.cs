@@ -40,9 +40,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     [Header("Scripts")]
     public WorldSpacePlayerUI worldSpaceUI;
-    public GameObject objectPooler;
     private PlayerManager playerManager;
-    
 
 
 
@@ -53,6 +51,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private Vector3 velocity;
     private int currentItemIndex;
     private int previousItemIndex = -1;
+
+    private float grenadeThrowDistance;
 
 
     #endregion
@@ -88,8 +88,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
             Destroy(GetComponentInChildren<PlayerInput>());                             //Allows controllers to work when multiple people connect  
 
-            Destroy(objectPooler);
-
             Destroy(playerUI);
 
 
@@ -120,6 +118,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDirection * speed * Time.deltaTime);
+
+
         }
         else if (isAiming)
         {
@@ -132,6 +132,17 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 controller.Move(moveDirection * speed * Time.deltaTime);
             }
+
+            // if aiming with grenade
+            Grenade grenade = items[currentItemIndex].GetComponent<Grenade>();
+            if (grenade != null)
+            {
+                
+                grenade.throwDistance += grenadeThrowDistance;
+                grenade.throwDistance = Mathf.Clamp(grenade.throwDistance, grenade.minThrowDistance, grenade.maxThrowDistance);
+
+            }
+
         }
         #endregion
 
@@ -295,16 +306,30 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public void OnAim(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
-
+        Grenade grenade = items[currentItemIndex].GetComponent<Grenade>();
 
         if (value.started)
         {
             isAiming = true;
+            if (grenade != null)
+            {
+                Debug.Log("TURN ON GRENADE");
+                grenade.drawProjectionScript.lineRenderer.enabled = true;
+            }
+
         }
-        else if (value.canceled)
+        
+        if (value.canceled)
         {
+
             isAiming = false;
+            if(grenade != null)
+            {
+                grenade.drawProjectionScript.lineRenderer.enabled = false;
+            }
+
         }
+
 
     } // END OnAim
 
@@ -332,11 +357,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         if (value.started)
         {
+
             items[currentItemIndex].Use();
         }
 
+        
+
     } // END OnAttack
 
+
+    // This function is controlled by the right stick / mouse
+    public void OnGrenadeAim(InputAction.CallbackContext value)
+    {
+        // Increase denominator to slow down the change in speed of the line renderer
+        grenadeThrowDistance = value.ReadValue<Vector2>().y / 8;
+
+
+
+    }
 
     #endregion
 
