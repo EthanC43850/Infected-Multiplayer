@@ -1,12 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grenade : Item
+public class Grenade : Explosive
 {
-    //[SerializeField] GameObject grenadePrefab;
-    [SerializeField] GameObject explosionFX;
-
     public float throwDistance = 10;
 
     public float minThrowDistance;
@@ -17,7 +15,8 @@ public class Grenade : Item
     public GameObject grenadeThrowableObject;
     public Transform ShotPoint;
 
-    //public GameObject Explosion;
+    public PhotonView PV;
+
 
     private void OnEnable()
     {
@@ -32,13 +31,29 @@ public class Grenade : Item
 
     public void ThrowProjectile()
     {
+        
+
+        if(PlayerController.debugMode == false)
+        {
+            PV.RPC("RPC_ThrowProjectile", RpcTarget.All);
+
+        }
+        else
+        {
+            GameObject grenade = Instantiate(grenadeThrowableObject, ShotPoint.position, ShotPoint.rotation);
+            grenade.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * throwDistance;
+        }
+
+    }
+
+
+    [PunRPC]
+    void RPC_ThrowProjectile()
+    {
         GameObject grenade = Instantiate(grenadeThrowableObject, ShotPoint.position, ShotPoint.rotation);
         grenade.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * throwDistance;
 
 
-
-        
     }
-
 
 }

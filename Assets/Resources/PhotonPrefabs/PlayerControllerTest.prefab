@@ -1797,7 +1797,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 337eed0307a8d22458c3be5d192e1ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
   maxHealth: 100
   currentHealth: 100
   items:
@@ -1816,7 +1815,6 @@ MonoBehaviour:
   cam: {fileID: 4005768983796123759}
   groundCheck: {fileID: 4005768984407670771}
   worldSpaceUI: {fileID: 8015658063283096911}
-  objectPooler: {fileID: 0}
   PV: {fileID: 0}
 --- !u!114 &7767804544899188835
 MonoBehaviour:
@@ -1904,6 +1902,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     #region Variables
 
-    public bool debugMode;
+    public static bool debugMode = false;
+
     [Header("Player Properties")]
     public int maxHealth = 100;
     public int currentHealth;
@@ -58,7 +59,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     #endregion
 
  
-
     #region Monobehaviours
     public void Awake()
     {
@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             Debug.Log("Stepped on spikes");
             TakeDamage(20);
-            worldSpaceUI.DisplayFloatingText(20);
+            //worldSpaceUI.DisplayFloatingText(20);
         }
     }
 
@@ -219,6 +219,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             currentHealth -= damage;
             worldSpaceUI.UpdateHealthUI(currentHealth);
+            worldSpaceUI.DisplayFloatingText(damage);
             if (currentHealth <= 0)
             {
                 Die();
@@ -370,6 +371,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public void OnGrenadeAim(InputAction.CallbackContext value)
     {
         // Increase denominator to slow down the change in speed of the line renderer
+        Debug.Log("grenade is aiming and value is " + value.ReadValue<Vector2>().y);
         grenadeThrowDistance = value.ReadValue<Vector2>().y / 8;
 
 

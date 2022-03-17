@@ -6,7 +6,7 @@ public class GrenadeThrowable : MonoBehaviour
 {
 
     public ExplosiveInfo explosiveInfo;
-    GameObject radiusObject;
+    private GameObject radiusObject;
     bool triggered = false;
 
 
@@ -20,13 +20,9 @@ public class GrenadeThrowable : MonoBehaviour
         {
             radiusObject.transform.position = transform.position;   // If radius collides with something else, move its position
         }
-
         triggered = true;
 
-
     }
-
-
     IEnumerator DetonateCoroutine()
     {
         radiusObject = Instantiate(explosiveInfo.radiusIndicator, transform.position, Quaternion.identity);
@@ -37,23 +33,15 @@ public class GrenadeThrowable : MonoBehaviour
         Detonate();
 
     }
-
-
     void Detonate()
     {
         Vector3 explosionPos = transform.position;
-
         Collider[] colliders = Physics.OverlapSphere(explosionPos, explosiveInfo.radius);
-
         foreach (Collider hit in colliders)
         {
             hit.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)explosiveInfo).damage);
-
         }
-
         Destroy(gameObject);
-
-
 
     }
 

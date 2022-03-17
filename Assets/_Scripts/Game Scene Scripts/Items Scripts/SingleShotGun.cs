@@ -47,7 +47,7 @@ public class SingleShotGun : Gun
 
             if(player != null)
             {
-                player.worldSpaceUI.DisplayFloatingText(((WeaponInfo)itemInfo).damage);
+                //player.worldSpaceUI.DisplayFloatingText(((WeaponInfo)itemInfo).damage);
             }
 
 

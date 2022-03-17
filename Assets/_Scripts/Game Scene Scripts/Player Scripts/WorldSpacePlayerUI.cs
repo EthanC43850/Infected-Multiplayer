@@ -31,7 +31,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
-        if (!player.debugMode)
+        if (!PlayerController.debugMode)
         {
             userNameText.text = player.PV.Owner.NickName;
         }
@@ -47,7 +47,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
         backHealthBar_Slider.maxValue = _maxHealth;
         backHealthBar_Slider.value = _maxHealth;
 
-        if (player.PV.IsMine && !player.debugMode)
+        if (player.PV.IsMine && !PlayerController.debugMode)
         {
             Hashtable hash = new Hashtable();
             hash.Add("setHealthMax", _maxHealth);
@@ -113,7 +113,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (player.debugMode) { return; }
+        if (PlayerController.debugMode) { return; }
 
         Debug.Log("sending sending sending");
         // Write
@@ -156,6 +156,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
         StartCoroutine(ChangeHealthValue());
 
     } // END SetHealthBar
+
 
     IEnumerator ChangeHealthValue()
     {
@@ -200,6 +201,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
             yield return null;
         }
         Debug.Log("While loop has broken!");
+
     }// END ChangeHealthValue
 
 
@@ -219,7 +221,6 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
         {
             textAttributes.color = Color.red;
         }
-        Debug.Log("CHANGE ROTATION OF " + _floatingText.name);
         _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
         Destroy(_floatingText, 1.5f);
         ///////////////////////////////////////////

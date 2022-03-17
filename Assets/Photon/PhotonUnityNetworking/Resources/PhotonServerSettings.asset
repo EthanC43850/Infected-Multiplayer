@@ -44,6 +44,7 @@ MonoBehaviour:
   - RPC_SetHealthBar
   - UpdateHealthUI
   - ChangeHealthValueRPC
+  - RPC_ThrowProjectile
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: bf6eb7a3968ca7c4cad359b886788707, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,7 +141,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31279a2d22296c74188438a820bf4e27, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 6856195002386327463}
   - component: {fileID: 5016702576342222157}
   - component: {fileID: 5993373468104595269}
+  - component: {fileID: 76960588}
   m_Layer: 7
   m_Name: Grenade
   m_TagString: Untagged
@@ -240,15 +241,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 978ef90124a0416439e93d5721297fe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemInfo: {fileID: 11400000, guid: 19c9b9633f7343d42a2bba56ea8d2728, type: 2}
+  itemInfo: {fileID: 11400000, guid: a8876c7cc2b08be4689932fd95a10dda, type: 2}
   itemGameObject: {fileID: 5016702576342222147}
-  explosionFX: {fileID: 1328806268905473210, guid: 014fb782998cace49b5aa8694700ed72, type: 3}
   throwDistance: 20
   minThrowDistance: 0
   maxThrowDistance: 25
   drawProjectionScript: {fileID: 5016702576342222157}
   grenadeThrowableObject: {fileID: 6519086313760782764, guid: 895253b2b671eb44388760e06f6b0b88, type: 3}
   ShotPoint: {fileID: 4691896561949519788}
+  PV: {fileID: 76960588}
 --- !u!114 &5016702576342222157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,7 +275,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5016702576342222147}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -365,3 +366,25 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &76960588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5016702576342222147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
