@@ -5,8 +5,8 @@ using UnityEngine;
 public class GrenadeThrowable : MonoBehaviour
 {
 
-    public ExplosiveInfo explosiveInfo;
-    GameObject radiusObject;
+    /*public ExplosiveInfo explosiveInfo;
+    private GameObject radiusObject;
     bool triggered = false;
 
 
@@ -55,6 +55,6 @@ public class GrenadeThrowable : MonoBehaviour
 
 
 
-    }
+    }*/
 
 }

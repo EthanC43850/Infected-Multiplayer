@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private float turnSmoothVelocity = 1f;
     private Vector3 moveInput;
     private Vector3 velocity;
-    private int currentItemIndex;
+    public int currentItemIndex;
     private int previousItemIndex = -1;
 
     private float grenadeThrowDistance;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3630580fca36a40a1040cae170fcd7, type: 3}
   m_Name: Grenade
   m_EditorClassIdentifier: 
-  itemName: Grenade
+  itemName: Grenade Throwable
   damage: 15
   radius: 2
   detonationTime: 2

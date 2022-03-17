@@ -26,8 +26,8 @@ public class DrawProjection : MonoBehaviour
     {
         lineRenderer.positionCount = (int)numPoints;
         List<Vector3> points = new List<Vector3>();
-        Vector3 startingPosition = grenadeController.ShotPoint.position;
-        Vector3 startingVelocity = grenadeController.ShotPoint.up * grenadeController.throwDistance;
+        Vector3 startingPosition = grenadeController.throwAngle.position;
+        Vector3 startingVelocity = grenadeController.throwAngle.up * grenadeController.throwDistance;
         for (float t = 0; t < numPoints; t += timeBetweenPoints)
         {
             Vector3 newPoint = startingPosition + t * startingVelocity;
