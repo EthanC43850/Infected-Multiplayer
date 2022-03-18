@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     #region Variables
 
-    public static bool debugMode = false;
+    public static bool debugMode = true;
 
     [Header("Player Properties")]
     public int maxHealth = 100;

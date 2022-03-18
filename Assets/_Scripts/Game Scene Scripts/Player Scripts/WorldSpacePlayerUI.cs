@@ -11,15 +11,19 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
 {
 
     #region Variables
-    [Header("Assign Objects")]
+    [Header("Player Connections")]
     [SerializeField] PlayerController player;
     [SerializeField] Text userNameText;
+    [SerializeField] GameObject floatingText;
+    [SerializeField] Gradient floatingTextGradient;
+    [SerializeField] GameObject worldCanvas;
+
+    [Header("Healthbar Connections")]
     [SerializeField] Slider frontHealthBar_Slider;
     [SerializeField] Slider backHealthBar_Slider;
     [SerializeField] Image frontHealthBar_Fill;
     [SerializeField] Image backHealthBar_Fill;
-    [SerializeField] GameObject floatingText;
-    [SerializeField] GameObject worldCanvas;
+    
 
     private float changeInHealthBarDuration = 2.0f;
     private int correctHealthAmt;
@@ -90,10 +94,8 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
                 GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.Euler(0, 0, 0), worldCanvas.transform);
                 TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
                 textAttributes.text = damageTaken.ToString();
-                if (damageTaken >= 40)
-                {
-                    textAttributes.color = Color.red;
-                }
+
+                textAttributes.color = floatingTextGradient.Evaluate(damageTaken/100f);
 
 
                 Destroy(_floatingText, 1.0f);
@@ -217,10 +219,9 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
         
         TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
         textAttributes.text = damageTaken.ToString();
-        if (damageTaken >= 40)
-        {
-            textAttributes.color = Color.red;
-        }
+
+        textAttributes.color = floatingTextGradient.Evaluate(damageTaken / 100f);
+
         _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
         Destroy(_floatingText, 1.5f);
         ///////////////////////////////////////////
