@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 5591992174662210909}
   - component: {fileID: 3828354827851679067}
   m_Layer: 0
-  m_Name: Canvas (Bomb Indicator)
+  m_Name: Canvas (Grenade Indicator)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
