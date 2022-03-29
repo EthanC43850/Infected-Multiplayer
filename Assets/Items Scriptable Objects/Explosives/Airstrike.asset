@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d3630580fca36a40a1040cae170fcd7, type: 3}
-  m_Name: Grenade
+  m_Name: Airstrike
   m_EditorClassIdentifier: 
-  itemName: Grenade
-  damage: 20
-  radius: 2.03
+  itemName: Airstrike
+  damage: 25
+  radius: 3
   detonationTime: 2
   explosionParticle: {fileID: 1328806268905473210, guid: 014fb782998cace49b5aa8694700ed72, type: 3}
-  radiusIndicator: {fileID: 4164063283350212747, guid: 433aaeb0731cede4cbedefb5b5acf55d, type: 3}
+  radiusIndicator: {fileID: 325792296110254002, guid: 7da09021add27c54192861aafbe722dd, type: 3}

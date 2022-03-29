@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [SerializeField] CharacterController controller;
     [SerializeField] GameObject playerUI;
     [SerializeField] Transform cam;
+    [SerializeField] CinemachineVirtualCamera birdEyeCam;
     [SerializeField] Transform groundCheck;
 
 
@@ -54,11 +55,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private int previousItemIndex = -1;
 
     private float grenadeThrowDistance;
+    private Vector3 airStrikePositionInput;
 
 
     #endregion
 
- 
+
     #region Monobehaviours
     public void Awake()
     {
@@ -133,7 +135,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 controller.Move(moveDirection * speed * Time.deltaTime);
             }
 
-            // if aiming with grenade
+            // if aiming with grenade (should i move this into a recursive coroutine instead to clean up update?)
             Grenade grenade = items[currentItemIndex].GetComponent<Grenade>();
             if (grenade != null)
             {
@@ -142,6 +144,25 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 grenade.throwDistance = Mathf.Clamp(grenade.throwDistance, grenade.minThrowDistance, grenade.maxThrowDistance);
 
             }
+
+            AirstrikePhone airStrike = items[currentItemIndex].GetComponent<AirstrikePhone>();
+            if(airStrike != null)
+            {
+
+                //float airStrikeTargetAngle = Mathf.Atan2(airStrikePositionInput.x, airStrikePositionInput.z) * Mathf.Rad2Deg + birdEyeCam.transform.eulerAngles.y;
+                //float airStrikeAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+
+                Vector3 airStrikeIndicatorMoveDirection = new Vector3(airStrikePositionInput.x, 0f, airStrikePositionInput.z);      //Quaternion.Euler(0f, airStrikeTargetAngle, 0f) * Vector3.forward;
+                if (airStrikeIndicatorMoveDirection.magnitude >= 0.1)
+                {
+                    airStrike.airStrikeIndicator.transform.Translate(airStrikeIndicatorMoveDirection * airStrike.airStrikeIndicatorMoveSpeed * Time.deltaTime);
+                }
+                //airStrike.airStrikeIndicatorTransform.Translate
+
+
+
+            }
+
 
         }
         #endregion
@@ -269,8 +290,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (!PV.IsMine) { return; }
         
         Vector2 inputMovement = value.ReadValue<Vector2>();
-        moveInput = new Vector3(inputMovement.x, 0, inputMovement.y).normalized; // Is normalize necessary?
-
+        moveInput = new Vector3(inputMovement.x, 0, inputMovement.y).normalized; // Normalize is necessary to make sure object does not speed up when two keys are pressed 
+                                                                                 // to go diagonally
     } // END OnMovement
 
 
@@ -308,6 +329,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     {
         if (!PV.IsMine) { return; }
         Grenade grenade = items[currentItemIndex].GetComponent<Grenade>();
+        AirstrikePhone airStrikePhone = items[currentItemIndex].GetComponent<AirstrikePhone>();
 
         if (value.started)
         {
@@ -316,6 +338,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             {
                 Debug.Log("TURN ON GRENADE");
                 grenade.drawProjectionScript.lineRenderer.enabled = true;
+            }
+            if(airStrikePhone != null)
+            {
+                airStrikePhone.airStrikeIndicator.gameObject.SetActive(true);
+                airStrikePhone.airStrikeIndicator.transform.position = airStrikePhone.gameObject.transform.position;
+                birdEyeCam.Priority = 11;
             }
 
         }
@@ -327,6 +355,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             if(grenade != null)
             {
                 grenade.drawProjectionScript.lineRenderer.enabled = false;
+            }
+            if(airStrikePhone != null)
+            {
+
+                airStrikePhone.airStrikeIndicator.gameObject.SetActive(false);
+                birdEyeCam.Priority = 9;
             }
 
         }
@@ -371,12 +405,23 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     public void OnGrenadeAim(InputAction.CallbackContext value)
     {
         // Increase denominator to slow down the change in speed of the line renderer
-        Debug.Log("grenade is aiming and value is " + value.ReadValue<Vector2>().y);
+        
+        //Debug.Log("grenade is aiming and value is " + value.ReadValue<Vector2>().y);
         grenadeThrowDistance = value.ReadValue<Vector2>().y / 8;
 
 
 
-    }
+    } // END OnGrenadeAim
+
+
+    public void OnAirstrikeAim(InputAction.CallbackContext value)
+    {
+        Vector2 airStrikeInputMovement = value.ReadValue<Vector2>();
+        airStrikePositionInput = new Vector3(airStrikeInputMovement.x, 0, airStrikeInputMovement.y).normalized;
+
+
+
+    } // END OnAirstrikeAim
 
     #endregion
 

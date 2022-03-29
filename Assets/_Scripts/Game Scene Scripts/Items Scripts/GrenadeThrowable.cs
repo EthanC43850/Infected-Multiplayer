@@ -9,12 +9,18 @@ public class GrenadeThrowable : MonoBehaviour
     private GameObject radiusObject;
     bool triggered = false;
 
-
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            StartCoroutine(DetonateCoroutine());
+        }
+    }
     public void OnCollisionEnter(Collision collision)
     {
         if(triggered == false)
         {
-            StartCoroutine(DetonateCoroutine());
+            //StartCoroutine(DetonateCoroutine());
         }
         else
         {
@@ -26,6 +32,7 @@ public class GrenadeThrowable : MonoBehaviour
     IEnumerator DetonateCoroutine()
     {
         radiusObject = Instantiate(explosiveInfo.radiusIndicator, transform.position, Quaternion.identity);
+        radiusObject.transform.localScale *= explosiveInfo.radius;
         yield return new WaitForSeconds(explosiveInfo.detonationTime);
         Destroy(radiusObject);
         GameObject explosion = Instantiate(explosiveInfo.explosionParticle, transform.position, explosiveInfo.explosionParticle.transform.rotation);
@@ -41,7 +48,7 @@ public class GrenadeThrowable : MonoBehaviour
         {
             hit.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)explosiveInfo).damage);
         }
-        Destroy(gameObject);
+        //Destroy(gameObject);
 
     }
 

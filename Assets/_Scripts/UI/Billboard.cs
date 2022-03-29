@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 
 /// <summary>
@@ -8,18 +9,16 @@ using UnityEngine;
 /// </summary>
 public class Billboard : MonoBehaviour
 {
-    Camera cam;
+
+    CinemachineBrain mainCam;
     void Update()
     {
-        if(cam == null)
+        if(mainCam == null)
         {
-            cam = FindObjectOfType<Camera>();
+            mainCam = FindObjectOfType<CinemachineBrain>();
         }
-        if(cam == null)
-        {
-            return;
-        }
-        transform.LookAt(cam.transform);
+        
+        transform.LookAt(mainCam.transform);
         transform.Rotate(Vector3.up * 180);
 
     }
