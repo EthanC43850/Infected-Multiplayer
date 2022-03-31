@@ -89,20 +89,8 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
         networkLerpTimer += Time.deltaTime;
         if (fillBack > player.currentHealth)
         {
-            if (isDamaged)
-            {
-                GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.Euler(0, 0, 0), worldCanvas.transform);
-                TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
-                textAttributes.text = damageTaken.ToString();
 
-                textAttributes.color = floatingTextGradient.Evaluate(damageTaken/100f);
-
-
-                Destroy(_floatingText, 1.0f);
-                isDamaged = false;
-            }
-
-
+            
             backHealthBar_Fill.color = Color.white;
             frontHealthBar_Slider.value = player.currentHealth;
             float percentComplete = networkLerpTimer / changeInHealthBarDuration;
@@ -110,7 +98,8 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
 
             backHealthBar_Slider.value = Mathf.Lerp(fillBack, player.currentHealth, percentComplete);
         }
-    }
+
+    } // END UpdateNetworkHealthBars
 
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -202,7 +191,6 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
 
             yield return null;
         }
-        Debug.Log("While loop has broken!");
 
     }// END ChangeHealthValue
 
@@ -215,15 +203,18 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
 
         ///////////////////////////////////////// 
         //For testing different positions of floating numbers
-        GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.identity, worldCanvas.transform);
-        
-        TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
-        textAttributes.text = damageTaken.ToString();
+        //if (PlayerController.debugMode == true)
+        //{
+            GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.identity, worldCanvas.transform);
 
-        textAttributes.color = floatingTextGradient.Evaluate(damageTaken / 100f);
+            TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
+            textAttributes.text = damageTaken.ToString();
 
-        _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        Destroy(_floatingText, 1.5f);
+            textAttributes.color = floatingTextGradient.Evaluate(damageTaken / 100f);
+
+            _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            Destroy(_floatingText, 1.5f);
+        //}
         ///////////////////////////////////////////
         
 

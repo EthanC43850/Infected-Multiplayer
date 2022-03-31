@@ -8,14 +8,29 @@ public class AirstrikePhone : Explosive
 {
 
     [Header("Airstrike Properties")]
-    public float airStrikeIndicatorMoveSpeed;
+    public float indicatorMoveSpeed;
 
     [Header("Object Connections")]
-    
     public GameObject missileObject;
-    public GameObject airStrikeIndicator;   // This is also located in explosive info which i have no idea how to type cast
+    public GameObject airStrikeIndicator; // Attached to phone weapon
     public PhotonView PV;
-    
+
+    private Vector3 missileHeightOffset = new Vector3(0f, 20f, 0f);
+    private ExplosiveInfo explosiveInfo;
+
+    private void OnEnable()
+    {
+        explosiveInfo = (ExplosiveInfo)itemInfo;
+        airStrikeIndicator.transform.localScale += new Vector3(explosiveInfo.radius + explosiveInfo.radiusIndicatorOffset, explosiveInfo.radius + explosiveInfo.radiusIndicatorOffset, explosiveInfo.radius + explosiveInfo.radiusIndicatorOffset);
+        PlayerController player = gameObject.GetComponentInParent<PlayerController>();
+
+        if(player != null)
+        {
+            player.airstrikePhone = this;
+        }
+
+    }
+
 
     public override void Use()
     {
@@ -27,13 +42,14 @@ public class AirstrikePhone : Explosive
 
         if (PlayerController.debugMode == false)
         {
-            PV.RPC("RPC_ThrowProjectile", RpcTarget.All);
+            PV.RPC("RPC_LaunchAirstrike", RpcTarget.All);
 
         }
         else
         {
-            GameObject airStrike = Instantiate(missileObject, airStrikeIndicator.transform.position, airStrikeIndicator.transform.rotation);
-            
+
+            AirstrikeMissile airStrike = Instantiate(missileObject, airStrikeIndicator.transform.position + missileHeightOffset, Quaternion.identity).GetComponent<AirstrikeMissile>();
+            airStrike.InstantiateIndicator(airStrikeIndicator.transform);
         }
 
 
@@ -41,12 +57,11 @@ public class AirstrikePhone : Explosive
 
 
     [PunRPC]
-    void RPC_ThrowProjectile()
+    void RPC_LaunchAirstrike()
     {
-        GameObject missile = Instantiate(missileObject, airStrikeIndicator.transform.position, airStrikeIndicator.transform.rotation);
+        AirstrikeMissile airStrike = Instantiate(missileObject, airStrikeIndicator.transform.position + missileHeightOffset, Quaternion.identity).GetComponent<AirstrikeMissile>();
+        airStrike.InstantiateIndicator(airStrikeIndicator.transform);
 
-
-        //grenade.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * throwDistance;
 
 
     }

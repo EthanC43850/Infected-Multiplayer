@@ -47,28 +47,27 @@ public class SingleShotGun : Gun
 
             if(player != null)
             {
-                //player.worldSpaceUI.DisplayFloatingText(((WeaponInfo)itemInfo).damage);
+                player.worldSpaceUI.DisplayFloatingText(((WeaponInfo)itemInfo).damage);
             }
 
-
-
-            /////////////////////////////////
             /// Single Player Testing
-            //Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
-
-            Collider[] colliders = Physics.OverlapSphere(hit.point, 0.3f);
-            if (colliders.Length != 0)
+            if (PlayerController.debugMode == true)
             {
-                GameObject bulletImpactObj = Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
-                Destroy(bulletImpactObj, 10f);
-                bulletImpactObj.transform.SetParent(colliders[0].transform);
+                Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
+
+                Collider[] colliders = Physics.OverlapSphere(hit.point, 0.3f);
+                if (colliders.Length != 0)
+                {
+                    GameObject bulletImpactObj = Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
+                    Destroy(bulletImpactObj, 10f);
+                    bulletImpactObj.transform.SetParent(colliders[0].transform);
+                }
             }
+            else
+            {
+                PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
 
-            ///////////////////////////////////
-
-            // Multiplayer testing
-            //PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
-
+            }
         }
 
     } // END Shoot

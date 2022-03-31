@@ -204,6 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1201637017537042286}
   - component: {fileID: 5424765797638317801}
+  - component: {fileID: 2406998864460277143}
   m_Layer: 0
   m_Name: Airstrike_Missile
   m_TagString: Untagged
@@ -242,6 +243,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2406998864460277143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5866113910783640382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ca2be77dd374547ae60164ffa5e01d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosiveInfo: {fileID: 11400000, guid: 185e56e32bbc3ca41a4bff181d2f7791, type: 2}
 --- !u!1 &6461910797158425333
 GameObject:
   m_ObjectHideFlags: 0

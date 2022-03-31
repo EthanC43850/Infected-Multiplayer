@@ -45,6 +45,8 @@ MonoBehaviour:
   - UpdateHealthUI
   - ChangeHealthValueRPC
   - RPC_ThrowProjectile
+  - RPC_LaunchAirstrike
+  - RPC_AirstrikeAim
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

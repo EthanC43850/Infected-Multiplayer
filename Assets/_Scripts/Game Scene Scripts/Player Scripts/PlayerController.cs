@@ -8,13 +8,16 @@ using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using ExitGames.Client.Photon;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 {
 
     #region Variables
 
-    public static bool debugMode = true;
+    public static bool debugMode = false;
+
+    public const byte OnAirstrikeAimEventCode = 1;
 
     [Header("Player Properties")]
     public int maxHealth = 100;
@@ -57,11 +60,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     private float grenadeThrowDistance;
     private Vector3 airStrikePositionInput;
 
+    [HideInInspector]
+    public AirstrikePhone airstrikePhone;
 
     #endregion
 
 
     #region Monobehaviours
+
+    /*private new void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    private new void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }*/
+
     public void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -152,10 +168,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 //float airStrikeTargetAngle = Mathf.Atan2(airStrikePositionInput.x, airStrikePositionInput.z) * Mathf.Rad2Deg + birdEyeCam.transform.eulerAngles.y;
                 //float airStrikeAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-                Vector3 airStrikeIndicatorMoveDirection = new Vector3(airStrikePositionInput.x, 0f, airStrikePositionInput.z);      //Quaternion.Euler(0f, airStrikeTargetAngle, 0f) * Vector3.forward;
+                Vector3 airStrikeIndicatorMoveDirection = new Vector3(-airStrikePositionInput.x, 0f, -airStrikePositionInput.z);    
                 if (airStrikeIndicatorMoveDirection.magnitude >= 0.1)
                 {
-                    airStrike.airStrikeIndicator.transform.Translate(airStrikeIndicatorMoveDirection * airStrike.airStrikeIndicatorMoveSpeed * Time.deltaTime);
+                    airStrike.airStrikeIndicator.transform.Translate(airStrikeIndicatorMoveDirection * airStrike.indicatorMoveSpeed * Time.deltaTime);
                 }
                 //airStrike.airStrikeIndicatorTransform.Translate
 
@@ -184,6 +200,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             Debug.Log("Player item changed!");
             EquipItem((int)changedProps["itemIndex"]);
 
+
+
+        }
+
+        if (!PV.IsMine && targetPlayer == PV.Owner && changedProps["airstrikeActive"] != null)
+        {
+            Debug.Log("AIR STRIKE BROADCASTED ACROSS NETWORK");
+            airstrikePhone.airStrikeIndicator.SetActive((bool)changedProps["airstrikeActive"]);
+            airstrikePhone.airStrikeIndicator.transform.position = transform.position;
+
         }
 
 
@@ -204,6 +230,22 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
 
     #region Methods
+
+   /* public void OnEvent(EventData photonEvent)
+    {
+
+        byte eventCode = photonEvent.Code;
+        if (eventCode == OnAirstrikeAimEventCode)
+        {
+            
+            object[] data = (object[])photonEvent.CustomData;
+            airstrikePhone.airStrikeIndicator.SetActive((bool)data[0]);
+            airstrikePhone.airStrikeIndicator.transform.position = transform.position;
+        }
+
+    } // END OnEvent*/
+
+
     private void EquipItem(int _index)
     {
         if (_index == previousItemIndex)
@@ -245,6 +287,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             {
                 Die();
             }
+
         }
         else
         {
@@ -282,6 +325,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     } // END Die
 
     #endregion
+
 
 
     #region Player Actions
@@ -327,9 +371,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     public void OnAim(InputAction.CallbackContext value)
     {
-        if (!PV.IsMine) { return; }
+        
         Grenade grenade = items[currentItemIndex].GetComponent<Grenade>();
-        AirstrikePhone airStrikePhone = items[currentItemIndex].GetComponent<AirstrikePhone>();
+        AirstrikePhone _airStrikePhone = items[currentItemIndex].GetComponent<AirstrikePhone>();
 
         if (value.started)
         {
@@ -339,11 +383,33 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 Debug.Log("TURN ON GRENADE");
                 grenade.drawProjectionScript.lineRenderer.enabled = true;
             }
-            if(airStrikePhone != null)
+            if (_airStrikePhone != null)
             {
-                airStrikePhone.airStrikeIndicator.gameObject.SetActive(true);
-                airStrikePhone.airStrikeIndicator.transform.position = airStrikePhone.gameObject.transform.position;
+                if (PlayerController.debugMode == false)
+                {
+                    /*airstrikePhone = _airStrikePhone;
+                    object[] content = new object[] { true };
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    PhotonNetwork.RaiseEvent(OnAirstrikeAimEventCode, content, raiseEventOptions, SendOptions.SendReliable);*/
+
+                    _airStrikePhone.airStrikeIndicator.SetActive(true);
+                    _airStrikePhone.airStrikeIndicator.transform.position = transform.position;
+                    // Project to all other users that this specific user is aiming an airstrike
+                    if (PV.IsMine && !debugMode)
+                    {
+                        Hashtable hash = new Hashtable();
+                        hash.Add("airstrikeActive", true);
+                        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+                    }
+                }
+                else
+                {
+                    _airStrikePhone.airStrikeIndicator.SetActive(true);
+                    _airStrikePhone.airStrikeIndicator.transform.position = transform.position;
+                }
+
                 birdEyeCam.Priority = 11;
+
             }
 
         }
@@ -356,10 +422,30 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             {
                 grenade.drawProjectionScript.lineRenderer.enabled = false;
             }
-            if(airStrikePhone != null)
+            if(_airStrikePhone != null)
             {
 
-                airStrikePhone.airStrikeIndicator.gameObject.SetActive(false);
+                if (PlayerController.debugMode == false)
+                {
+                    /*airstrikePhone = _airStrikePhone;
+                    object[] content = new object[] { false };
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    PhotonNetwork.RaiseEvent(OnAirstrikeAimEventCode, content, raiseEventOptions, SendOptions.SendReliable);*/
+
+                    _airStrikePhone.airStrikeIndicator.SetActive(false);
+                    _airStrikePhone.airStrikeIndicator.transform.position = transform.position;
+
+                    if (PV.IsMine && !debugMode)
+                    {
+                        Hashtable hash = new Hashtable();
+                        hash.Add("airstrikeActive", false);
+                        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+                    }
+                }
+                else
+                {
+                    _airStrikePhone.airStrikeIndicator.gameObject.SetActive(false);
+                }
                 birdEyeCam.Priority = 9;
             }
 
@@ -424,5 +510,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     } // END OnAirstrikeAim
 
     #endregion
+
+
+
+
 
 }

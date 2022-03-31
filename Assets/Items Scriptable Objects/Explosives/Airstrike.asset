@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Airstrike
   damage: 25
-  radius: 3
-  detonationTime: 2
+  radius: 10
+  radiusIndicatorOffset: 1
+  detonationTime: 0
   explosionParticle: {fileID: 1328806268905473210, guid: 014fb782998cace49b5aa8694700ed72, type: 3}
   radiusIndicator: {fileID: 325792296110254002, guid: 7da09021add27c54192861aafbe722dd, type: 3}

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Grenade
   damage: 20
-  radius: 2.03
+  radius: 2.3
+  radiusIndicatorOffset: 1
   detonationTime: 2
   explosionParticle: {fileID: 1328806268905473210, guid: 014fb782998cace49b5aa8694700ed72, type: 3}
   radiusIndicator: {fileID: 4164063283350212747, guid: 433aaeb0731cede4cbedefb5b5acf55d, type: 3}
