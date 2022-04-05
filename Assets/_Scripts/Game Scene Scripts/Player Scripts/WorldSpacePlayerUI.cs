@@ -35,6 +35,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
+        
         if (!PlayerController.debugMode)
         {
             userNameText.text = player.PV.Owner.NickName;
