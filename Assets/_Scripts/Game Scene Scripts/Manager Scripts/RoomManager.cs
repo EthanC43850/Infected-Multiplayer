@@ -37,7 +37,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
 
-        Debug.Log("Spawn player manager");
 
         if (scene.buildIndex == 1)   //If in the game scene, create player manager
         {
