@@ -43,7 +43,7 @@ public class AirstrikePhone : Explosive
         if (PlayerController.debugMode == false)
         {
             PV.RPC("RPC_LaunchAirstrike", RpcTarget.All);
-
+             
         }
         else
         {
@@ -56,12 +56,15 @@ public class AirstrikePhone : Explosive
     }
 
 
+    // AIRSTRIKES CURRENTLY DO DOUBLE DAMAGE BECAUSE THE INSTANTIATED OBJECTS RUN LOCALLY.
+    // FIX: Implement Detonation function INSIDE the PunRPC just like in the "SingleShotGun" Scripts
+
+
     [PunRPC]
     void RPC_LaunchAirstrike()
     {
         AirstrikeMissile airStrike = Instantiate(missileObject, airStrikeIndicator.transform.position + missileHeightOffset, Quaternion.identity).GetComponent<AirstrikeMissile>();
         airStrike.InstantiateIndicator(airStrikeIndicator.transform);
-
 
 
     }
