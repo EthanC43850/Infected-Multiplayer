@@ -201,8 +201,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             EquipItem((int)changedProps["itemIndex"]);
 
 
-
         }
+
+
 
         if (!PV.IsMine && targetPlayer == PV.Owner && changedProps["airstrikeActive"] != null)
         {
@@ -218,12 +219,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Spikes>())
+        // IMPORTANT: This function will run as many times as there are players in the game. The collider on my local computer && all other clients
+        // In this example, a player will take 60 damage (20 * 3) if there are 3 clients
+        /*if (other.gameObject.GetComponent<Spikes>())
         {
             Debug.Log("Stepped on spikes");
             TakeDamage(20);
             //worldSpaceUI.DisplayFloatingText(20);
-        }
+        }*/
     }
 
     #endregion
@@ -287,7 +290,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             {
                 Die();
             }
-
         }
         else
         {
@@ -295,20 +297,17 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             worldSpaceUI.networkLerpTimer = 0;
         }
 
-        
     } // END TakeDamage
 
 
     [PunRPC]
     public void RPC_TakeDamage(int damage)
     {
-        if (!PV.IsMine) { return; }         // Makes sure the function only runs on the victims computer
 
-        currentHealth -= damage;
+        if (!PV.IsMine) { return; }         // Pun RPC runs on everyones computer, but the !pv.ismine makes sure the function only runs on the victims computer
 
-        
+        currentHealth -= damage;    // In the multiplayer tutorial, this function is placed after !PV.IsMine. Keep this in mind if problems arise in the future.
         worldSpaceUI.UpdateHealthUI(currentHealth);
-
 
         if (currentHealth <= 0)
         {
