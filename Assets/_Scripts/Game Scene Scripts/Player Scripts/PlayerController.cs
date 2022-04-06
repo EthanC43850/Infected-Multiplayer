@@ -201,8 +201,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             EquipItem((int)changedProps["itemIndex"]);
 
 
-
         }
+
+
 
         if (!PV.IsMine && targetPlayer == PV.Owner && changedProps["airstrikeActive"] != null)
         {
@@ -302,11 +303,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [PunRPC]
     public void RPC_TakeDamage(int damage)
     {
-        if (!PV.IsMine) { return; }         // Makes sure the function only runs on the victims computer
-
         currentHealth -= damage;
 
-        
+        if (!PV.IsMine) { return; }         // Pun RPC runs on everyones computer, but the !pv.ismine makes sure the function only runs on the victims computer
+        Debug.Log("ABOUT TO TAKE DAMGE, CURRENT HEALTH IS: " + currentHealth);
+
+        Debug.Log("TOOK DAMGE, CURRENT HEALTH IS: " + currentHealth);
+
+
         worldSpaceUI.UpdateHealthUI(currentHealth);
 
 
