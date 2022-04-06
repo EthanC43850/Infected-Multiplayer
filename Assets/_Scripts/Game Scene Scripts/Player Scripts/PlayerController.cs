@@ -290,18 +290,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             {
                 Die();
             }
-
         }
         else
         {
-
             PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
             worldSpaceUI.networkLerpTimer = 0;
-            
-            
         }
 
-        
     } // END TakeDamage
 
 
@@ -312,9 +307,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (!PV.IsMine) { return; }         // Pun RPC runs on everyones computer, but the !pv.ismine makes sure the function only runs on the victims computer
 
         currentHealth -= damage;    // In the multiplayer tutorial, this function is placed after !PV.IsMine. Keep this in mind if problems arise in the future.
-
         worldSpaceUI.UpdateHealthUI(currentHealth);
-
 
         if (currentHealth <= 0)
         {

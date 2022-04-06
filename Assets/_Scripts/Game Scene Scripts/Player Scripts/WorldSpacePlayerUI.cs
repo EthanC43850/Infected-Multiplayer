@@ -49,7 +49,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
             userNameText.text = player.PV.Owner.NickName;
         }
         
-    }
+    } // END Start
 
 
     public void SetHealthBarMax(int _maxHealth)
@@ -74,7 +74,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     #region No Longer need to use this update loop, will leave here for future reference if I need to send any kind of packet over a network
     /*
 
-        Must Include IPunObservable interface to send packets over a network
+        Must Include IPunObservable interface to send packets over a network, which means a Photonview is not required on gameobject
         // Update is called once per frame
         void Update()
         {
@@ -173,8 +173,6 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         }
 
-
-        // PUN REFUSES TO RUN THE COROUTINES. IS THERE A REASON WHY?
 
     } // END SetHealthBar
 
