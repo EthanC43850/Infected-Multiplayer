@@ -52,6 +52,7 @@ public class AirstrikeMissile : MonoBehaviour
                 player.worldSpaceUI.DisplayFloatingText(((WeaponInfo)explosiveInfo).damage);
             }
 
+            if (player != null && !player.PV.IsMine) { return; }
             hit.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)explosiveInfo).damage);
         }
 

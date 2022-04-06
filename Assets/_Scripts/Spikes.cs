@@ -16,11 +16,13 @@ public class Spikes : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter(Collider other)
     {
+        
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (!player.PV.IsMine) { return; }
 
-        IDamageable player = other.gameObject.GetComponent<IDamageable>();
         if (player != null)
         {
-            player.TakeDamage(5);
+            player.TakeDamage(20);
         }
     }
 
