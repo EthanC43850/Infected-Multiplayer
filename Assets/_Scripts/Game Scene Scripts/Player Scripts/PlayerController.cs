@@ -219,12 +219,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Spikes>())
+        // IMPORTANT: This function will run as many times as there are players in the game. The collider on my local computer && all other clients
+        // In this example, a player will take 60 damage (20 * 3) if there are 3 clients
+        /*if (other.gameObject.GetComponent<Spikes>())
         {
             Debug.Log("Stepped on spikes");
             TakeDamage(20);
             //worldSpaceUI.DisplayFloatingText(20);
-        }
+        }*/
     }
 
     #endregion
@@ -292,8 +294,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
         else
         {
+
             PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
             worldSpaceUI.networkLerpTimer = 0;
+            
+            
         }
 
         
@@ -303,13 +308,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     [PunRPC]
     public void RPC_TakeDamage(int damage)
     {
-        currentHealth -= damage;
 
         if (!PV.IsMine) { return; }         // Pun RPC runs on everyones computer, but the !pv.ismine makes sure the function only runs on the victims computer
-        Debug.Log("ABOUT TO TAKE DAMGE, CURRENT HEALTH IS: " + currentHealth);
 
-        Debug.Log("TOOK DAMGE, CURRENT HEALTH IS: " + currentHealth);
-
+        currentHealth -= damage;    // In the multiplayer tutorial, this function is placed after !PV.IsMine. Keep this in mind if problems arise in the future.
 
         worldSpaceUI.UpdateHealthUI(currentHealth);
 

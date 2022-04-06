@@ -143,9 +143,8 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
         if (!pv.IsMine && targetPlayer == pv.Owner && changedProps["currentHealth"] != null)
         {
-            Debug.Log("Player health changed!");
             UpdateHealthUI((int)changedProps["currentHealth"]);
-            Debug.Log("COROUTINE SHOULD ABOUT TO START");
+
             StopAllCoroutines();
 
             StartCoroutine(ChangeHealthValue());
@@ -163,7 +162,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     public void UpdateHealthUI(int _currentHealth)
     {
         Debug.Log("Update Health");
-        
+        player.currentHealth = _currentHealth;
         StopAllCoroutines();
         StartCoroutine(ChangeHealthValue());
 
