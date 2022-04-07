@@ -10,18 +10,19 @@ using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 
-public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
+public class PlayerController : Targetable, IDamageable
 {
 
     #region Variables
 
-    public static bool debugMode = false;
+    public static bool debugMode = true;
 
-    public const byte OnAirstrikeAimEventCode = 1;
+    //public const byte OnAirstrikeAimEventCode = 1;
 
     [Header("Player Properties")]
     public int maxHealth = 100;
     public int currentHealth;
+    public WorldSpacePlayerUI worldSpaceUI;     // AI needs this too
     public Item[] items;
     public bool isAiming;
 
@@ -44,12 +45,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
 
     [Header("Scripts")]
-    public WorldSpacePlayerUI worldSpaceUI;
+    
     private PlayerManager playerManager;
 
 
 
-    [HideInInspector] public PhotonView PV;
+    
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity = 1f;
     private Vector3 moveInput;
@@ -78,9 +79,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
     }*/
 
-    public void Awake()
+    public override void Awake()
     {
-        PV = GetComponent<PhotonView>();
+        base.Awake();
 
         if (!debugMode)
         {
@@ -88,7 +89,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         }
         
 
-    } //END Awake
+    } // END Awake
 
     private void Start()
     {
@@ -294,7 +295,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         else
         {
             PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
-            worldSpaceUI.networkLerpTimer = 0;
         }
 
     } // END TakeDamage
@@ -514,4 +514,4 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
 
 
-}
+} // END Class

@@ -27,9 +27,6 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     private float changeInHealthBarDuration = 2.0f;
     private int correctHealthAmt;
-    [HideInInspector]
-    public float networkLerpTimer;
-    private bool isDamaged = false;
     private int damageTaken;
 
     PhotonView pv;
@@ -116,7 +113,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     */
 
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (PlayerController.debugMode) { return; }
 
@@ -131,7 +128,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
         {
             correctHealthAmt = (int)stream.ReceiveNext();
         }
-    }
+    }*/
 
     #endregion
 
@@ -225,7 +222,6 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     public void DisplayFloatingText(int damage)
     {
-        isDamaged = true;
         damageTaken = damage;
 
 
