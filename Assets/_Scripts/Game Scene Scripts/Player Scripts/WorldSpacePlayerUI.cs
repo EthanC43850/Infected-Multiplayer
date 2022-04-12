@@ -12,7 +12,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     #region Variables
     [Header("Player Connections")]
-    [SerializeField] PlayerController player;
+    //[SerializeField] PlayerController player;
     [SerializeField] Text userNameText;
     [SerializeField] GameObject floatingText;
     [SerializeField] Gradient floatingTextGradient;
@@ -26,7 +26,8 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     
 
     private float changeInHealthBarDuration = 2.0f;
-    private int correctHealthAmt;
+    private int correctHealthAmt; // Could most likely delete
+    private int currentHealth;
     private int damageTaken;
 
     PhotonView pv;
@@ -40,8 +41,11 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        
-        if (!PlayerController.debugMode)
+        PlayerController player = gameObject.GetComponent<PlayerController>();
+
+
+
+        if (!PlayerController.debugMode && player != null)
         {
             userNameText.text = player.PV.Owner.NickName;
         }
@@ -51,12 +55,13 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     public void SetHealthBarMax(int _maxHealth)
     {
-
+        Debug.Log("Max health is being set to " + _maxHealth);
         frontHealthBar_Slider.maxValue = _maxHealth;
         frontHealthBar_Slider.value = _maxHealth;
         backHealthBar_Slider.maxValue = _maxHealth;
         backHealthBar_Slider.value = _maxHealth;
 
+        if(gameObject.GetComponent<PlayerController>() == null) { return; }
         if (pv.IsMine && !PlayerController.debugMode)
         {
             Hashtable hash = new Hashtable();
@@ -159,11 +164,11 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     public void UpdateHealthUI(int _currentHealth)
     {
         Debug.Log("Update Health");
-        player.currentHealth = _currentHealth;
+        currentHealth = _currentHealth;
         StopAllCoroutines();
         StartCoroutine(ChangeHealthValue());
 
-        if (pv.IsMine && !PlayerController.debugMode)
+        if (!PlayerController.debugMode && pv.IsMine)
         {
             Hashtable hash = new Hashtable();
             hash.Add("currentHealth", _currentHealth);
@@ -188,15 +193,15 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
             lerpTimer += Time.deltaTime;
             // If lose health
-            if (fillBack > player.currentHealth)
+            if (fillBack > currentHealth)
             {
-
                 backHealthBar_Fill.color = Color.white;
-                frontHealthBar_Slider.value = player.currentHealth;
+                frontHealthBar_Slider.value = currentHealth;
                 float percentComplete = lerpTimer / changeInHealthBarDuration;
+
                 percentComplete *= percentComplete; //* percentComplete;           // The more you square this, the slower health will drop
 
-                backHealthBar_Slider.value = Mathf.Lerp(fillBack, player.currentHealth, percentComplete);
+                backHealthBar_Slider.value = Mathf.Lerp(fillBack, currentHealth, percentComplete);
 
             }
 
@@ -213,7 +218,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
             }*/
 
             //backHealthBar_Slider.value = hFraction;
-
+            
             yield return null;
         }
 

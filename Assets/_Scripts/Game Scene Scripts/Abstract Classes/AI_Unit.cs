@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 ///  Base Class for all AI Units: Zombies, Sentry Guns, Survivors
 /// </summary>
-public abstract class AI_Unit : Targetable
+public abstract class AI_Unit : Targetable, IDamageable
 {
 
     #region Enums
@@ -44,22 +44,32 @@ public abstract class AI_Unit : Targetable
     public AttackType attackType;
     public float attackRange;
     public float attackRatio; // Time between attacks
-    public float damagePerAttack;
+    public int damagePerAttack;
     public float speed; // Movement speed
 
-    public Targetable target;
     public WorldSpacePlayerUI worldSpaceUI;
 
     [Header("Sound FX")]
     [HideInInspector] public AudioClip attackAudioClip;
     [HideInInspector] public AudioClip dieAudioClip;
 
-
+    [HideInInspector] public float lastBlowTime = -1000f;
+    public Targetable target;
     public List<Targetable> enemies;
+
+    public Transform spawnPosition;
+
     #endregion
 
 
     #region Monobehaviours
+
+    public virtual void Start()
+    {
+        worldSpaceUI.SetHealthBarMax(health);
+    }
+
+
     public virtual void Update()
     {
         /*if (!PhotonNetwork.IsMasterClient && !PlayerController.debugMode)
@@ -68,12 +78,9 @@ public abstract class AI_Unit : Targetable
             return;
         }*/
 
-        
         switch (state)
         {
             case States.Idle:
-
-                // Find closest target
                 bool targetFound = FindClosestTarget();
                 if (targetFound)
                 {
@@ -82,18 +89,26 @@ public abstract class AI_Unit : Targetable
 
                 break;
             case States.Seeking:
-                Seek();
+                Seek();     // Could delete this and call seek coroutine in the seek function to allow delay in destination change
                 if (IsTargetInRange())
                 {
-                    //StartAttack();
+                    StartAttack();
                 }
-                break;
 
+                break;
             case States.Attacking:
                 if (IsTargetInRange()) {
 
-                    Debug.Log("PUNCH PUNCH PUNCH");
+                    if(Time.time >= lastBlowTime + attackRatio)
+                    {
+                        DealBlow();
+
+                    }
                 
+                }
+                else
+                {
+                    Seek();
                 }
 
                 break;
@@ -122,6 +137,13 @@ public abstract class AI_Unit : Targetable
         state = States.Attacking;
 
     } // END StartAttack
+
+    public virtual void DealBlow()
+    {
+        Debug.Log("PUNCH PUNCH PUNCH");
+        lastBlowTime = Time.time;
+
+    } // END DealBlow
 
 
     public virtual void Stop()
@@ -169,7 +191,9 @@ public abstract class AI_Unit : Targetable
 
     void Die()
     {
-
+        //gameObject.SetActive(false);
+        Debug.Log("ZOMBIE SHOULD'VE DIED");
+        transform.position = spawnPosition.position;
 
 
     } // END Die

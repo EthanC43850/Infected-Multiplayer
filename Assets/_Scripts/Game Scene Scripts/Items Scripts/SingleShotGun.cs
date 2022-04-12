@@ -42,12 +42,12 @@ public class SingleShotGun : Gun
     {
         if(Physics.Raycast(gunBarrel.position, gunBarrel.transform.forward, out RaycastHit hit, 4.0f))
         {
-            PlayerController player = hit.collider.gameObject.GetComponent<PlayerController>();
+            WorldSpacePlayerUI worldSpaceUI = hit.collider.gameObject.GetComponent<WorldSpacePlayerUI>();
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)itemInfo).damage);
 
-            if(player != null)
+            if(worldSpaceUI != null)
             {
-                player.worldSpaceUI.DisplayFloatingText(((WeaponInfo)itemInfo).damage);
+                worldSpaceUI.DisplayFloatingText(((WeaponInfo)itemInfo).damage);
             }
 
             /// Single Player Testing
@@ -77,6 +77,8 @@ public class SingleShotGun : Gun
     [PunRPC]
     void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
     {
+        // Just a bullet hole effect
+
         Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
         if(colliders.Length != 0)
         {
