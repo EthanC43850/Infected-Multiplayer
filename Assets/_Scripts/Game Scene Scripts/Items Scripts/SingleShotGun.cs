@@ -42,7 +42,7 @@ public class SingleShotGun : Gun
     {
         if(Physics.Raycast(gunBarrel.position, gunBarrel.transform.forward, out RaycastHit hit, 4.0f))
         {
-            WorldSpacePlayerUI worldSpaceUI = hit.collider.gameObject.GetComponent<WorldSpacePlayerUI>();
+            WorldSpacePlayerUI worldSpaceUI = hit.collider.gameObject.GetComponentInChildren<WorldSpacePlayerUI>();
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)itemInfo).damage);
 
             if(worldSpaceUI != null)
