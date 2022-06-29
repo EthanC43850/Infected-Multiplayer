@@ -3,8 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Base class for all objects that can be damaged (Units, players, structures, buildings)
+// Can assign different teams/ factions, as well as having units target a specific type of faction
 public class Targetable : MonoBehaviourPunCallbacks
 {
+    public Faction faction;
 
     [HideInInspector] public PhotonView PV;
 

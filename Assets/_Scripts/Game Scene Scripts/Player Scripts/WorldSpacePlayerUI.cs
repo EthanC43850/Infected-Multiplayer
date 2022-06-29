@@ -23,7 +23,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     [SerializeField] Slider backHealthBar_Slider;
     [SerializeField] Image frontHealthBar_Fill;
     [SerializeField] Image backHealthBar_Fill;
-    
+
 
     private float changeInHealthBarDuration = 2.0f;
     private int correctHealthAmt; // Could most likely delete
@@ -49,7 +49,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
         {
             userNameText.text = player.PV.Owner.NickName;
         }
-        
+
     } // END Start
 
 
@@ -61,7 +61,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
         backHealthBar_Slider.maxValue = _maxHealth;
         backHealthBar_Slider.value = _maxHealth;
 
-        if(gameObject.GetComponent<PlayerController>() == null) { return; }
+        if (gameObject.GetComponent<PlayerController>() == null) { return; }
         if (pv.IsMine && !PlayerController.debugMode)
         {
             Hashtable hash = new Hashtable();
@@ -206,19 +206,19 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
             }
 
             // For Healing
-            /*if (fillFront < hFraction)
+            if (fillFront < currentHealth)
             {
-                backHealthBar_Fill.color = Color.green;
-                backHealthBar_Slider.value = hFraction;
+                backHealthBar_Fill.color = new Color32(101, 255, 23, 255); // Light green
+                backHealthBar_Slider.value = currentHealth;
                 lerpTimer += Time.deltaTime;
-                float percentComplete = lerpTimer / changeInHealthBarDuration;
+                float percentComplete = lerpTimer / changeInHealthBarDuration *0.5f;  // Add me to slow down health bar regen fill speed.
                 percentComplete *= percentComplete;
                 frontHealthBar_Slider.value = Mathf.Lerp(fillFront, backHealthBar_Slider.value, percentComplete);
 
-            }*/
+            }
 
             //backHealthBar_Slider.value = hFraction;
-            
+
             yield return null;
         }
 
@@ -234,18 +234,18 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
         //For testing different positions of floating numbers
         //if (PlayerController.debugMode == true)
         //{
-            GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.identity, worldCanvas.transform);
+        GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.identity, worldCanvas.transform);
 
-            TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
-            textAttributes.text = damageTaken.ToString();
+        TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
+        textAttributes.text = damageTaken.ToString();
 
-            textAttributes.color = floatingTextGradient.Evaluate(damageTaken / 100f);
+        textAttributes.color = floatingTextGradient.Evaluate(damageTaken / 100f);
 
-            _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            Destroy(_floatingText, 1.5f);
+        _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        Destroy(_floatingText, 1.5f);
         //}
         ///////////////////////////////////////////
-        
+
 
     } // END DisplayFloatingText
 

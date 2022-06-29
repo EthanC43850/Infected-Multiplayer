@@ -9,7 +9,7 @@ public class AI_Data : ScriptableObject
     public string unitName;
 
     [Header("AI Unit Properties")]
-    public AI_Unit.AttackType attackType;
+    public AgentStateMachine.AttackType attackType;
     public float attackRange;
     public float attackRatio;   // Time between attacks
     public float damagePerAttack;

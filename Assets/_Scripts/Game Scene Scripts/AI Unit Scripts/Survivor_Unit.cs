@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Survivor_Unit : AI_Unit
+public class Survivor_Unit : AgentStateMachine
 {
     #region Variables
 
@@ -16,17 +16,9 @@ public class Survivor_Unit : AI_Unit
 
 
     #region Monobehaviours
-    public override void Awake()
-    {
-        base.Awake();
-        navMeshAgent = GetComponent<NavMeshAgent>();
 
-    }
 
-    public override void Update()
-    {
-        base.Update();
-    }
+
 
 
     #endregion

@@ -8,8 +8,10 @@ public class PlayerManager : MonoBehaviour
 {
 
     PhotonView PV;
-
     GameObject controller;
+
+    public delegate void AddToAIEnemyLists(Targetable target);
+    public static event AddToAIEnemyLists AddEnemyToAILists;
 
     private void Awake()
     {
@@ -30,6 +32,7 @@ public class PlayerManager : MonoBehaviour
     {
         Transform spawnpoint = SpawnManager.Instance.GetSpawnpoint();
         controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
+        AddEnemyToAILists.Invoke(controller.GetComponent<Targetable>());  
         
     }
 
