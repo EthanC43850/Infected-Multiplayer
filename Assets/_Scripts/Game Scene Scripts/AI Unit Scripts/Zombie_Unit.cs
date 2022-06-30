@@ -34,7 +34,7 @@ public class Zombie_Unit : AgentStateMachine
         {
             lastBlowTime = Time.time;
 
-            Debug.Log("ZOMBIES DEALING BLOW");
+            //Debug.Log("ZOMBIES DEALING BLOW");
             transform.forward = (target.transform.position - transform.position).normalized; // turn towards the target
             if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange))
             {

@@ -6,18 +6,14 @@ public class AgentStateChase : MonoBehaviour, IAgentState
 {
 
     #region Variables
-
     AgentStateMachine stateMachineScript;
-
 
     #endregion
 
 
+    #region Monobehaviours
 
-
-    #region Methods
-
-    public void Start()
+    public void Awake()
     {
         stateMachineScript = GetComponent<AgentStateMachine>();
     }
@@ -55,13 +51,13 @@ public class AgentStateChase : MonoBehaviour, IAgentState
     public void FindClosestTarget() // Should AI always attack closest target?
     {
         
-        Debug.Log("looking for closest target");
+        //Debug.Log("looking for closest target");
         float closestDistance = Mathf.Infinity; // Anything closer than this will become the new target
         Targetable closestTarget = null;
 
         foreach (Targetable enemy in stateMachineScript.enemies)
         {
-            Debug.Log(enemy.name);
+            //Debug.Log(enemy.name);
             if(enemy == null) // If enemy has been destroyed remove from list
             {
                 stateMachineScript.enemies.Remove(enemy);

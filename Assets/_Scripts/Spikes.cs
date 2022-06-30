@@ -28,9 +28,14 @@ public class Spikes : MonoBehaviourPunCallbacks
             player.TakeDamage(20);
         }
 
-        // This is null for some reason. Why???
-        zombieTestDelMe = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ZombieUnit"), zombieSpawnPoint.position, zombieSpawnPoint.rotation, 0, new object[] { pv.ViewID });
+        // returns null, WHY??
+        //zombieTestDelMe = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ZombieUnit"), zombieSpawnPoint.position, zombieSpawnPoint.rotation, 0, new object[] { pv.ViewID });
 
+        if (PlayerController.debugMode)
+        {
+            Instantiate(zombieTestDelMe, zombieSpawnPoint.transform.position, Quaternion.identity);
+
+        }
 
 
 

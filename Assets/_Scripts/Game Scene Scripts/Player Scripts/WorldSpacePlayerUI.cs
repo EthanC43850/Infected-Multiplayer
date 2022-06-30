@@ -44,7 +44,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
         PlayerController player = gameObject.GetComponentInParent<PlayerController>();
 
 
-        Debug.Log("THE PLAYER OBJECT NAME IS " + player.name);
+        //Debug.Log("THE PLAYER OBJECT NAME IS " + player.name);
         if (!PlayerController.debugMode && player != null)
         {
             userNameText.text = player.PV.Owner.NickName;
@@ -55,7 +55,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     public void SetHealthBarMax(int _maxHealth)
     {
-        Debug.Log("Max health is being set to " + _maxHealth);
+        //Debug.Log("Max health is being set to " + _maxHealth);
         frontHealthBar_Slider.maxValue = _maxHealth;
         frontHealthBar_Slider.value = _maxHealth;
         backHealthBar_Slider.maxValue = _maxHealth;
@@ -163,7 +163,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     public void UpdateHealthUI(int _currentHealth)
     {
-        Debug.Log("Update Health");
+        //Debug.Log("Update Health");
         currentHealth = _currentHealth;
         StopAllCoroutines();
         StartCoroutine(ChangeHealthValue());
@@ -181,7 +181,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     IEnumerator ChangeHealthValue()
     {
-        Debug.Log("Entered Coroutine");
+        //Debug.Log("Entered Coroutine");
         float lerpTimer = 0;
 
 

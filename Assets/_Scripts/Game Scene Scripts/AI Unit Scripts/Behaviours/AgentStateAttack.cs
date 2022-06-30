@@ -6,15 +6,14 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
 {
 
     #region Variables
-
     AgentStateMachine stateMachineScript;
-
 
     #endregion
 
+
     #region Monobehaviours
 
-    public void Start()
+    public void Awake()
     {
         stateMachineScript = GetComponent<AgentStateMachine>();
     }

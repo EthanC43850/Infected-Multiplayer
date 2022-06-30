@@ -7,7 +7,8 @@ public class Survivor_Unit : AgentStateMachine
 {
     #region Variables
 
-
+    [Header("Additional Survivor Behaviours")]
+    public AgentStateProtectPlayer protectState;
 
 
 
@@ -16,7 +17,12 @@ public class Survivor_Unit : AgentStateMachine
 
     #region Monobehaviours
 
+    public override void Start()
+    {
+        base.Start();
 
+        ChangeState(protectState);
+    }
 
 
 
