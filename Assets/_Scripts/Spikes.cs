@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using System.IO;
 
 public class Spikes : MonoBehaviourPunCallbacks
 {
 
     PhotonView pv;
+    public GameObject zombieTestDelMe;
+    public Transform zombieSpawnPoint;
 
     private void Awake()
     {
@@ -24,6 +27,13 @@ public class Spikes : MonoBehaviourPunCallbacks
         {
             player.TakeDamage(20);
         }
+
+        // This is null for some reason. Why???
+        zombieTestDelMe = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ZombieUnit"), zombieSpawnPoint.position, zombieSpawnPoint.rotation, 0, new object[] { pv.ViewID });
+
+
+
+
     }
 
 

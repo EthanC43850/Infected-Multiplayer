@@ -2136,6 +2136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 337eed0307a8d22458c3be5d192e1ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faction: 0
   PV: {fileID: 0}
   maxHealth: 100
   currentHealth: 100
@@ -4993,6 +4994,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8661518218109950009, guid: 3407ddaee0ecbff40a08250522fe47e3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bf6eb7a3968ca7c4cad359b886788707, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3407ddaee0ecbff40a08250522fe47e3, type: 3}
 --- !u!4 &7926539338781472024 stripped

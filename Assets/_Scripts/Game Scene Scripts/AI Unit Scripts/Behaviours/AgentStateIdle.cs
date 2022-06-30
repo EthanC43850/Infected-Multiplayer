@@ -12,7 +12,7 @@ public class AgentStateIdle : MonoBehaviour, IAgentState
 
     #region Monobehaviours
 
-    public void Start()
+    public void Awake()
     {
         stateMachineScript = GetComponent<AgentStateMachine>();
     }
@@ -20,8 +20,10 @@ public class AgentStateIdle : MonoBehaviour, IAgentState
 
     public void Enter()
     {
+
         Debug.Log("Entered Idle");
         stateMachineScript.navMeshAgent.isStopped = true;
+        
     }
 
     public void Exit()
@@ -37,6 +39,20 @@ public class AgentStateIdle : MonoBehaviour, IAgentState
         {
             stateMachineScript.ChangeState(stateMachineScript.chaseState);
         }
+        Debug.Log(stateMachineScript.enemies.Count);
+
+        if (stateMachineScript.enemies.Count == 0 && PlayerController.debugMode)
+        {
+
+            foreach (Targetable target in FindObjectsOfType<Targetable>())
+            {
+                Debug.Log(target.name);
+                stateMachineScript.AddEnemyToList(target);
+
+            }
+
+        }
+
     }
     #endregion
 

@@ -41,10 +41,10 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        PlayerController player = gameObject.GetComponent<PlayerController>();
+        PlayerController player = gameObject.GetComponentInParent<PlayerController>();
 
 
-
+        Debug.Log("THE PLAYER OBJECT NAME IS " + player.name);
         if (!PlayerController.debugMode && player != null)
         {
             userNameText.text = player.PV.Owner.NickName;

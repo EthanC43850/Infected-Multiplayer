@@ -66,7 +66,6 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     public virtual void Start()
     {
-
         //Subscribe function
         PlayerManager.AddEnemyToAILists += AddEnemyToList;
 
@@ -82,6 +81,11 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     public void Update()
     {
+        if (!PhotonNetwork.IsMasterClient && PlayerController.debugMode == false)
+        {
+            return;
+        }
+
         if (currentAgentState != null)
         {
             currentAgentState.Update();
@@ -177,7 +181,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
 
     //-------------------------------------------//
-    void AddEnemyToList(Targetable enemy)
+    public void AddEnemyToList(Targetable enemy)
     {
         
         if (faction != enemy.faction)

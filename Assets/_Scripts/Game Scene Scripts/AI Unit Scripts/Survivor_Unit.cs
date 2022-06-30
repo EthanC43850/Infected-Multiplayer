@@ -10,7 +10,6 @@ public class Survivor_Unit : AgentStateMachine
 
 
 
-    private NavMeshAgent navMeshAgent;
 
     #endregion
 
