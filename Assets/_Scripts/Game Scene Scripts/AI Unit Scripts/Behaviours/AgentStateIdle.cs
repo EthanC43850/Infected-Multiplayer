@@ -39,14 +39,14 @@ public class AgentStateIdle : MonoBehaviour, IAgentState
         {
             stateMachineScript.ChangeState(stateMachineScript.chaseState);
         }
-        Debug.Log(stateMachineScript.enemies.Count);
+        //Debug.Log(stateMachineScript.enemies.Count);
 
         if (stateMachineScript.enemies.Count == 0 && PlayerController.debugMode)
         {
 
             foreach (Targetable target in FindObjectsOfType<Targetable>())
             {
-                Debug.Log(target.name);
+                //Debug.Log(target.name);
                 stateMachineScript.AddEnemyToList(target);
 
             }

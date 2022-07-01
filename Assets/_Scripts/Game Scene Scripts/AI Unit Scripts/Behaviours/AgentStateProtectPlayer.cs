@@ -41,6 +41,9 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     public void Enter()
     {
         Debug.Log("ENTERED PROTECT MODE");
+        stateMachineScript.navMeshAgent.SetDestination(host.transform.position);
+        stateMachineScript.navMeshAgent.isStopped = false;
+
     }
 
     public void Exit()
@@ -51,15 +54,18 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
     void IAgentState.Update()
     {
-        Debug.Log(host.transform.position);
+        Debug.Log("IS NAVMESH stop: " + stateMachineScript.navMeshAgent.isStopped);
+        Debug.Log("IS NAVMESH PENDING:" + stateMachineScript.navMeshAgent.pathPending);
 
         if (isInGuardRange())
         {
+            Debug.Log("GUARD IS IN RANGE AND REMAINING DISTANCE OF " + stateMachineScript.navMeshAgent.remainingDistance);
             stateMachineScript.navMeshAgent.isStopped = true;
             
         }
         else
         {
+            Debug.Log("NOT IN RANGE AND THERES A REMAINING DISTANCE OF " + stateMachineScript.navMeshAgent.remainingDistance);
 
             stateMachineScript.navMeshAgent.SetDestination(host.transform.position);
             stateMachineScript.navMeshAgent.isStopped = false;
@@ -106,9 +112,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
         if (!stateMachineScript.navMeshAgent.pathPending)
         {
-            Debug.Log("Distance from host is " + stateMachineScript.navMeshAgent.remainingDistance);
-
-            if (stateMachineScript.navMeshAgent.remainingDistance <= stateMachineScript.navMeshAgent.stoppingDistance + 7)
+            if (stateMachineScript.navMeshAgent.remainingDistance <= stateMachineScript.navMeshAgent.stoppingDistance)
             {
                 if (!stateMachineScript.navMeshAgent.hasPath || stateMachineScript.navMeshAgent.velocity.sqrMagnitude == 0f)
                 {
