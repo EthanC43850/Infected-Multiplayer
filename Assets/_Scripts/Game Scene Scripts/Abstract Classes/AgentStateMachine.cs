@@ -55,6 +55,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     public AgentStateIdle idleState;
     public AgentStateChase chaseState;
     public AgentStateAttack attackState;
+    public Transform damageOutputPoint;
 
 
     #endregion
@@ -66,6 +67,12 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     public virtual void Start()
     {
+        if(faction == Faction.Zombie)
+        {
+            spawnPosition = FindObjectOfType<ZombieSpawnPoint>().transform;
+        }
+
+
         //Subscribe function
         PlayerManager.AddEnemyToAILists += AddEnemyToList;
 
@@ -122,8 +129,22 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         Debug.Log("PUNCH PUNCH PUNCH");
         lastBlowTime = Time.time;
 
-    } // END DealBlow
+        if (Time.time >= lastBlowTime + attackRatio)
+        {
+            lastBlowTime = Time.time;
 
+            //Debug.Log("ZOMBIES DEALING BLOW");
+            transform.forward = (target.transform.position - transform.position).normalized; // turn towards the target
+            if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange))
+            {
+                hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(damagePerAttack);
+
+            }
+
+        }
+
+
+    } // END DealBlow
 
 
 
@@ -184,16 +205,21 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     public void AddEnemyToList(Targetable enemy)
     {
         
-        if (faction != enemy.faction)
+        if (faction != enemy.faction) // Make sure AI enemies are not on same team
         {
+            foreach(Targetable _enemy in enemies) // Make sure not to add same enemies twice
+            {
+                if(enemy == _enemy)
+                {
+                    return;
+                }
+            }
+
             enemies.Add(enemy);
 
         }
 
     } // END AddEnemyToList
-
-
-
 
 
 
