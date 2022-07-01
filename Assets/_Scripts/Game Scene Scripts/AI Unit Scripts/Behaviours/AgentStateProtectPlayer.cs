@@ -18,7 +18,8 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     #region Variables
 
     [Header("Player Protect Properties")]
-    [serializefield] float guardDistance;
+    public float patrolDistance = 7;  // Distance to 
+    public float guardDistance = 7;
 
 
 
@@ -54,24 +55,26 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
     void IAgentState.Update()
     {
-        Debug.Log("IS NAVMESH stop: " + stateMachineScript.navMeshAgent.isStopped);
-        Debug.Log("IS NAVMESH PENDING:" + stateMachineScript.navMeshAgent.pathPending);
 
+
+        // Protect Player
+        ProtectPlayer();
+
+
+        // Follow Player
         if (isInGuardRange())
         {
-            Debug.Log("GUARD IS IN RANGE AND REMAINING DISTANCE OF " + stateMachineScript.navMeshAgent.remainingDistance);
             stateMachineScript.navMeshAgent.isStopped = true;
-            
+            // create coroutine to change patrol distance every few seconds for more realism?
         }
         else
         {
-            Debug.Log("NOT IN RANGE AND THERES A REMAINING DISTANCE OF " + stateMachineScript.navMeshAgent.remainingDistance);
 
             stateMachineScript.navMeshAgent.SetDestination(host.transform.position);
             stateMachineScript.navMeshAgent.isStopped = false;
 
-
         }
+
 
 
 
@@ -86,20 +89,27 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
     void ProtectPlayer()
     {
+
+        // If zombie comes close enough to player, AI will target zombie and get in range to kill
         Collider[] hitColliders = Physics.OverlapSphere(host.position, guardDistance); // Put layermask later
         foreach(var hitCollider in hitColliders)
         {
             Zombie_Unit zombie = hitCollider.gameObject.GetComponent<Zombie_Unit>();
-            if (zombie != null)
+            if (zombie != null && stateMachineScript.target != null) // Make sure only 1 zombie is targetted at a time
             {
                 stateMachineScript.target = zombie;
                 stateMachineScript.ChangeState(stateMachineScript.chaseState);
                 break;
             }
 
+        }
 
+        if (!isTargetInRangeOfPlayer())
+        {
+            stateMachineScript.target = null;
 
         }
+
 
 
     }
@@ -110,23 +120,9 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     bool isInGuardRange()
     {
 
-        if (!stateMachineScript.navMeshAgent.pathPending)
+        if (Vector3.Distance(transform.position, host.position) < patrolDistance)
         {
-            if (stateMachineScript.navMeshAgent.remainingDistance <= stateMachineScript.navMeshAgent.stoppingDistance)
-            {
-                if (!stateMachineScript.navMeshAgent.hasPath || stateMachineScript.navMeshAgent.velocity.sqrMagnitude == 0f)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
         else
         {
@@ -134,6 +130,20 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
         }
 
+
+    } // END isInGuardRange
+
+    bool isTargetInRangeOfPlayer()
+    {
+
+        if(Vector3.Distance(stateMachineScript.target.transform.position, host.position) > guardDistance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
     }
 
@@ -144,7 +154,12 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     {
 
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(host.position, guardDistance);
+
+        Gizmos.DrawWireSphere(host.position, guardDistance);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(host.position, patrolDistance);
+
 
     }
 

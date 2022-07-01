@@ -35,7 +35,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     public float attackRange;
     public float attackRatio; // Time between attacks
     public int damagePerAttack;
-    public float speed; // Movement speed
+    public float speed = 3.5f; // Movement speed
 
     public WorldSpacePlayerUI worldSpaceUI; // Move this to its own script. this breaks SOLID Rule
 

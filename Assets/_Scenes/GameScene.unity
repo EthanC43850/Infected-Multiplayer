@@ -4675,7 +4675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &385086386
 Transform:
   m_ObjectHideFlags: 0
@@ -12506,7 +12506,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1067750342}
   m_LocalRotation: {x: 0.5000001, y: -0.49999848, z: 0.50000006, w: 0.5000015}
-  m_LocalPosition: {x: 19.095352, y: 7.9986773, z: 7.1811113}
+  m_LocalPosition: {x: 19.1, y: 7.05, z: 7.63}
   m_LocalScale: {x: 0.563329, y: 0.31516442, z: 0.63032883}
   m_Children: []
   m_Father: {fileID: 0}
@@ -12749,7 +12749,7 @@ MonoBehaviour:
   attackRange: 0
   attackRatio: 0
   damagePerAttack: 0
-  speed: 0
+  speed: 3.5
   worldSpaceUI: {fileID: 282163046}
   attackAudioClip: {fileID: 0}
   dieAudioClip: {fileID: 0}
@@ -12819,7 +12819,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!4 &1070239907
 Transform:
   m_ObjectHideFlags: 0
@@ -12854,7 +12854,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e29c3cae61d3a5e4c93fe523aada9f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  host: {fileID: 1067750343}
+  patrolDistance: 4.3
+  guardDistance: 8.8
+  host: {fileID: 1467764581}
   stateMachineScript: {fileID: 1070239903}
 --- !u!1 &1074634263
 GameObject:
@@ -17826,6 +17828,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454221373}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1467764581 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3300878783898674162, guid: bb9595bf9e7c54045a45e47735be256e, type: 3}
+  m_PrefabInstance: {fileID: 1382627998}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1469762029
 GameObject:
   m_ObjectHideFlags: 0
@@ -22241,7 +22248,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756412544}
   m_LocalRotation: {x: 0.0000010579824, y: -0.70710677, z: 0.7071069, w: 0.000003106892}
-  m_LocalPosition: {x: 30.823467, y: -10.084212, z: -0.5558481}
+  m_LocalPosition: {x: 30.823467, y: -10.38, z: -0.5558481}
   m_LocalScale: {x: 15.169299, y: 1.8423, z: 3.6846}
   m_Children: []
   m_Father: {fileID: 1499561556}
@@ -50970,7 +50977,7 @@ RectTransform:
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.69000244, y: -0.56}
   m_SizeDelta: {x: -5.98, y: -6.68}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -51078,7 +51085,7 @@ RectTransform:
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.69000244, y: -0.56}
   m_SizeDelta: {x: -5.98, y: -6.68}
   m_Pivot: {x: 0.5, y: 0.5}

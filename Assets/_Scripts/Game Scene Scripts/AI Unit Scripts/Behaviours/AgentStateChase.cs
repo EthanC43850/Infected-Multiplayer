@@ -31,7 +31,11 @@ public class AgentStateChase : MonoBehaviour, IAgentState
 
     void IAgentState.Update()
     {
-        FindClosestTarget();
+        if(stateMachineScript.target == null)   
+        {
+            FindClosestTarget();
+
+        }
 
         if (IsTargetInRange())
         {
