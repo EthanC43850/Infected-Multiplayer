@@ -31,11 +31,9 @@ public class AgentStateChase : MonoBehaviour, IAgentState
 
     void IAgentState.Update()
     {
-        if(stateMachineScript.target == null)   
-        {
-            FindClosestTarget();
 
-        }
+        ChaseClosestTarget();
+
 
         if (IsTargetInRange())
         {
@@ -52,7 +50,7 @@ public class AgentStateChase : MonoBehaviour, IAgentState
     #region Helper Methods
 
     //-------------------------------------------//
-    public void FindClosestTarget() // Should AI always attack closest target?
+    public void ChaseClosestTarget() // Should AI always attack closest target?
     {
         
         //Debug.Log("looking for closest target");
@@ -61,16 +59,17 @@ public class AgentStateChase : MonoBehaviour, IAgentState
 
         foreach (Targetable enemy in stateMachineScript.enemies)
         {
-            //Debug.Log(enemy.name);
+            Debug.Log("SURVIVOR " + enemy.name + " is DISTANCE: " + Vector3.Distance(transform.position, enemy.transform.position));
             if(enemy == null) // If enemy has been destroyed remove from list
             {
                 stateMachineScript.enemies.Remove(enemy);
             }
 
 
-            if ((transform.position - enemy.transform.position).magnitude < closestDistance)
+            if (Vector3.Distance(transform.position, enemy.transform.position) < closestDistance)
             {
                 closestTarget = enemy;
+
 
             }
 
@@ -84,6 +83,8 @@ public class AgentStateChase : MonoBehaviour, IAgentState
         {
             stateMachineScript.target = closestTarget;
             stateMachineScript.navMeshAgent.SetDestination(closestTarget.transform.position);
+            Debug.Log("Closest target is " + closestTarget.gameObject.name);
+
         }
 
     } // END FindClosestTarget

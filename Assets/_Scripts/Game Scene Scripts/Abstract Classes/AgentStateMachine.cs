@@ -33,7 +33,8 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     public int maxHealth = 50;
     public AttackType attackType;
     public float attackRange;
-    public float attackRatio; // Time between attacks
+    [Tooltip("Seconds between attacks")]
+    public float attackCoolDown; // Seconds between attacks
     public int damagePerAttack;
     public float speed = 3.5f; // Movement speed
 
@@ -43,7 +44,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     [Header("Sound FX")]
     [HideInInspector] public AudioClip attackAudioClip;
     [HideInInspector] public AudioClip dieAudioClip;
-    [HideInInspector] public float lastBlowTime = -500;
+    [HideInInspector] public float lastBlowTime = -9999f;
     public Targetable target;
     public List<Targetable> enemies;
 
@@ -127,13 +128,11 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     public virtual void DealBlow()
     {
         Debug.Log("PUNCH PUNCH PUNCH");
-        lastBlowTime = Time.time;
-
-        if (Time.time >= lastBlowTime + attackRatio)
+        if (Time.time > lastBlowTime + attackCoolDown)
         {
             lastBlowTime = Time.time;
 
-            //Debug.Log("ZOMBIES DEALING BLOW");
+            Debug.Log(gameObject.name + " is DEALING BLOW");
             transform.forward = (target.transform.position - transform.position).normalized; // turn towards the target
             if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange))
             {
@@ -196,7 +195,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         health = maxHealth;
         worldSpaceUI.UpdateHealthUI(health);
         transform.position = spawnPosition.position;
-
+        Destroy(gameObject);
 
     } // END Die
 

@@ -19,6 +19,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
     [Header("Player Protect Properties")]
     public ProtectActions currentState;
+    [Tooltip("Distance to follow player from")]
     public float patrolDistance = 7;  // Distance to 
     public float guardDistance = 7;
 
@@ -92,12 +93,16 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
         }
 
-        // Remove targets that move out of distance
+        // Remove targets that move out of distance or die
         foreach (Targetable _target in stateMachineScript.enemies)
         {
-            if (Vector3.Distance(host.position, _target.transform.position) > guardDistance)
+            if (_target == null)
             {
-                stateMachineScript.enemies.Remove(_target);
+                if (Vector3.Distance(host.position, _target.transform.position) > guardDistance)
+                {
+                    stateMachineScript.enemies.Remove(_target);
+
+                }
             }
         }
 
