@@ -98,12 +98,15 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         {
             if (_target == null)
             {
-                if (Vector3.Distance(host.position, _target.transform.position) > guardDistance)
-                {
-                    stateMachineScript.enemies.Remove(_target);
+                stateMachineScript.enemies.Remove(_target);
 
-                }
             }
+            else if (Vector3.Distance(host.position, _target.transform.position) > guardDistance)
+            {
+                stateMachineScript.enemies.Remove(_target);
+
+            }
+
         }
 
 

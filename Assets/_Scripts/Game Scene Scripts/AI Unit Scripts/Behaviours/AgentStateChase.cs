@@ -59,17 +59,20 @@ public class AgentStateChase : MonoBehaviour, IAgentState
 
         foreach (Targetable enemy in stateMachineScript.enemies)
         {
-            Debug.Log("SURVIVOR " + enemy.name + " is DISTANCE: " + Vector3.Distance(transform.position, enemy.transform.position));
-            if(enemy == null) // If enemy has been destroyed remove from list
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+
+            if (enemy == null) // If enemy has been destroyed remove from list
             {
                 stateMachineScript.enemies.Remove(enemy);
             }
 
 
-            if (Vector3.Distance(transform.position, enemy.transform.position) < closestDistance)
+            if (distanceToEnemy < closestDistance)
             {
+                closestDistance = distanceToEnemy;
                 closestTarget = enemy;
-
+                
+                //Debug.Log("Closest target is " + closestTarget.gameObject.name);
 
             }
 
@@ -83,7 +86,6 @@ public class AgentStateChase : MonoBehaviour, IAgentState
         {
             stateMachineScript.target = closestTarget;
             stateMachineScript.navMeshAgent.SetDestination(closestTarget.transform.position);
-            Debug.Log("Closest target is " + closestTarget.gameObject.name);
 
         }
 
