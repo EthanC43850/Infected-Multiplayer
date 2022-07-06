@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Look",
+                    "name": "Weapon Aim",
                     "type": "PassThrough",
                     "id": "00baf4b5-3fc8-4e04-9343-34cdc0c1750a",
                     "expectedControlType": "Vector2",
@@ -73,6 +73,15 @@
                     "type": "Button",
                     "id": "b0313cd0-acb8-40b6-af4e-60591cc8da28",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Look",
+                    "type": "PassThrough",
+                    "id": "1b805ba8-182f-40be-bb23-f1d9d275ddba",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -174,7 +183,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Look",
+                    "action": "Weapon Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -185,7 +194,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
-                    "action": "Look",
+                    "action": "Weapon Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -296,6 +305,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Switch to Secondary Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eedb47e2-2f50-46e9-9b75-358bda96431e",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "813d4e7a-b345-45dc-a461-e6e52b3e680d",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

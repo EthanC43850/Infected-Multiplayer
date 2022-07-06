@@ -25,7 +25,7 @@ public class Spikes : MonoBehaviourPunCallbacks
 
         if (player != null)
         {
-            player.TakeDamage(20);
+            player.TakeDamage(1);
         }
 
         // returns null, WHY??

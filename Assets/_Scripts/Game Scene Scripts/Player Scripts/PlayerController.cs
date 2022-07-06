@@ -54,6 +54,7 @@ public class PlayerController : Targetable, IDamageable
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity = 1f;
     private Vector3 moveInput;
+    private Vector3 lookInput;
     private Vector3 velocity;
     private int currentItemIndex;
     private int previousItemIndex = -1;
@@ -140,7 +141,7 @@ public class PlayerController : Targetable, IDamageable
 
 
         }
-        else if (isAiming)
+        else if (isAiming) // Faces character in the forward direction of the camera
         {
             float targetAngle = Mathf.Atan2(moveInput.x, moveInput.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, cam.eulerAngles.y, ref turnSmoothVelocity, turnSmoothTime);
@@ -336,6 +337,28 @@ public class PlayerController : Targetable, IDamageable
         moveInput = new Vector3(inputMovement.x, 0, inputMovement.y).normalized; // Normalize is necessary to make sure object does not speed up when two keys are pressed 
                                                                                  // to go diagonally
     } // END OnMovement
+
+    public void OnLook(InputAction.CallbackContext value)
+    {
+        if (!PV.IsMine) { return; }
+        
+        Vector2 inputLook = value.ReadValue<Vector2>();
+        lookInput = new Vector3(inputLook.x, 0, inputLook.y).normalized; // Normalize is necessary to make sure object does not speed up when two keys are pressed 
+        float targetAngle = Mathf.Atan2(inputLook.x, inputLook.y) * Mathf.Rad2Deg + cam.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+        if (value.started)
+        {
+            isAiming = true;
+        }
+        else if (value.canceled)
+        {
+            isAiming = false;
+        }
+
+    }
+
 
 
     public void OnSprint(InputAction.CallbackContext value)
