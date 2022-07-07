@@ -32,8 +32,8 @@ public class PlayerManager : MonoBehaviour
     {
         Transform spawnpoint = SpawnManager.Instance.GetSpawnpoint();
         controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
-        AddEnemyToAILists.Invoke(controller.GetComponent<Targetable>());
-        Debug.Log(controller.GetComponent<Targetable>().name);
+        //AddEnemyToAILists.Invoke(controller.GetComponent<Targetable>());
+        //Debug.Log(controller.GetComponent<Targetable>().name);
     }
 
 

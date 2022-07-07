@@ -1,12 +1,8 @@
 using Cinemachine;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
-using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
 
@@ -15,7 +11,7 @@ public class PlayerController : Targetable, IDamageable
 
     #region Variables
 
-    public static bool debugMode = true;
+    public static bool debugMode = false;
 
     //public const byte OnAirstrikeAimEventCode = 1;
 
@@ -36,13 +32,13 @@ public class PlayerController : Targetable, IDamageable
     public LayerMask groundMask;
 
 
-    [Header("Object Assignments:")]
+    [Header("Connections:")]
     [SerializeField] CharacterController controller;
     [SerializeField] GameObject playerUI;
     [SerializeField] Transform cam;
     [SerializeField] CinemachineVirtualCamera birdEyeCam;
     [SerializeField] Transform groundCheck;
-
+    public Animator playerAnimator;
 
     [Header("Scripts")]
     
@@ -125,9 +121,14 @@ public class PlayerController : Targetable, IDamageable
         {
             velocity.y = -2f;
         }
+
         //gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        // Refactor so that errors dont pop up
+        Vector3 desiredDirection = cam.forward * moveInput.z + cam.right * moveInput.x;
+        AnimateThePlayer(desiredDirection);
 
         if (moveInput.magnitude >= 0.1f && !isAiming)
         {
@@ -137,6 +138,8 @@ public class PlayerController : Targetable, IDamageable
 
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDirection * speed * Time.deltaTime);
+
+
 
 
         }
@@ -182,6 +185,8 @@ public class PlayerController : Targetable, IDamageable
 
 
         }
+
+
         #endregion
 
         if (transform.position.y < -70f)
@@ -248,6 +253,20 @@ public class PlayerController : Targetable, IDamageable
         }
 
     } // END OnEvent*/
+
+
+    private void AnimateThePlayer(Vector3 desiredDirection)
+    {
+        Vector3 movement = new Vector3(desiredDirection.x, 0f, desiredDirection.z);
+        float forw = Vector3.Dot(movement, transform.forward);
+        float stra = Vector3.Dot(movement, transform.right);
+
+        playerAnimator.SetFloat("Forward", forw);
+        playerAnimator.SetFloat("Strafe", stra);
+
+
+    } // END AnimatePlayer
+
 
 
     private void EquipItem(int _index)
@@ -335,6 +354,7 @@ public class PlayerController : Targetable, IDamageable
         Vector2 inputMovement = value.ReadValue<Vector2>();
         moveInput = new Vector3(inputMovement.x, 0, inputMovement.y).normalized; // Normalize is necessary to make sure object does not speed up when two keys are pressed 
                                                                                  // to go diagonally
+        
     } // END OnMovement
 
 
