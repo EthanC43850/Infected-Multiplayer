@@ -11,7 +11,7 @@ public class PlayerController : Targetable, IDamageable
 
     #region Variables
 
-    public static bool debugMode = false;
+    public static bool debugMode = true;
 
     //public const byte OnAirstrikeAimEventCode = 1;
 
