@@ -1849,7 +1849,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4908561162360409950}
-  sceneViewId: 17
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &4908561162360409950
@@ -2994,7 +2994,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 10
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1001 &1513461640
@@ -3006,7 +3006,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2419638891394997094, guid: ace365f7df65c0f449f3d3e026bd6323, type: 3}
       propertyPath: sceneViewId
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4339844775700586120, guid: ace365f7df65c0f449f3d3e026bd6323, type: 3}
       propertyPath: m_Name
@@ -3018,7 +3018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8765361387163338887, guid: ace365f7df65c0f449f3d3e026bd6323, type: 3}
       propertyPath: sceneViewId
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9063876747969685831, guid: ace365f7df65c0f449f3d3e026bd6323, type: 3}
       propertyPath: m_RootOrder
@@ -3143,7 +3143,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3586935777730868564, guid: 2979e65110ca1814e83e810b2969df5b, type: 3}
       propertyPath: sceneViewId
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2979e65110ca1814e83e810b2969df5b, type: 3}
@@ -3288,7 +3288,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1696471031}
-  sceneViewId: 41
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1001 &4715375590172369047
@@ -3406,7 +3406,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1717642848117108975, guid: 3407ddaee0ecbff40a08250522fe47e3, type: 3}
       propertyPath: sceneViewId
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2131816002080950128, guid: 3407ddaee0ecbff40a08250522fe47e3, type: 3}
       propertyPath: m_Name
@@ -3484,7 +3484,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 76960588, guid: 11b4d8ad98aeaab40b990853ac9c6691, type: 3}
       propertyPath: sceneViewId
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 319063279038788236, guid: 11b4d8ad98aeaab40b990853ac9c6691, type: 3}
       propertyPath: m_RootOrder
