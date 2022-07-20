@@ -21,6 +21,8 @@ public class AgentStateChase : MonoBehaviour, IAgentState
     public void Enter()
     {
         Debug.Log("Entered Chase");
+        stateMachineScript.navMeshAgent.isStopped = false;
+        stateMachineScript.animator.SetBool("IsMoving", true);
 
     }
 
@@ -96,7 +98,9 @@ public class AgentStateChase : MonoBehaviour, IAgentState
     //-------------------------------------------//
     public bool IsTargetInRange()
     {
-        return (transform.position - stateMachineScript.target.transform.position).magnitude <= stateMachineScript.attackRange;
+        
+
+        return Vector3.Distance(transform.position, stateMachineScript.target.transform.position) <= stateMachineScript.attackRange;
 
     } // END IsTargetInRange
 

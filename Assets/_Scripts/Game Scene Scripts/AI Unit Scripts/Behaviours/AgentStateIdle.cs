@@ -7,6 +7,8 @@ public class AgentStateIdle : MonoBehaviour, IAgentState
     #region Variables
     AgentStateMachine stateMachineScript;
 
+
+
     #endregion
 
 
@@ -23,12 +25,12 @@ public class AgentStateIdle : MonoBehaviour, IAgentState
 
         Debug.Log("Entered Idle");
         stateMachineScript.navMeshAgent.isStopped = true;
-        
+        stateMachineScript.animator.SetBool("IsMoving", false);
+
     }
 
     public void Exit()
     {
-        stateMachineScript.navMeshAgent.isStopped = false;
 
     }
 

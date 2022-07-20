@@ -23,6 +23,7 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
         Debug.Log("Entered Attack state");
 
         stateMachineScript.navMeshAgent.isStopped = true;
+        stateMachineScript.animator.SetBool("IsMoving", false);
 
     }
 
@@ -33,6 +34,10 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
 
     void IAgentState.Update()
     {
+
+        //Debug.Log("Vector3.distance is " + Vector3.Distance(transform.position, stateMachineScript.target.transform.position) + " and navmeshdistance is " + stateMachineScript.navMeshAgent.remainingDistance);
+        Debug.Log("The name of the current transform is " + transform.name);
+
         if (!IsTargetInRangeOrDead()) // Back to chasing if target is out of range or dies
         {
             stateMachineScript.ChangeState(stateMachineScript.chaseState);
@@ -55,7 +60,7 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
             return false;
         }
 
-        return (transform.position - stateMachineScript.target.transform.position).magnitude <= stateMachineScript.attackRange;
+        return Vector3.Distance(transform.position, stateMachineScript.target.transform.position) <= stateMachineScript.attackRange;
 
     } // END IsTargetInRange
 

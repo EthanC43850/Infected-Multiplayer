@@ -40,6 +40,10 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     public WorldSpacePlayerUI worldSpaceUI; // Move this to its own script. this breaks SOLID Rule
 
+    [Header("VFX")]
+    public Animator animator;
+    //public float maxSpeedForWalkAnimation;
+
 
     [Header("Sound FX")]
     [HideInInspector] public AudioClip attackAudioClip;
@@ -56,6 +60,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     public AgentStateIdle idleState;
     public AgentStateChase chaseState;
     public AgentStateAttack attackState;
+    public AgentStateDie dieState;
     public Transform damageOutputPoint;
 
 
@@ -96,6 +101,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
         if (currentAgentState != null)
         {
+
             currentAgentState.Update();
         }
 
@@ -132,11 +138,11 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         {
             lastBlowTime = Time.time;
 
-            Debug.Log(gameObject.name + " is DEALING BLOW");
             transform.forward = (target.transform.position - transform.position).normalized; // turn towards the target
-            if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange))
+            if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange+1)) // Extended attack range a little more because nav mesh stops right at the range
             {
                 hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(damagePerAttack);
+                animator.SetTrigger("Attack");
 
             }
 
@@ -158,7 +164,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
             worldSpaceUI.DisplayFloatingText(damage);
             if (health <= 0)
             {
-                Die();
+                ChangeState(dieState);
             }
         }
         else
@@ -181,23 +187,21 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
         if (health <= 0)
         {
-            Die();
+            ChangeState(dieState);
+
         }
 
     } // END RPC_TakeDamage
 
 
     //-------------------------------------------//
-    void Die()
+    void ResetZombie()
     {
-        //gameObject.SetActive(false);
-        Debug.Log("ZOMBIE SHOULD'VE DIED");
         health = maxHealth;
         worldSpaceUI.UpdateHealthUI(health);
         transform.position = spawnPosition.position;
-        Destroy(gameObject);
+    }
 
-    } // END Die
 
 
     //-------------------------------------------//
