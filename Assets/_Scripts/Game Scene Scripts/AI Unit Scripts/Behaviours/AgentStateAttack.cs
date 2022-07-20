@@ -7,7 +7,7 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
 
     #region Variables
     AgentStateMachine stateMachineScript;
-
+    public GameObject debugCube;
     #endregion
 
 
@@ -24,7 +24,8 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
 
         stateMachineScript.navMeshAgent.isStopped = true;
         stateMachineScript.animator.SetBool("IsMoving", false);
-
+        /*Instantiate(debugCube, transform.position, Quaternion.identity);
+        Instantiate(debugCube, stateMachineScript.target.transform.position, Quaternion.identity);*/
     }
 
     public void Exit()
@@ -36,10 +37,11 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
     {
 
         //Debug.Log("Vector3.distance is " + Vector3.Distance(transform.position, stateMachineScript.target.transform.position) + " and navmeshdistance is " + stateMachineScript.navMeshAgent.remainingDistance);
-        Debug.Log("The name of the current transform is " + transform.name);
+        Debug.Log("Distance from zombie to target is " + Vector3.Distance(stateMachineScript.target.transform.position, transform.position));
 
         if (!IsTargetInRangeOrDead()) // Back to chasing if target is out of range or dies
         {
+            Debug.Log("TARGET GOT OUT OF RANGE OR DIED");
             stateMachineScript.ChangeState(stateMachineScript.chaseState);
         }
 
@@ -60,7 +62,7 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
             return false;
         }
 
-        return Vector3.Distance(transform.position, stateMachineScript.target.transform.position) <= stateMachineScript.attackRange;
+        return Vector3.Distance(stateMachineScript.target.transform.position, transform.position) <= stateMachineScript.attackRange;
 
     } // END IsTargetInRange
 
