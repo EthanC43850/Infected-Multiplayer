@@ -37,7 +37,7 @@ public class PlayerController : Targetable, IDamageable
     [SerializeField] GameObject playerUI;
     [SerializeField] Transform cam;
     [SerializeField] CinemachineVirtualCamera birdEyeCam;
-    [SerializeField] Transform groundCheck;
+    public Transform groundCheckTransform;
     public Animator playerAnimator;
 
     [Header("Scripts")]
@@ -51,6 +51,10 @@ public class PlayerController : Targetable, IDamageable
     private float turnSmoothVelocity = 1f;
     private Vector3 moveInput;
     private Vector3 velocity;
+    private Vector3 currentMoveInput;
+    private Vector3 smoothInputVelocity;
+    private float smoothInputSpeed = 0.1f;
+
     private int currentItemIndex;
     private int previousItemIndex = -1;
 
@@ -59,6 +63,8 @@ public class PlayerController : Targetable, IDamageable
 
     [HideInInspector]
     public AirstrikePhone airstrikePhone;
+
+
 
     #endregion
 
@@ -116,7 +122,7 @@ public class PlayerController : Targetable, IDamageable
     {
         #region Player Movement
         //jump
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheckTransform.position, groundDistance, groundMask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
@@ -127,7 +133,9 @@ public class PlayerController : Targetable, IDamageable
         controller.Move(velocity * Time.deltaTime);
 
         // Refactor so that errors dont pop up
-        Vector3 desiredDirection = cam.forward * moveInput.z + cam.right * moveInput.x;
+
+        currentMoveInput = Vector3.SmoothDamp(currentMoveInput, moveInput, ref smoothInputVelocity, smoothInputSpeed);
+        Vector3 desiredDirection = cam.forward * currentMoveInput.z + cam.right * currentMoveInput.x;
         AnimateThePlayer(desiredDirection);
 
         if (moveInput.magnitude >= 0.1f && !isAiming)

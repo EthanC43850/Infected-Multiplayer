@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     GameObject controller;
 
     public delegate void AddToAIEnemyLists(Targetable target);
-    public static event AddToAIEnemyLists AddEnemyToAILists;
+    //public static event AddToAIEnemyLists AddEnemyToAILists;
 
     private void Awake()
     {
