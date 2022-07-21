@@ -69,4 +69,8 @@ public class AirstrikePhone : Explosive
 
     }
 
+    public override void FinishedUse()
+    {
+        throw new NotImplementedException();
+    }
 }

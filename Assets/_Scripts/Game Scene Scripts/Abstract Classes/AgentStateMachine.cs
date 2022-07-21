@@ -141,12 +141,16 @@ public abstract class AgentStateMachine : Targetable, IDamageable
             Vector3 lookPos = (target.transform.position - transform.position);
             lookPos.y = 0; // Avoid weird glitch with AI facing sky
             transform.forward = lookPos; // turn towards the target
-            if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange+1)) // Extended attack range a little more because nav mesh stops right at the range
+
+            animator.SetTrigger("Attack"); // Damage caused by animation event
+
+
+            /*if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange+1)) // Extended attack range a little more because nav mesh stops right at the range
             {
                 hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(damagePerAttack);
                 animator.SetTrigger("Attack");
 
-            }
+            }*/
 
         }
 

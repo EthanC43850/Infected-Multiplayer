@@ -49,13 +49,13 @@ public class PlayerController : Targetable, IDamageable
     
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity = 1f;
-    private Vector3 moveInput;
+    [HideInInspector] public Vector3 moveInput;
     private Vector3 velocity;
     private Vector3 currentMoveInput;
     private Vector3 smoothInputVelocity;
     private float smoothInputSpeed = 0.1f;
 
-    private int currentItemIndex;
+    [HideInInspector] public int currentItemIndex;
     private int previousItemIndex = -1;
 
     private float grenadeThrowDistance;
@@ -263,7 +263,7 @@ public class PlayerController : Targetable, IDamageable
     } // END OnEvent*/
 
 
-    private void AnimateThePlayer(Vector3 desiredDirection)
+    public virtual void AnimateThePlayer(Vector3 desiredDirection)
     {
         Vector3 movement = new Vector3(desiredDirection.x, 0f, desiredDirection.z);
         float forw = Vector3.Dot(movement, transform.forward);
@@ -346,7 +346,11 @@ public class PlayerController : Targetable, IDamageable
 
     void Die()
     {
-        playerManager.Die();
+        if(debugMode == false)
+        {
+            playerManager.Die();
+
+        }
 
     } // END Die
 
@@ -499,17 +503,18 @@ public class PlayerController : Targetable, IDamageable
     } // END SwitchToSecondaryItem
 
 
-    public void OnAttack(InputAction.CallbackContext value)
+    public virtual void OnAttack(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
 
-        if (value.started)
+        if (value.performed)
         {
 
             items[currentItemIndex].Use();
         }
 
-        
+
+
 
     } // END OnAttack
 

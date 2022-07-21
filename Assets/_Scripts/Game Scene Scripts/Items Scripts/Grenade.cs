@@ -56,4 +56,8 @@ public class Grenade : Explosive
 
     }
 
+    public override void FinishedUse()
+    {
+        throw new System.NotImplementedException();
+    }
 }

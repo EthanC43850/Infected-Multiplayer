@@ -24,6 +24,8 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
 
         stateMachineScript.navMeshAgent.isStopped = true;
         stateMachineScript.animator.SetBool("IsMoving", false);
+
+
         /*Instantiate(debugCube, transform.position, Quaternion.identity);
         Instantiate(debugCube, stateMachineScript.target.transform.position, Quaternion.identity);*/
     }
@@ -37,7 +39,7 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
     {
 
         //Debug.Log("Vector3.distance is " + Vector3.Distance(transform.position, stateMachineScript.target.transform.position) + " and navmeshdistance is " + stateMachineScript.navMeshAgent.remainingDistance);
-        Debug.Log("Distance from zombie to target is " + Vector3.Distance(stateMachineScript.target.transform.position, transform.position));
+        //Debug.Log("Distance from zombie to target is " + Vector3.Distance(stateMachineScript.target.transform.position, transform.position)); // THIS PRINTS WEIRD NUMBERS, may become a problem in future
 
         if (!IsTargetInRangeOrDead()) // Back to chasing if target is out of range or dies
         {

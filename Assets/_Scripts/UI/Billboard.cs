@@ -11,15 +11,20 @@ public class Billboard : MonoBehaviour
 {
 
     CinemachineBrain mainCam;
+
+    private void Awake()
+    {
+        mainCam = FindObjectOfType<CinemachineBrain>();
+
+    }
     void Update()
     {
-        if(mainCam == null)
+        if (mainCam != null)
         {
-            mainCam = FindObjectOfType<CinemachineBrain>();
+            transform.LookAt(mainCam.transform);
+            transform.Rotate(Vector3.up * 180);
         }
-        
-        transform.LookAt(mainCam.transform);
-        transform.Rotate(Vector3.up * 180);
+
 
     }
 }

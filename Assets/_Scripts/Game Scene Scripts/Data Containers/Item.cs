@@ -8,4 +8,5 @@ public abstract class Item : MonoBehaviour
     public GameObject itemGameObject;
 
     public abstract void Use();
+    public abstract void FinishedUse(); // function called once a button is no longer being held down
 }

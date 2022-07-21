@@ -13,7 +13,7 @@ public class SingleShotGun : Gun
 
 
     #endregion
-
+     
 
     #region Monobehaviours
     private void Awake()
@@ -89,6 +89,11 @@ public class SingleShotGun : Gun
         // <3 you future E keep goin
 
     } // RPC_Shoot
+
+    public override void FinishedUse()
+    {
+        throw new System.NotImplementedException();
+    }
 
     #endregion
 
