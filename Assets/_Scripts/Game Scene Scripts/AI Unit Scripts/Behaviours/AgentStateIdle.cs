@@ -23,7 +23,6 @@ public class AgentStateIdle : MonoBehaviour, IAgentState
     public void Enter()
     {
 
-        Debug.Log("Entered Idle");
         stateMachineScript.navMeshAgent.isStopped = true;
         stateMachineScript.animator.SetBool("IsMoving", false);
 

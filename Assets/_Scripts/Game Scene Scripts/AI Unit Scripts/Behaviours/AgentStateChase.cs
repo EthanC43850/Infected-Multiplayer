@@ -24,6 +24,7 @@ public class AgentStateChase : MonoBehaviour, IAgentState
         stateMachineScript.navMeshAgent.isStopped = false;
         stateMachineScript.animator.SetBool("IsMoving", true);
 
+
     }
 
     public void Exit()

@@ -48,6 +48,7 @@ public class SingleShotGun : Gun
             if(worldSpaceUI != null)
             {
                 worldSpaceUI.DisplayFloatingText(((WeaponInfo)itemInfo).damage);
+
             }
 
             /// Single Player Testing

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,11 +20,15 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
     [Header("Player Protect Properties")]
     public ProtectActions currentState;
-    [Tooltip("Distance to follow player from")]
+
+/*    [Tooltip("Distance from player to run to once out of radius")]
+    public float maxStoppingDistance = 7;*/
+    [Tooltip("Radius to guard player from")]
     public float patrolDistance = 7;  // Distance to 
+    [Tooltip("Enemy distance from host to begin attacking")]
     public float guardDistance = 7;
 
-    bool isReturningToPlayer;
+    public bool isReturningToPlayer;
 
     [Header("Additional Components")]
     public Transform host;
@@ -62,10 +67,29 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
         ReturnToPlayerRadius();
 
+        AnimateAgent();
+
+
         // Protect Player
         if (isEnemyInRange())
         {
             AttackClosestTarget();
+
+        }
+
+
+    }
+
+    private void AnimateAgent()
+    {
+        if(stateMachineScript.navMeshAgent.velocity.magnitude >= 0.1f)
+        {
+            stateMachineScript.animator.SetBool("IsMoving", true);
+
+        }
+        else
+        {
+            stateMachineScript.animator.SetBool("IsMoving", false);
 
         }
 
@@ -178,7 +202,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     //-------------------------------------------//
     void ReturnToPlayerRadius()
     {
-
+        Debug.Log(Vector3.Distance(transform.position, host.position));
         if (Vector3.Distance(transform.position, host.position) < patrolDistance) //close enough
         {
             isReturningToPlayer = false;

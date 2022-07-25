@@ -4,9 +4,23 @@ using UnityEngine;
 
 public class AgentStatePosessed : MonoBehaviour, IAgentState 
 {
+
+    AgentStateMachine stateMachineScript;
+    PlayerController AIController;
+
+    private void Awake()
+    {
+        stateMachineScript = GetComponent<AgentStateMachine>();
+        AIController = GetComponent<PlayerController>();
+
+    }
+
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        stateMachineScript.navMeshAgent.enabled = false;
+        ((ZombieController)AIController).isPossessed = true;    // Works only for zombie atm
+
+
     }
 
     public void Exit()

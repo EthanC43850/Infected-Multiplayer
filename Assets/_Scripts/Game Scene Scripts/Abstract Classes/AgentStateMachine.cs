@@ -57,6 +57,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     [HideInInspector] public NavMeshAgent navMeshAgent;
 
     [Header("AI Behaviour Scripts")]
+    public PlayerController AIController;
     public AgentStateIdle idleState;
     public AgentStateChase chaseState;
     public AgentStateAttack attackState;
@@ -92,17 +93,18 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     
 
-    public void Update()
+    public virtual void Update()
     {
-        if (!PhotonNetwork.IsMasterClient && PlayerController.debugMode == false)
+        if (!PhotonNetwork.IsMasterClient && PlayerController.debugMode == false) // Might need to add a "isPossessed" bool
         {
             return;
+
         }
 
         if (currentAgentState != null)
         {
-
             currentAgentState.Update();
+
         }
 
         
@@ -135,22 +137,30 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     {
         if (Time.time > lastBlowTime + attackCoolDown)
         {
-            Debug.Log("PUNCH PUNCH PUNCH");
+            Debug.Log(gameObject.name + " JUST THREW A PUNCH");
 
             lastBlowTime = Time.time;
             Vector3 lookPos = (target.transform.position - transform.position);
             lookPos.y = 0; // Avoid weird glitch with AI facing sky
             transform.forward = lookPos; // turn towards the target
 
-            animator.SetTrigger("Attack"); // Damage caused by animation event
-
-
-            /*if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange+1)) // Extended attack range a little more because nav mesh stops right at the range
+            if(animator != null)
             {
-                hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(damagePerAttack);
-                animator.SetTrigger("Attack");
+                animator.SetTrigger("Attack"); // Damage caused by animation event
 
-            }*/
+            }
+            else
+            {
+                // test attack
+                if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange + 1)) // Extended attack range a little more because nav mesh stops right at the range
+                {
+                    hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(damagePerAttack);
+                    //animator.SetTrigger("Attack");
+
+                }
+            }
+
+            
 
         }
 

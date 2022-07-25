@@ -128,8 +128,12 @@ public class PlayerController : Targetable, IDamageable
             velocity.y = -2f;
         }
 
-        //gravity
-        velocity.y += gravity * Time.deltaTime;
+        //only apply gravity when grounded
+        if (!isGrounded)
+        {
+            velocity.y += gravity * Time.deltaTime;
+
+        }
         controller.Move(velocity * Time.deltaTime);
 
         // Refactor so that errors dont pop up

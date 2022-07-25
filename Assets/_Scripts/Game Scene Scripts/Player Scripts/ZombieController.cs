@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class ZombieController : PlayerController
 {
 
+    public bool isPossessed;
 
 
     public override void AnimateThePlayer(Vector3 desiredDirection)
@@ -17,7 +18,7 @@ public class ZombieController : PlayerController
 
 
         }
-        else
+        else if(isPossessed) // only stop moving animation if not posessed
         {
             playerAnimator.SetBool("IsMoving", false);
 

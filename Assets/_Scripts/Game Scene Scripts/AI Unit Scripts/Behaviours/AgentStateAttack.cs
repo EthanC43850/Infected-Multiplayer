@@ -23,6 +23,8 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
         Debug.Log("Entered Attack state");
 
         stateMachineScript.navMeshAgent.isStopped = true;
+
+        
         stateMachineScript.animator.SetBool("IsMoving", false);
 
 

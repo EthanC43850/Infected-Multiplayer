@@ -10,11 +10,11 @@ using Cinemachine;
 public class Billboard : MonoBehaviour
 {
 
-    CinemachineBrain mainCam;
+    Camera mainCam;
 
     private void Awake()
     {
-        mainCam = FindObjectOfType<CinemachineBrain>();
+        mainCam = Camera.main;
 
     }
     void Update()
@@ -22,7 +22,7 @@ public class Billboard : MonoBehaviour
         if (mainCam != null)
         {
             transform.LookAt(mainCam.transform);
-            transform.Rotate(Vector3.up * 180);
+            //transform.Rotate(Vector3.up * 180);
         }
 
 
