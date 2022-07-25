@@ -38,6 +38,8 @@ public class PlayerController : Targetable, IDamageable
     [SerializeField] Transform cam;
     [SerializeField] CinemachineVirtualCamera birdEyeCam;
     public Transform groundCheckTransform;
+    public Collider playerHitBox;
+
     public Animator playerAnimator;
 
     [Header("Scripts")]
@@ -63,7 +65,6 @@ public class PlayerController : Targetable, IDamageable
 
     [HideInInspector]
     public AirstrikePhone airstrikePhone;
-
 
 
     #endregion
@@ -120,6 +121,7 @@ public class PlayerController : Targetable, IDamageable
 
     private void Update()
     {
+
         #region Player Movement
         //jump
         isGrounded = Physics.CheckSphere(groundCheckTransform.position, groundDistance, groundMask);
@@ -134,7 +136,15 @@ public class PlayerController : Targetable, IDamageable
             velocity.y += gravity * Time.deltaTime;
 
         }
-        controller.Move(velocity * Time.deltaTime);
+
+        if (isDead)
+        {
+            return;
+        }
+
+
+
+            controller.Move(velocity * Time.deltaTime);
 
         // Refactor so that errors dont pop up
 
@@ -201,7 +211,7 @@ public class PlayerController : Targetable, IDamageable
 
         #endregion
 
-        if (transform.position.y < -70f)
+        if (transform.position.y < -70f) // Fell to death
         {
             Die();
         }
@@ -355,6 +365,12 @@ public class PlayerController : Targetable, IDamageable
             playerManager.Die();
 
         }
+
+        isDead = true;
+        playerAnimator.SetTrigger("IsDead");
+        playerHitBox.enabled = false;
+        controller.enabled = false;
+
 
     } // END Die
 

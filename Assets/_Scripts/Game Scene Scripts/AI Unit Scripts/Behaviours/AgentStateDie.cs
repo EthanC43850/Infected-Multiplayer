@@ -6,6 +6,7 @@ public class AgentStateDie : MonoBehaviour, IAgentState
 {
 
     AgentStateMachine stateMachineScript;
+    public Collider hitBox;
 
     public void Awake()
     {
@@ -16,10 +17,10 @@ public class AgentStateDie : MonoBehaviour, IAgentState
 
     void IAgentState.Enter()
     {
-
+        hitBox.enabled = false;
         stateMachineScript.navMeshAgent.enabled = false;
         stateMachineScript.animator.SetTrigger("IsDead");
-
+        stateMachineScript.isDead = true;
 
     }
 

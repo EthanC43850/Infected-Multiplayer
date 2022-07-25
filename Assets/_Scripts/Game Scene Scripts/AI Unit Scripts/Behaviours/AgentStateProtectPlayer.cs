@@ -109,10 +109,11 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         Collider[] hitColliders = Physics.OverlapSphere(host.position, guardDistance); // Put layermask later
         foreach (var hitCollider in hitColliders)
         {
-            Zombie_Unit zombie = hitCollider.gameObject.GetComponent<Zombie_Unit>();
-            if (zombie != null)
+            Targetable enemy = hitCollider.gameObject.GetComponent<Targetable>();
+            
+            if (enemy != null && enemy.faction != stateMachineScript.faction)
             {
-                stateMachineScript.AddEnemyToList(zombie);
+                stateMachineScript.AddEnemyToList(enemy);
             }
 
         }
@@ -120,7 +121,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         // Remove targets that move out of distance or die
         foreach (Targetable _target in stateMachineScript.enemies)
         {
-            if (_target == null)
+            if (_target == null || _target.isDead) // If enemy has been killed/ destroyed remove from list
             {
                 stateMachineScript.enemies.Remove(_target);
 
@@ -138,24 +139,20 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         Targetable closestTarget = null;
         foreach (Targetable enemy in stateMachineScript.enemies)
         {
-            if (enemy == null) // If enemy has been killed/ destroyed remove from list
-            {
-                stateMachineScript.enemies.Remove(enemy);
-            }
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if ((transform.position - enemy.transform.position).magnitude < closestDistance)
+            if (distanceToEnemy < closestDistance)
             {
+                closestDistance = distanceToEnemy;
                 closestTarget = enemy;
+                stateMachineScript.target = closestTarget;
+
 
             }
 
         }
 
-        if (closestTarget != null) // If null, that means no enemies in range
-        {
-            stateMachineScript.target = closestTarget;
 
-        }
 
 
         if (stateMachineScript.enemies.Count != 0)

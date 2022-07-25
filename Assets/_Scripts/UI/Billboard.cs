@@ -22,7 +22,7 @@ public class Billboard : MonoBehaviour
         if (mainCam != null)
         {
             transform.LookAt(mainCam.transform);
-            //transform.Rotate(Vector3.up * 180);
+            transform.Rotate(Vector3.up * 180);
         }
 
 

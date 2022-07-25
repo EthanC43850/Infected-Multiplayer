@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class AgentStatePosessed : MonoBehaviour, IAgentState 
@@ -7,6 +8,10 @@ public class AgentStatePosessed : MonoBehaviour, IAgentState
 
     AgentStateMachine stateMachineScript;
     PlayerController AIController;
+
+    public Animator AIAnimator;
+    public AnimatorController zombiePossessedAnimator;
+    public AnimatorController zombieAIAnimator;
 
     private void Awake()
     {

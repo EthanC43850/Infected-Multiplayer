@@ -144,7 +144,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
             lookPos.y = 0; // Avoid weird glitch with AI facing sky
             transform.forward = lookPos; // turn towards the target
 
-            if(animator != null)
+            if(attackType == AttackType.Melee)
             {
                 animator.SetTrigger("Attack"); // Damage caused by animation event
 

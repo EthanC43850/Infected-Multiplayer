@@ -8,6 +8,7 @@ using UnityEngine;
 public class Targetable : MonoBehaviourPunCallbacks
 {
     public Faction faction;
+    public bool isDead;
 
     [HideInInspector] public PhotonView PV;
 

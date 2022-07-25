@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class ZombieController : PlayerController
 {
 
-    public bool isPossessed;
+    public bool isPossessed = true;
 
 
     public override void AnimateThePlayer(Vector3 desiredDirection)
@@ -18,7 +18,7 @@ public class ZombieController : PlayerController
 
 
         }
-        else if(isPossessed) // only stop moving animation if not posessed
+        else if(isPossessed) // only stop moving animation if not posessed. Most likely going to just make two prefabs instead of combining into one, in which case, this bool is useless
         {
             playerAnimator.SetBool("IsMoving", false);
 

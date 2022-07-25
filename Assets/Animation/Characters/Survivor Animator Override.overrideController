@@ -7,7 +7,7 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Survivor Animator Override
-  m_Controller: {fileID: 9100000, guid: faa1fd6cb8ea0784e984b57d8ad5ff1d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 7f175ca9620d7f2448429e576395cdeb, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: fc9a62f9b1354f342bacfbbe077c503e, type: 2}
     m_OverrideClip: {fileID: 7400004, guid: 8daa50189dd68ef46b8bd15dad17a34c, type: 3}
@@ -19,3 +19,5 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400004, guid: 8daa50189dd68ef46b8bd15dad17a34c, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: 37e6af8636979e04086967e3bd667606, type: 2}
     m_OverrideClip: {fileID: 7400004, guid: 8daa50189dd68ef46b8bd15dad17a34c, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: e44a892308e84194f9f7a5817a6285d7, type: 2}
+    m_OverrideClip: {fileID: 7400014, guid: 8daa50189dd68ef46b8bd15dad17a34c, type: 3}
