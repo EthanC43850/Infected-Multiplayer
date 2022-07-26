@@ -8,7 +8,21 @@ public class SingleShotGun : Gun
 
     #region Variables
 
-    [SerializeField] Transform gunBarrel;
+    [Header("Projectile Settings")]
+    [SerializeField] Transform bulletSpawnPoint;
+    [serializefield] GameObject projectilePrefab;
+
+    [serializefield] float shootRate;
+    private float timer;
+
+    [Header("Particles")]
+    [serializefield] ParticleSystem spawnParticles;
+
+    [Header("Audio")]
+    [serializefield] AudioSource spawnAudioSource;
+
+
+
     PhotonView PV;
 
 
@@ -23,7 +37,8 @@ public class SingleShotGun : Gun
 
     public void Update()
     {
-        Debug.DrawRay(gunBarrel.position, gunBarrel.transform.forward * 4, Color.red);
+        timer += Time.deltaTime;
+        //Debug.DrawRay(bulletSpawnPoint.position, bulletSpawnPoint.transform.forward * 4, Color.red);
     }
 
     #endregion
@@ -40,7 +55,26 @@ public class SingleShotGun : Gun
     
     public void Shoot()
     {
-        if(Physics.Raycast(gunBarrel.position, gunBarrel.transform.forward, out RaycastHit hit, 4.0f))
+
+        /*timer = 0f;
+        Instantiate(projectilePrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+
+        if (spawnParticles)
+        {
+            spawnParticles.Play();
+        }
+
+        if (spawnAudioSource)
+        {
+            spawnAudioSource.Play();
+        }
+*/
+
+
+        #region Shooting Method Through Raycast (Could be useful for fast shortranged shotguns)
+
+
+        if (Physics.Raycast(bulletSpawnPoint.position, bulletSpawnPoint.transform.forward, out RaycastHit hit, 4.0f))
         {
             WorldSpacePlayerUI worldSpaceUI = hit.collider.gameObject.GetComponentInChildren<WorldSpacePlayerUI>();
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)itemInfo).damage);
@@ -69,7 +103,12 @@ public class SingleShotGun : Gun
                 PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
 
             }
+
+
         }
+
+        #endregion
+
 
     } // END Shoot
 

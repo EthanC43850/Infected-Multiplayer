@@ -11,7 +11,7 @@ public class ZombieFistCollider : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!zombieFistsScript.PV.IsMine) { return; }
+        if (!zombieFistsScript.PV.IsMine && PlayerController.debugMode == false) { return; }
 
         Targetable target = other.gameObject.GetComponent<Targetable>();
 
