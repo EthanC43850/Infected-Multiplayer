@@ -152,7 +152,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
             else
             {
                 // test attack
-                if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange + 1)) // Extended attack range a little more because nav mesh stops right at the range
+                if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange)) // Extended attack range a little more because nav mesh stops right at the range
                 {
                     hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(damagePerAttack);
                     //animator.SetTrigger("Attack");
@@ -181,6 +181,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
             if (health <= 0)
             {
                 ChangeState(dieState);
+                isDead = true;
             }
         }
         else
@@ -204,6 +205,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         if (health <= 0)
         {
             ChangeState(dieState);
+            isDead = true;
 
         }
 

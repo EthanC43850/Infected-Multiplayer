@@ -14,7 +14,9 @@ public class ZombieFistCollider : MonoBehaviour
         if (!zombieFistsScript.PV.IsMine) { return; }
 
         Targetable target = other.gameObject.GetComponent<Targetable>();
-        
+
+        Debug.Log("trigger detected " + other.name);
+
         if(target.faction == zombieControllerScript.faction) // Avoid hitting self, as well as teammates
         {
             return;

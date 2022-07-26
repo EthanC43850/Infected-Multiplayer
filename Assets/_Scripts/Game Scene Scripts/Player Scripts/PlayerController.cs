@@ -38,7 +38,7 @@ public class PlayerController : Targetable, IDamageable
     [SerializeField] Transform cam;
     [SerializeField] CinemachineVirtualCamera birdEyeCam;
     public Transform groundCheckTransform;
-    public Collider playerHitBox;
+    //public Collider playerHitBox;
 
     public Animator playerAnimator;
 
@@ -123,6 +123,10 @@ public class PlayerController : Targetable, IDamageable
     {
 
         #region Player Movement
+
+
+        
+
         //jump
         isGrounded = Physics.CheckSphere(groundCheckTransform.position, groundDistance, groundMask);
         if (isGrounded && velocity.y < 0)
@@ -137,14 +141,14 @@ public class PlayerController : Targetable, IDamageable
 
         }
 
+
+        controller.Move(velocity * Time.deltaTime);
+
         if (isDead)
         {
             return;
         }
 
-
-
-            controller.Move(velocity * Time.deltaTime);
 
         // Refactor so that errors dont pop up
 
@@ -366,10 +370,15 @@ public class PlayerController : Targetable, IDamageable
 
         }
 
-        isDead = true;
-        playerAnimator.SetTrigger("IsDead");
-        playerHitBox.enabled = false;
-        controller.enabled = false;
+        if(isDead == false) 
+        {
+            isDead = true;
+            playerAnimator.SetTrigger("IsDead");
+
+        }
+
+        //playerHitBox.enabled = false;
+
 
 
     } // END Die

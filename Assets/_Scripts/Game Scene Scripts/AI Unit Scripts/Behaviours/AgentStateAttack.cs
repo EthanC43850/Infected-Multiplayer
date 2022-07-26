@@ -63,6 +63,7 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
     {
         if(stateMachineScript.target == null || stateMachineScript.target.isDead)
         {
+
             return false;
         }
 

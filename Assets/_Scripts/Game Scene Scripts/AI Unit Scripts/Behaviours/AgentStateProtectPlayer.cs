@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
@@ -101,7 +102,8 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
     #region Methods
 
-    bool isEnemyInRange()
+    //-------------------------------------------//
+    bool isEnemyInRange() // Check for enemies in the range of spherecast
     {
 
 
@@ -119,7 +121,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         }
 
         // Remove targets that move out of distance or die
-        foreach (Targetable _target in stateMachineScript.enemies)
+        foreach (Targetable _target in stateMachineScript.enemies.ToList())
         {
             if (_target == null || _target.isDead) // If enemy has been killed/ destroyed remove from list
             {
@@ -178,13 +180,14 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     public void AttackClosestTarget() // Should AI always attack closest target?
     {
 
-        if (Vector3.Distance(stateMachineScript.target.transform.position, host.position) > stateMachineScript.attackRange && isReturningToPlayer)
+        if (Vector3.Distance(stateMachineScript.target.transform.position, transform.position) > stateMachineScript.attackRange)
         {
+            //Debug.Log("Distance between guard and target is " + Vector3.Distance(stateMachineScript.target.transform.position, transform.position));
             stateMachineScript.navMeshAgent.isStopped = false;
 
             stateMachineScript.navMeshAgent.SetDestination(stateMachineScript.target.transform.position);
         }
-        else // Close enough for attack
+        else if (!isReturningToPlayer) // 
         {
             stateMachineScript.navMeshAgent.isStopped = true;
             stateMachineScript.DealBlow();
@@ -199,7 +202,6 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     //-------------------------------------------//
     void ReturnToPlayerRadius()
     {
-        Debug.Log(Vector3.Distance(transform.position, host.position));
         if (Vector3.Distance(transform.position, host.position) < patrolDistance) //close enough
         {
             isReturningToPlayer = false;
@@ -233,6 +235,8 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(host.position, patrolDistance);
 
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, stateMachineScript.attackRange);
 
     }
 

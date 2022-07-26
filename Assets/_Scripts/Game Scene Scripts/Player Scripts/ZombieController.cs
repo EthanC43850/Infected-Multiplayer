@@ -11,7 +11,7 @@ public class ZombieController : PlayerController
 
     public override void AnimateThePlayer(Vector3 desiredDirection)
     {
-        Debug.Log("magnitude is " + moveInput.magnitude);
+        //Debug.Log("magnitude is " + moveInput.magnitude);
         if(moveInput.magnitude != 0)
         {
             playerAnimator.SetBool("IsMoving", true);

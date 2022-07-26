@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AgentStateChase : MonoBehaviour, IAgentState
@@ -60,11 +61,11 @@ public class AgentStateChase : MonoBehaviour, IAgentState
         float closestDistance = Mathf.Infinity; // Anything closer than this will become the new target
         Targetable closestTarget = null;
 
-        foreach (Targetable enemy in stateMachineScript.enemies)
+        foreach (Targetable enemy in stateMachineScript.enemies.ToList())
         {
             float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if (enemy == null) // If enemy has been destroyed remove from list
+            if (enemy == null || enemy.isDead) // If enemy has been destroyed remove from list
             {
                 stateMachineScript.enemies.Remove(enemy);
             }
@@ -74,7 +75,8 @@ public class AgentStateChase : MonoBehaviour, IAgentState
             {
                 closestDistance = distanceToEnemy;
                 closestTarget = enemy;
-                
+                stateMachineScript.target = closestTarget;
+                stateMachineScript.navMeshAgent.SetDestination(closestTarget.transform.position);
                 //Debug.Log("Closest target is " + closestTarget.gameObject.name);
 
             }
@@ -85,12 +87,7 @@ public class AgentStateChase : MonoBehaviour, IAgentState
         {
             Debug.Log("No targets found!");
         }
-        else
-        {
-            stateMachineScript.target = closestTarget;
-            stateMachineScript.navMeshAgent.SetDestination(closestTarget.transform.position);
 
-        }
 
     } // END FindClosestTarget
 
@@ -100,7 +97,6 @@ public class AgentStateChase : MonoBehaviour, IAgentState
     public bool IsTargetInRange()
     {
         
-
         return Vector3.Distance(transform.position, stateMachineScript.target.transform.position) <= stateMachineScript.attackRange;
 
     } // END IsTargetInRange

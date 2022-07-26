@@ -21,11 +21,12 @@ public class Spikes : MonoBehaviourPunCallbacks
     {
         
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if(player == null) { return; }
         if (!player.PV.IsMine) { return; }
 
         if (player != null)
         {
-            player.TakeDamage(20);
+            player.TakeDamage(5);
         }
 
         // returns null, WHY??
