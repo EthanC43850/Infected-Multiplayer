@@ -161,7 +161,7 @@ MonoBehaviour:
   itemInfo: {fileID: 11400000, guid: 358a5172fafd1f84ab822ebd8a46f894, type: 2}
   itemGameObject: {fileID: 2131816002080950128}
   bulletImpactPrefab: {fileID: 8651614026630635065, guid: 807a21c7483eac2499cb64e66d3be855, type: 3}
-  gunBarrel: {fileID: 4771378538154901427}
+  bulletSpawnPoint: {fileID: 4771378538154901427}
 --- !u!114 &1717642848117108975
 MonoBehaviour:
   m_ObjectHideFlags: 0
