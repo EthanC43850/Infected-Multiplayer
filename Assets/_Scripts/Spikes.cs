@@ -24,6 +24,7 @@ public class Spikes : MonoBehaviourPunCallbacks
         if(player == null) { return; }
         if (!player.PV.IsMine) { return; }
 
+
         if (player != null)
         {
             player.TakeDamage(5);

@@ -4,15 +4,46 @@ using UnityEngine;
 
 public class BulletProjectileBehaviour : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [HideInInspector] public GunInfo gunInfo;
+    private Rigidbody bulletRigidBody;
+
+
+    public void Init(GunInfo _gunInfo)
     {
-        
+        gunInfo = _gunInfo;
+        bulletRigidBody = GetComponent<Rigidbody>();
+        Destroy(gameObject, gunInfo.bulletLifeTime);
+
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
-        
+        Vector3 movement = transform.forward * gunInfo.bulletSpeed * Time.deltaTime;
+        bulletRigidBody.MovePosition(transform.position + movement);
+
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        WorldSpacePlayerUI worldSpaceUI = other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>();
+
+        other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)gunInfo).damage);
+        other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>()?.DisplayFloatingText(((WeaponInfo)gunInfo).damage);
+
+
+        /// Single Player Testing
+        if (PlayerController.debugMode == true)
+        {
+            // Can instantiate different impact particles based on what the other object hit is
+            Instantiate(gunInfo.hitWallParticles, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+
+        }
+
+    }
+
+
 }

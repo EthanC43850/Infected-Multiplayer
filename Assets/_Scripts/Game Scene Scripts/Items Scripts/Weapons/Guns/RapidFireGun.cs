@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleShotGun : Gun
+public class RapidFireGun : Gun
 {
 
     #region Variables
@@ -12,7 +12,6 @@ public class SingleShotGun : Gun
     [SerializeField] Transform bulletSpawnPoint;
     [serializefield] GameObject projectilePrefab;
 
-    [serializefield] float shootRate;
     private float timer;
 
     [Header("Particles")]
@@ -88,14 +87,14 @@ public class SingleShotGun : Gun
             /// Single Player Testing
             if (PlayerController.debugMode == true)
             {
-                Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
+                //Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
 
                 Collider[] colliders = Physics.OverlapSphere(hit.point, 0.3f);
                 if (colliders.Length != 0)
                 {
-                    GameObject bulletImpactObj = Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
-                    Destroy(bulletImpactObj, 10f);
-                    bulletImpactObj.transform.SetParent(colliders[0].transform);
+                    //GameObject bulletImpactObj = Instantiate(bulletImpactPrefab, hit.point + hit.normal * 0.001f, Quaternion.LookRotation(hit.normal, Vector3.up) * bulletImpactPrefab.transform.rotation);
+                   // Destroy(bulletImpactObj, 10f);
+                   // bulletImpactObj.transform.SetParent(colliders[0].transform);
                 }
             }
             else
@@ -113,7 +112,7 @@ public class SingleShotGun : Gun
     } // END Shoot
 
 
-    // Would need to implement object pooling through a network
+    /*// Would need to implement object pooling through a network
     [PunRPC]
     void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
     {
@@ -128,7 +127,7 @@ public class SingleShotGun : Gun
         }
         // <3 you future E keep goin
 
-    } // RPC_Shoot
+    } // RPC_Shoot*/
 
     public override void FinishedUse()
     {
