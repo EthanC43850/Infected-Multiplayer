@@ -47,7 +47,7 @@ public class SingleShotGun : Gun
     public override void Use()
     {
         Debug.Log("Firing " + itemGameObject.name);
-        if(timer >= (GunInfo)itemInfo.shootRate)
+        if(timer >= ((GunInfo)itemInfo).shootRate)
         {
             Shoot();
 
