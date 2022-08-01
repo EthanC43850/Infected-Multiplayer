@@ -113,7 +113,6 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     #endregion
 
 
-
     #region Methods
 
     //-------------------------------------------//

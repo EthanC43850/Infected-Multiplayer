@@ -38,6 +38,11 @@ public class Spikes : MonoBehaviourPunCallbacks
             Instantiate(zombieTestDelMe, zombieSpawnPoint.transform.position, Quaternion.identity);
 
         }
+        else
+        {
+            Instantiate(zombieTestDelMe, zombieSpawnPoint.transform.position, Quaternion.identity);
+
+        }
 
 
 

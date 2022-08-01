@@ -58,8 +58,17 @@ public class SingleShotGun : Gun
     {
 
         timer = 0f;
-        BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<BulletProjectileBehaviour>();
-        _bulletInfo.Init((GunInfo)itemInfo);
+
+        if(PlayerController.debugMode == false)
+        {
+            PV.RPC("RPC_Shoot", RpcTarget.All);
+        }
+        else
+        {
+            BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<BulletProjectileBehaviour>();
+            _bulletInfo.Init((GunInfo)itemInfo);
+        }
+        
 
 
         if (spawnParticles)
@@ -74,6 +83,17 @@ public class SingleShotGun : Gun
 
 
     } // END Shoot
+
+
+    [PunRPC]
+    void RPC_Shoot()
+    {
+        BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<BulletProjectileBehaviour>();
+        _bulletInfo.Init((GunInfo)itemInfo);
+
+
+    } // END RPC_Shoot
+
 
 
     public override void FinishedUse()
