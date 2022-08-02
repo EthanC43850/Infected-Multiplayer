@@ -38,6 +38,8 @@ public class PlayerController : Targetable, IDamageable
     [SerializeField] Transform cam;
     [SerializeField] CinemachineVirtualCamera birdEyeCam;
     public Transform groundCheckTransform;
+    [SerializeField] GameObject rightHandParent;
+
     //public Collider playerHitBox;
 
     public Animator playerAnimator;
@@ -377,6 +379,7 @@ public class PlayerController : Targetable, IDamageable
         {
             isDead = true;
             playerAnimator.SetTrigger("IsDead");
+            playerUI.SetActive(false);
 
         }
 

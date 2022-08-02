@@ -40,13 +40,14 @@ public class Spikes : MonoBehaviourPunCallbacks
         }
         else
         {
-            Instantiate(zombieTestDelMe, zombieSpawnPoint.transform.position, Quaternion.identity);
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Zombie_AI ( Non-Controllable)"), zombieSpawnPoint.position, zombieSpawnPoint.rotation, 0, new object[] { pv.ViewID });
+
+
 
         }
 
 
 
     }
-
 
 }

@@ -20,6 +20,7 @@ public class AgentStateDie : MonoBehaviour, IAgentState
         hitBox.enabled = false;
         stateMachineScript.navMeshAgent.enabled = false;
         stateMachineScript.animator.SetTrigger("IsDead");
+        stateMachineScript.worldSpaceUI.gameObject.SetActive(false);
         stateMachineScript.isDead = true;
 
     }

@@ -10,12 +10,15 @@ public class SingleShotGun : Gun
 
     [Header("Projectile Settings")]
     public Transform bulletSpawnPoint;
+    /*public Transform rightHandTransform;
+    public Transform rightHandLocalTransformValues;*/
 
     [Header("Particles")]
     public ParticleSystem spawnParticles;
 
     [Header("Audio")]
     public AudioSource spawnAudioSource;
+
 
 
     private float timer;
@@ -30,6 +33,15 @@ public class SingleShotGun : Gun
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+
+        // Attempted to animate gun with right hand, when running backwards the gun gets aimed up
+        /*if(rightHandTransform != null)
+        {
+            transform.SetParent(rightHandTransform, true);
+            transform.position = rightHandLocalTransformValues.position;
+            transform.rotation = rightHandLocalTransformValues.rotation;
+            transform.localScale = rightHandLocalTransformValues.localScale;
+        }*/
     }
 
     public void Update()

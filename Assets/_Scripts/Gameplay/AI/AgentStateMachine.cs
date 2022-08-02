@@ -83,6 +83,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         //Subscribe function
         //PlayerManager.AddEnemyToAILists += AddEnemyToList;
 
+
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
 
@@ -95,6 +96,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     public virtual void Update()
     {
+        Debug.Log("master client is " + PhotonNetwork.IsMasterClient);
         if (!PhotonNetwork.IsMasterClient && PlayerController.debugMode == false) // Might need to add a "isPossessed" bool
         {
             return;
@@ -227,12 +229,19 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         
         if (faction != enemy.faction) // Make sure AI enemies are not on same team
         {
-            foreach(Targetable _enemy in enemies) // Make sure not to add same enemies twice
+            foreach(Targetable _enemy in enemies) // Go through current list of targets to make sure target is not added twice
             {
                 if(enemy == _enemy)
                 {
                     return;
                 }
+
+            }
+
+            if (enemy.isDead)
+            {
+                return;
+
             }
 
             enemies.Add(enemy);

@@ -53,6 +53,15 @@ public class AgentStateIdle : MonoBehaviour, IAgentState
             }
 
         }
+        else // When online, use zombie manager instead of the expensive function (FindObjectsofType)
+        {
+            Debug.Log("size of zombie spawn manager script is " + ZombieSpawnManager.Instance.targets.Count);
+            foreach(Targetable target in ZombieSpawnManager.Instance.targets)
+            {
+                stateMachineScript.AddEnemyToList(target);
+
+            }
+        }
 
     }
     #endregion

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 214310859}
   - component: {fileID: 214310861}
   - component: {fileID: 9089434667624669102}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Projectile_Bullet_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4710399351570394}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RaycastOriginPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 4210678332855296}
   - component: {fileID: 33978180595449468}
   - component: {fileID: 23074885243393270}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BulletVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
