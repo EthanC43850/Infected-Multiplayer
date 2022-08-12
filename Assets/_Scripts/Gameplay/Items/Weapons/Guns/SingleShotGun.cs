@@ -33,7 +33,6 @@ public class SingleShotGun : Gun
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
-
         // Attempted to animate gun with right hand, when running backwards the gun gets aimed up
         /*if(rightHandTransform != null)
         {
@@ -43,6 +42,14 @@ public class SingleShotGun : Gun
             transform.localScale = rightHandLocalTransformValues.localScale;
         }*/
     }
+
+    private void Start()
+    {
+        ((GunInfo)itemInfo).pv = PV;
+
+
+    }
+
 
     public void Update()
     {
@@ -101,7 +108,7 @@ public class SingleShotGun : Gun
     void RPC_Shoot()
     {
         BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<BulletProjectileBehaviour>();
-        _bulletInfo.Init((GunInfo)itemInfo);
+        _bulletInfo.Init((GunInfo)itemInfo);        // TRYING TO INITIALIZE BULLETS WITH PHOTON VIEW TO FIGURE OUT WHO SHOT, AND WHO GOT THE KILL 
 
 
     } // END RPC_Shoot

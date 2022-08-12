@@ -26,6 +26,17 @@ public class ZombieFistCollider : MonoBehaviour
         {
             other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)zombieFistsScript.itemInfo).damage);
 
+            if (target.isDead)
+            {
+                Debug.Log("Killed target!");
+
+            }
+            else
+            {
+                Debug.Log("Did not kill target");
+
+            }
+
             WorldSpacePlayerUI worldSpaceUI = other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>();
             if (worldSpaceUI != null)
             {

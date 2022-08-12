@@ -3324,7 +3324,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Infect Your Friends
+  m_Text: KING OF THE DEAD
 --- !u!222 &1450482431
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4183,6 +4183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c2221370a09aa4dad525234064e180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnedGamemodeSceneNumber: 1
   roomNameInputField: {fileID: 662104340}
   roomNameText: {fileID: 528615724}
   roomListContent: {fileID: 478374844}

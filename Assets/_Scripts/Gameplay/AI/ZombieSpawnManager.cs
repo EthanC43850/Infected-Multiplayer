@@ -15,8 +15,17 @@ public class ZombieSpawnManager : MonoBehaviour
 
     }
 
+    public void AddTargetToList(Targetable target)
+    {
+        Debug.Log("Adding AI Target to list");
+        targets.Add(target);
 
-    public static void RemoveTargetFromList(Targetable target)
+        Debug.Log("The list contains: " + targets);
+
+    }
+
+
+    public void RemoveTargetFromList(Targetable target)
     {
 
 

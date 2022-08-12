@@ -49,13 +49,13 @@ public class BulletProjectileBehaviour : MonoBehaviour
 
             if (!pv.IsMine) // Bullet hits player or AI Unit, pv = player/AI hit, !pv.IsMine = the local client
             {
-                other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)gunInfo).damage);
-                other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>()?.DisplayFloatingText(((WeaponInfo)gunInfo).damage);
+                other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>()?.DisplayFloatingText(((WeaponInfo)gunInfo).damage); // Display damage on all clients
 
             }
-            else // Display damage on local client
+            else // Take damage on local client
             {
-                
+                other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)gunInfo).damage);
+
 
             }
         }

@@ -1684,12 +1684,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   controller: {fileID: 3300878783898674166}
-  playerUI: {fileID: 2071192875814461672}
+  playerUI: {fileID: 9203369102621068677}
   cam: {fileID: 3300878783675960113}
   birdEyeCam: {fileID: 1471485005}
   groundCheckTransform: {fileID: 3300878784272956589}
   rightHandParent: {fileID: 9085608986409536556}
+  playerHitBox: {fileID: 3300878783898674166}
   playerAnimator: {fileID: 6921197229860587410}
+  playerManager: {fileID: 0}
   moveInput: {x: 0, y: 0, z: 0}
   currentItemIndex: 0
   airstrikePhone: {fileID: 0}
@@ -3665,6 +3667,12 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 2
     Name: Strafe
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsMoving
+  - Type: 9
+    SynchronizeType: 2
+    Name: IsDead
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0

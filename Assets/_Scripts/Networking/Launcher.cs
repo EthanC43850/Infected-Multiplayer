@@ -9,9 +9,10 @@ public class Launcher : MonoBehaviourPunCallbacks
 {
     public static Launcher Instance;
 
-    
+    [Header("Gamemodes")]
+    public int turnedGamemodeSceneNumber;
 
-
+    [Header("Menu Objects")]
     [SerializeField] InputField roomNameInputField;
     [SerializeField] Text roomNameText;
     [SerializeField] Transform roomListContent;
@@ -104,9 +105,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
+
     public void StartGame()
     {
         PhotonNetwork.LoadLevel(1);
+
     }
 
 

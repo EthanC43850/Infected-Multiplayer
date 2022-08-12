@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using ExitGames.Client.Photon;
+using System.Collections;
 
 public class PlayerController : Targetable, IDamageable
 {
@@ -34,23 +35,23 @@ public class PlayerController : Targetable, IDamageable
 
     [Header("Connections:")]
     [SerializeField] CharacterController controller;
-    [SerializeField] GameObject playerUI;
+    [SerializeField] GameObject playerUI;       // Eventually delete and start calling worldspaceUI.gameobject in functions
     [SerializeField] Transform cam;
     [SerializeField] CinemachineVirtualCamera birdEyeCam;
     public Transform groundCheckTransform;
     [SerializeField] GameObject rightHandParent;
 
-    //public Collider playerHitBox;
+    public Collider playerHitBox;
 
     public Animator playerAnimator;
 
-    [Header("Scripts")]
-    
-    private PlayerManager playerManager;
+
+    [HideInInspector]
+    public PlayerManager playerManager;
 
 
 
-    
+
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity = 1f;
     [HideInInspector] public Vector3 moveInput;
@@ -92,7 +93,7 @@ public class PlayerController : Targetable, IDamageable
         {
             playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
         }
-        
+
 
     } // END Awake
 
@@ -112,7 +113,7 @@ public class PlayerController : Targetable, IDamageable
 
             Destroy(GetComponentInChildren<PlayerInput>());                             //Allows controllers to work when multiple people connect  
 
-            Destroy(playerUI);
+            //Destroy(playerUI);
 
 
 
@@ -130,7 +131,7 @@ public class PlayerController : Targetable, IDamageable
         {
             return;
         }
-        
+
 
         //jump
         isGrounded = Physics.CheckSphere(groundCheckTransform.position, groundDistance, groundMask);
@@ -190,20 +191,20 @@ public class PlayerController : Targetable, IDamageable
             Grenade grenade = items[currentItemIndex].GetComponent<Grenade>();
             if (grenade != null)
             {
-                
+
                 grenade.throwDistance += grenadeThrowDistance;
                 grenade.throwDistance = Mathf.Clamp(grenade.throwDistance, grenade.minThrowDistance, grenade.maxThrowDistance);
 
             }
 
             AirstrikePhone airStrike = items[currentItemIndex].GetComponent<AirstrikePhone>();
-            if(airStrike != null)
+            if (airStrike != null)
             {
 
                 //float airStrikeTargetAngle = Mathf.Atan2(airStrikePositionInput.x, airStrikePositionInput.z) * Mathf.Rad2Deg + birdEyeCam.transform.eulerAngles.y;
                 //float airStrikeAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
-                Vector3 airStrikeIndicatorMoveDirection = new Vector3(-airStrikePositionInput.x, 0f, -airStrikePositionInput.z);    
+                Vector3 airStrikeIndicatorMoveDirection = new Vector3(-airStrikePositionInput.x, 0f, -airStrikePositionInput.z);
                 if (airStrikeIndicatorMoveDirection.magnitude >= 0.1)
                 {
                     airStrike.airStrikeIndicator.transform.Translate(airStrikeIndicatorMoveDirection * airStrike.indicatorMoveSpeed * Time.deltaTime);
@@ -228,15 +229,23 @@ public class PlayerController : Targetable, IDamageable
     } // END Update
 
 
+    //-------------------------------------------//
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        
+
         // Call this function across all devices and make sure that only this specific player's gun switches, not everybody else's
         if (!PV.IsMine && targetPlayer == PV.Owner && changedProps["itemIndex"] != null)
         {
-            Debug.Log("Player item changed!");
+            //Debug.Log("Player item changed!");
             EquipItem((int)changedProps["itemIndex"]);
 
+
+        }
+
+        if (!PV.IsMine && targetPlayer == PV.Owner && changedProps["DeathState"] != null) // Make sure this specific players UI and hitbox is turned off
+        {
+            playerUI.SetActive(false);
+            playerHitBox.enabled = false;
 
         }
 
@@ -244,7 +253,7 @@ public class PlayerController : Targetable, IDamageable
 
         if (!PV.IsMine && targetPlayer == PV.Owner && changedProps["airstrikeActive"] != null)
         {
-            Debug.Log("AIR STRIKE BROADCASTED ACROSS NETWORK");
+            //Debug.Log("AIR STRIKE BROADCASTED ACROSS NETWORK");
             airstrikePhone.airStrikeIndicator.SetActive((bool)changedProps["airstrikeActive"]);
             airstrikePhone.airStrikeIndicator.transform.position = transform.position;
 
@@ -254,6 +263,7 @@ public class PlayerController : Targetable, IDamageable
     } // END OnPlayerPropertiesUpdate
 
 
+    //-------------------------------------------//
     private void OnTriggerEnter(Collider other)
     {
         // IMPORTANT: This function will run as many times as there are players in the game. The collider on my local computer && all other clients
@@ -271,21 +281,22 @@ public class PlayerController : Targetable, IDamageable
 
     #region Methods
 
-   /* public void OnEvent(EventData photonEvent)
-    {
+    /* public void OnEvent(EventData photonEvent)
+     {
 
-        byte eventCode = photonEvent.Code;
-        if (eventCode == OnAirstrikeAimEventCode)
-        {
-            
-            object[] data = (object[])photonEvent.CustomData;
-            airstrikePhone.airStrikeIndicator.SetActive((bool)data[0]);
-            airstrikePhone.airStrikeIndicator.transform.position = transform.position;
-        }
+         byte eventCode = photonEvent.Code;
+         if (eventCode == OnAirstrikeAimEventCode)
+         {
 
-    } // END OnEvent*/
+             object[] data = (object[])photonEvent.CustomData;
+             airstrikePhone.airStrikeIndicator.SetActive((bool)data[0]);
+             airstrikePhone.airStrikeIndicator.transform.position = transform.position;
+         }
+
+     } // END OnEvent*/
 
 
+    //-------------------------------------------//
     public virtual void AnimateThePlayer(Vector3 desiredDirection)
     {
         Vector3 movement = new Vector3(desiredDirection.x, 0f, desiredDirection.z);
@@ -299,7 +310,7 @@ public class PlayerController : Targetable, IDamageable
     } // END AnimatePlayer
 
 
-
+    //-------------------------------------------//
     private void EquipItem(int _index)
     {
         if (_index == previousItemIndex)
@@ -308,7 +319,7 @@ public class PlayerController : Targetable, IDamageable
         }
 
         currentItemIndex = _index;
-        Debug.Log("About to equip item " + items[currentItemIndex].itemGameObject.name);
+        //Debug.Log("About to equip item " + items[currentItemIndex].itemGameObject.name);
         items[currentItemIndex].itemGameObject.SetActive(true);
 
         if (previousItemIndex != -1)
@@ -330,6 +341,7 @@ public class PlayerController : Targetable, IDamageable
     } // END EqupItem
 
 
+    //-------------------------------------------//
     public void TakeDamage(int damage)
     {
         if (debugMode)
@@ -344,50 +356,76 @@ public class PlayerController : Targetable, IDamageable
         }
         else
         {
-            PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+            PV.RPC(nameof(RPC_TakeDamage), PV.Owner, damage);   // Signals to all that this specific PV owner is taking damage
         }
 
     } // END TakeDamage
 
 
+    //-------------------------------------------//
     [PunRPC]
-    public void RPC_TakeDamage(int damage)
+    public void RPC_TakeDamage(int damage, PhotonMessageInfo info)
     {
 
-        if (!PV.IsMine) { return; }         // Pun RPC runs on everyones computer, but the !pv.ismine makes sure the function only runs on the victims computer
-
-        currentHealth -= damage;    // In the multiplayer tutorial, this function is placed after !PV.IsMine. Keep this in mind if problems arise in the future.
+        currentHealth -= damage; 
         worldSpaceUI.UpdateHealthUI(currentHealth);
 
         if (currentHealth <= 0)
         {
             Die();
+            PlayerManager.Find(info.Sender).GetKill();  // Find the playermanager associated with the player who sent this RPC, then call getkill on this playermanager;
         }
 
     } // END RPC_TakeDamage
 
 
-    void Die()
+    //-------------------------------------------//
+    public void Die()
     {
-        if(debugMode == false)
-        {
-            playerManager.Die();
-
-        }
-
-        if(isDead == false) 
+        if (debugMode == false && isDead == false) // Online 
         {
             isDead = true;
             playerAnimator.SetTrigger("IsDead");
             playerUI.SetActive(false);
 
+
+            // Disable this target players UI over clients 
+            Hashtable hash = new Hashtable();
+            hash.Add("DeathState", true); // throwing random value to key
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+            StartCoroutine(IWaitToRespawn());
+
+        }
+        else if (isDead == false)
+        {
+
+            isDead = true;
+            playerAnimator.SetTrigger("IsDead");
+            playerUI.SetActive(false);
         }
 
-        //playerHitBox.enabled = false;
+
+        playerHitBox.enabled = false;
 
 
 
     } // END Die
+
+
+    
+
+
+    //-------------------------------------------//
+    IEnumerator IWaitToRespawn()
+    {
+        yield return new WaitForSeconds(3.0f);
+        playerManager.Die();
+
+
+
+    }
+
 
     #endregion
 
@@ -397,11 +435,11 @@ public class PlayerController : Targetable, IDamageable
     public void OnMove(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
-        
+
         Vector2 inputMovement = value.ReadValue<Vector2>();
         moveInput = new Vector3(inputMovement.x, 0, inputMovement.y).normalized; // Normalize is necessary to make sure object does not speed up when two keys are pressed 
                                                                                  // to go diagonally
-        
+
     } // END OnMovement
 
 
@@ -437,7 +475,7 @@ public class PlayerController : Targetable, IDamageable
 
     public void OnAim(InputAction.CallbackContext value)
     {
-        
+
         Grenade grenade = items[currentItemIndex].GetComponent<Grenade>();
         AirstrikePhone _airStrikePhone = items[currentItemIndex].GetComponent<AirstrikePhone>();
 
@@ -479,16 +517,16 @@ public class PlayerController : Targetable, IDamageable
             }
 
         }
-        
+
         if (value.canceled)
         {
 
             isAiming = false;
-            if(grenade != null)
+            if (grenade != null)
             {
                 grenade.drawProjectionScript.lineRenderer.enabled = false;
             }
-            if(_airStrikePhone != null)
+            if (_airStrikePhone != null)
             {
 
                 if (PlayerController.debugMode == false)
@@ -558,7 +596,7 @@ public class PlayerController : Targetable, IDamageable
     public void OnGrenadeAim(InputAction.CallbackContext value)
     {
         // Increase denominator to slow down the change in speed of the line renderer
-        
+
         //Debug.Log("grenade is aiming and value is " + value.ReadValue<Vector2>().y);
         grenadeThrowDistance = value.ReadValue<Vector2>().y / 8;
 
@@ -577,9 +615,6 @@ public class PlayerController : Targetable, IDamageable
     } // END OnAirstrikeAim
 
     #endregion
-
-
-
 
 
 } // END Class

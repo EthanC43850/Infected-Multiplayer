@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class GunInfo : WeaponInfo
     public float shootRate;
     public float bulletSpeed;
     public float bulletLifeTime;
+    public PhotonView pv;
 
     public GameObject bulletPrefab;
     public GameObject hitEnemyParticles;

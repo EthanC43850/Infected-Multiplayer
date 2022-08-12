@@ -1595,16 +1595,22 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsMoving
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Attack
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsDead
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsAttacking
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsMeleeAttack_b
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
   - SynchronizeType: 0
     LayerIndex: 1
