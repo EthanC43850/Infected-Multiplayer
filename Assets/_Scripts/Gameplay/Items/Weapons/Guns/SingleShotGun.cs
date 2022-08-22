@@ -79,7 +79,7 @@ public class SingleShotGun : Gun
 
         if(PlayerController.debugMode == false)
         {
-            PV.RPC("RPC_Shoot", RpcTarget.All);
+            PV.RPC(nameof(RPC_Shoot), RpcTarget.All);
         }
         else
         {
@@ -104,11 +104,11 @@ public class SingleShotGun : Gun
 
 
     [PunRPC]
-    void RPC_Shoot()
+    void RPC_Shoot(PhotonMessageInfo info)
     {
         BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<BulletProjectileBehaviour>();
         _bulletInfo.Init((GunInfo)itemInfo);        // TRYING TO INITIALIZE BULLETS WITH PHOTON VIEW TO FIGURE OUT WHO SHOT, AND WHO GOT THE KILL 
-
+        _bulletInfo.InitBulletOwner(info);
 
     } // END RPC_Shoot
 

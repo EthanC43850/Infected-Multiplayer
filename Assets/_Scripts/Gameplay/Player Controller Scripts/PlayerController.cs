@@ -91,7 +91,8 @@ public class PlayerController : Targetable, IDamageable
 
         if (!debugMode)
         {
-            playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+            playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>(); // InstantiationData [0] is simply the view ID which was passed
+                                                                                                         // 
         }
 
 

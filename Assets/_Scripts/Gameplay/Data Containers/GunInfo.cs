@@ -15,4 +15,4 @@ public class GunInfo : WeaponInfo
     public GameObject hitWallParticles;
 
 
-}
+} // END Class

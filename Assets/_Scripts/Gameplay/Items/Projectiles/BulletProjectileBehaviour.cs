@@ -8,7 +8,7 @@ public class BulletProjectileBehaviour : MonoBehaviour
 {
     [HideInInspector] public GunInfo gunInfo;
     private Rigidbody bulletRigidBody;
-    private PhotonView pv;
+    private PhotonMessageInfo bulletOwner;
 
 
     public void Init(GunInfo _gunInfo)
@@ -18,6 +18,12 @@ public class BulletProjectileBehaviour : MonoBehaviour
         Destroy(gameObject, gunInfo.bulletLifeTime);
 
     } // END Init
+
+    public void InitBulletOwner(PhotonMessageInfo _info)
+    {
+        bulletOwner = _info;
+
+    }
 
 
     private void Update()
@@ -59,7 +65,7 @@ public class BulletProjectileBehaviour : MonoBehaviour
             }
         }
 
-        if (PlayerController.debugMode)
+        if (PlayerController.debugMode) 
         {
             other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)gunInfo).damage);
             other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>()?.DisplayFloatingText(((WeaponInfo)gunInfo).damage);

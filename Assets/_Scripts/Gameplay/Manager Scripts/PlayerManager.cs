@@ -61,8 +61,8 @@ public class PlayerManager : MonoBehaviour
 
             if (foundCure)
             {
-                controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
-
+                controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID }); // PV.ViewID allows the controller to find its own playermanager. 
+                                                                                                                                                                                    //PV.ViewID is index 0 of the array of objects that were passed.
             }
             else
             {
@@ -172,7 +172,7 @@ public class PlayerManager : MonoBehaviour
     //-------------------------------------------//
     public static PlayerManager Find(Player player)
     {
-        return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player); // Not optimial, fix later
+        return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player); // Find Player manager associated with message
     }
 
 

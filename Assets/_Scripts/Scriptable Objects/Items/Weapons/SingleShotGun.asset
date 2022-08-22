@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Rifle V2
   damage: 10
   shootRate: 0
-  bulletSpeed: 45
+  bulletSpeed: 5
   bulletLifeTime: 3
   bulletPrefab: {fileID: 1218724716591446, guid: c4b4b81382c254a999d09f9375fbe2c7, type: 3}
   hitEnemyParticles: {fileID: 1294844066107714, guid: 1a0f7225fc3d5408280dfce6c1979b1a, type: 3}
