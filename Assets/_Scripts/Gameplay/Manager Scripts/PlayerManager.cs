@@ -166,7 +166,7 @@ public class PlayerManager : MonoBehaviour
             controller.gameObject.GetComponent<PlayerController>().Die();
         }
 
-    }
+    } // END RPC_GetKill
 
 
     //-------------------------------------------//

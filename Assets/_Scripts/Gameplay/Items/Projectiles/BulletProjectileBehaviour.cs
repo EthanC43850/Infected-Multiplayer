@@ -8,17 +8,16 @@ public class BulletProjectileBehaviour : MonoBehaviour
 {
     [HideInInspector] public GunInfo gunInfo;
     private Rigidbody bulletRigidBody;
-    //private PhotonView PV;
+    private PhotonView pv;
 
 
     public void Init(GunInfo _gunInfo)
     {
         gunInfo = _gunInfo;
         bulletRigidBody = GetComponent<Rigidbody>();
-        //PV = GetComponent<PhotonView>(); // To make bullets more accurate, I can give photon views to bullets
         Destroy(gameObject, gunInfo.bulletLifeTime);
 
-    }
+    } // END Init
 
 
     private void Update()

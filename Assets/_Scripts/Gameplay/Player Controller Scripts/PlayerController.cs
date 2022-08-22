@@ -430,8 +430,9 @@ public class PlayerController : Targetable, IDamageable
     #endregion
 
 
+    #region Player Input Events
 
-    #region Player Actions
+    //-------------------------------------------//
     public void OnMove(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
@@ -443,6 +444,7 @@ public class PlayerController : Targetable, IDamageable
     } // END OnMovement
 
 
+    //-------------------------------------------//
     public void OnSprint(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
@@ -459,6 +461,7 @@ public class PlayerController : Targetable, IDamageable
     } // END OnSprint
 
 
+    //-------------------------------------------//
     public void OnJump(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
@@ -473,6 +476,7 @@ public class PlayerController : Targetable, IDamageable
     } // END OnJump
 
 
+    //-------------------------------------------//
     public void OnAim(InputAction.CallbackContext value)
     {
 
@@ -559,6 +563,7 @@ public class PlayerController : Targetable, IDamageable
     } // END OnAim
 
 
+    //-------------------------------------------//
     public void SwitchToPrimaryItem(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
@@ -567,6 +572,8 @@ public class PlayerController : Targetable, IDamageable
 
     } // END SwitchToPrimaryItem
 
+
+    //-------------------------------------------//
     public void SwitchToSecondaryItem(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
@@ -576,6 +583,7 @@ public class PlayerController : Targetable, IDamageable
     } // END SwitchToSecondaryItem
 
 
+    //-------------------------------------------//
     public virtual void OnAttack(InputAction.CallbackContext value)
     {
         if (!PV.IsMine) { return; }
@@ -592,8 +600,8 @@ public class PlayerController : Targetable, IDamageable
     } // END OnAttack
 
 
-    // This function is controlled by the right stick / mouse
-    public void OnGrenadeAim(InputAction.CallbackContext value)
+    //-------------------------------------------//
+    public void OnGrenadeAim(InputAction.CallbackContext value) // This function is controlled by the right stick / mouse
     {
         // Increase denominator to slow down the change in speed of the line renderer
 
@@ -605,6 +613,7 @@ public class PlayerController : Targetable, IDamageable
     } // END OnGrenadeAim
 
 
+    //-------------------------------------------//
     public void OnAirstrikeAim(InputAction.CallbackContext value)
     {
         Vector2 airStrikeInputMovement = value.ReadValue<Vector2>();

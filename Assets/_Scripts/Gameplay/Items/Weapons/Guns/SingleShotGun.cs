@@ -45,7 +45,6 @@ public class SingleShotGun : Gun
 
     private void Start()
     {
-        ((GunInfo)itemInfo).pv = PV;
 
 
     }
