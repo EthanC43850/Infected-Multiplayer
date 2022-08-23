@@ -17,6 +17,8 @@ public class CurePlayer : MonoBehaviour
             player.playerManager.RespawnAsSurvivor();    
         }
 
+        Destroy(this.gameObject);
+
     }
 
 
