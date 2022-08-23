@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     ZombieSpawnManager zombieSpawner;
 
     int kills;
+    int deaths;
 
     public bool foundCure = false;
 
@@ -36,12 +37,7 @@ public class PlayerManager : MonoBehaviour
         if (PV.IsMine)
         {
             CreateController();
-
-
-
-
         }
-
     }
 
     #endregion
@@ -61,27 +57,21 @@ public class PlayerManager : MonoBehaviour
 
             if (foundCure)
             {
-                controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID }); // PV.ViewID allows the controller to find its own playermanager. 
-                                                                                                                                                                                    //PV.ViewID is index 0 of the array of objects that were passed.
+                controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID }); // PV.ViewID allows the controller to find its own playermanager.                                                                                                                                                                  //PV.ViewID is index 0 of the array of objects that were passed.
             }
             else
             {
                 controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "ZombieController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
-
             }
 
         }
         else if (SceneManager.GetActiveScene().buildIndex == 2) // Survivor Vs Survivor GameMode
         {
             controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
-
-
         }
         else
         {
             Debug.Log("Ethan - NO CONTROLLERS CREATED, WRONG SCENE INDEX");
-
-
         }
 
 
@@ -93,27 +83,10 @@ public class PlayerManager : MonoBehaviour
         //PV.RPC("AddPlayersToTargetLists", RpcTarget.All); // Test for adding players to zombie spawner list
         //StartCoroutine(IWaitForObjects());
 
-    }
+    } // END CreateController
 
 
-    //-------------------------------------------//
-    public void CreateZombieController()
-    {
-
-    }
-
-
-    //-------------------------------------------//
-    public void CreateSurvivorController()
-    {
-
-
-
-
-    }
-
-
-    [PunRPC]
+    /*[PunRPC]
     public void AddPlayersToTargetLists()
     {
         Debug.Log("ABOUT TO ADD PLAYER TO TARGET LIST AND IS PHOTON VIEW MINE? : " + PV.IsMine);
@@ -131,7 +104,7 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitUntil(() => zombieSpawner != null);
 
 
-    }
+    }*/
 
 
     //-------------------------------------------//
@@ -140,7 +113,13 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.Destroy(controller);
         CreateController();
 
-    }
+        deaths++;
+        Hashtable hash = new Hashtable();
+        hash.Add("deaths", deaths);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+
+    } // End Die
 
     //-------------------------------------------//
     public void GetKill()
@@ -151,22 +130,32 @@ public class PlayerManager : MonoBehaviour
 
 
     //-------------------------------------------//
+    [PunRPC]
     public void RPC_GetKill()
     {
         kills++;
-        Debug.Log("GOT A KILL");
-
         Hashtable hash = new Hashtable();
         hash.Add("kills", kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-        if (!foundCure && SceneManager.GetActiveScene().buildIndex == 1)    // If playing turned Gamemode
+        // Turned Gamemode
+        if (!foundCure && SceneManager.GetActiveScene().buildIndex == 1)
         {
-            foundCure = true;
-            controller.gameObject.GetComponent<PlayerController>().Die();
+            FoundCure();
         }
 
     } // END RPC_GetKill
+
+
+    //-------------------------------------------//
+    public void FoundCure()     // Respawn Zombie as a Survivor
+    {
+        foundCure = true;
+        PhotonNetwork.Destroy(controller);
+        CreateController();
+
+    } // END FoundCure
+
 
 
     //-------------------------------------------//

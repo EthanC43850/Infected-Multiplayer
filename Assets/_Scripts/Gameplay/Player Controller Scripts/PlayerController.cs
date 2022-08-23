@@ -151,13 +151,10 @@ public class PlayerController : Targetable, IDamageable
 
         controller.Move(velocity * Time.deltaTime);
 
-        if (isDead)
+        if (isDead) // Stop all movement when dead
         {
             return;
         }
-
-
-        // Refactor so that errors dont pop up
 
         currentMoveInput = Vector3.SmoothDamp(currentMoveInput, moveInput, ref smoothInputVelocity, smoothInputSpeed);
         Vector3 desiredDirection = cam.forward * currentMoveInput.z + cam.right * currentMoveInput.x;
@@ -176,7 +173,7 @@ public class PlayerController : Targetable, IDamageable
 
 
         }
-        else if (isAiming)
+        else if (isAiming)  // Keep track of the direction of projectiles 
         {
             float targetAngle = Mathf.Atan2(moveInput.x, moveInput.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, cam.eulerAngles.y, ref turnSmoothVelocity, turnSmoothTime);
@@ -264,19 +261,6 @@ public class PlayerController : Targetable, IDamageable
     } // END OnPlayerPropertiesUpdate
 
 
-    //-------------------------------------------//
-    private void OnTriggerEnter(Collider other)
-    {
-        // IMPORTANT: This function will run as many times as there are players in the game. The collider on my local computer && all other clients
-        // In this example, a player will take 60 damage (20 * 3) if there are 3 clients
-        /*if (other.gameObject.GetComponent<Spikes>())
-        {
-            Debug.Log("Stepped on spikes");
-            TakeDamage(20);
-            //worldSpaceUI.DisplayFloatingText(20);
-        }*/
-    }
-
     #endregion
 
 
@@ -357,7 +341,7 @@ public class PlayerController : Targetable, IDamageable
         }
         else
         {
-            PV.RPC(nameof(RPC_TakeDamage), PV.Owner, damage);   // Signals to all that this specific PV owner is taking damage
+            PV.RPC(nameof(RPC_TakeDamage), PV.Owner, damage);   // Signals to all that this specific PV owner is taking damage, (The shooter runs this call)
         }
 
     } // END TakeDamage

@@ -137,4 +137,4 @@ public class Shotgun : Gun
 
     #endregion
 
-}
+} // END Class

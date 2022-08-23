@@ -49,6 +49,7 @@ MonoBehaviour:
   - RPC_AirstrikeAim
   - AddPlayersToTargetLists
   - SpawnZombieOnNetwork
+  - RPC_GetKill
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
