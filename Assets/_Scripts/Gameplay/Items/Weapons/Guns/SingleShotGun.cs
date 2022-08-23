@@ -108,7 +108,7 @@ public class SingleShotGun : Gun
     {
         BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, initialPosition, initialRotation).GetComponent<BulletProjectileBehaviour>();
         _bulletInfo.Init((GunInfo)itemInfo);        // TRYING TO INITIALIZE BULLETS WITH PHOTON VIEW TO FIGURE OUT WHO SHOT, AND WHO GOT THE KILL 
-        _bulletInfo.InitBulletOwner(info);
+        _bulletInfo.InitBulletOwner(PV);
 
     } // END RPC_Shoot
 

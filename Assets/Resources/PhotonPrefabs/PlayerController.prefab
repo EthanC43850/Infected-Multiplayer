@@ -1688,12 +1688,11 @@ MonoBehaviour:
   cam: {fileID: 3300878783675960113}
   birdEyeCam: {fileID: 1471485005}
   groundCheckTransform: {fileID: 3300878784272956589}
-  rightHandParent: {fileID: 9085608986409536556}
   playerHitBox: {fileID: 3300878783898674166}
   playerAnimator: {fileID: 6921197229860587410}
   playerManager: {fileID: 0}
-  moveInput: {x: 0, y: 0, z: 0}
   currentItemIndex: 0
+  moveInput: {x: 0, y: 0, z: 0}
   airstrikePhone: {fileID: 0}
 --- !u!114 &8184310987003956029
 MonoBehaviour:
@@ -3626,16 +3625,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5635779998805099944, guid: bfe5fb299aa28b6469d665745ad07a23, type: 3}
   m_PrefabInstance: {fileID: 4135713044763342648}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &9085608986409536556 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5148617293593901844, guid: bfe5fb299aa28b6469d665745ad07a23, type: 3}
-  m_PrefabInstance: {fileID: 4135713044763342648}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &6921197229860587410 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6442409367849627818, guid: bfe5fb299aa28b6469d665745ad07a23, type: 3}
-  m_PrefabInstance: {fileID: 4135713044763342648}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4647732772029802685 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8783445679152717701, guid: bfe5fb299aa28b6469d665745ad07a23, type: 3}
@@ -3644,6 +3633,11 @@ GameObject:
 --- !u!4 &1898990992439362653 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2539910503024735077, guid: bfe5fb299aa28b6469d665745ad07a23, type: 3}
+  m_PrefabInstance: {fileID: 4135713044763342648}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6921197229860587410 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6442409367849627818, guid: bfe5fb299aa28b6469d665745ad07a23, type: 3}
   m_PrefabInstance: {fileID: 4135713044763342648}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1696471031

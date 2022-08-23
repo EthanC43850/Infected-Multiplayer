@@ -105,6 +105,9 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     public void RPC_GetKill()
     {
+
+        Debug.Log("manager Called GETKILL" + gameObject.name);
+
         kills++;
         Hashtable hash = new Hashtable();
         hash.Add("kills", kills);

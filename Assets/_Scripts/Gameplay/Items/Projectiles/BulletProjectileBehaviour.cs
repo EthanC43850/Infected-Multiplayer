@@ -9,7 +9,7 @@ public class BulletProjectileBehaviour : MonoBehaviour
     [HideInInspector] public GunInfo gunInfo;
     private Rigidbody bulletRigidBody;
     private PhotonMessageInfo bulletOwner;
-    
+    public PhotonView PV;
 
     public void Init(GunInfo _gunInfo)
     {
@@ -19,9 +19,9 @@ public class BulletProjectileBehaviour : MonoBehaviour
 
     } // END Init
 
-    public void InitBulletOwner(PhotonMessageInfo _info)
+    public void InitBulletOwner(PhotonView _PV) // Track which bullets belong to which players
     {
-        bulletOwner = _info;
+        PV = _PV;
 
     }
 
@@ -42,24 +42,22 @@ public class BulletProjectileBehaviour : MonoBehaviour
         Destroy(gameObject);
 
 
-        // Using PV of others
-        PhotonView pv = other.gameObject.GetComponent<PhotonView>();
-
         Debug.Log("hit collider " + other.name);
         //Debug.Log(pv.name);
 
-        if (pv != null)
+        if (PV != null)
         {
             Debug.Log("PV IS NOT NULL FOR " + other.name);
 
-            if (!pv.IsMine) // Bullet hits player or AI Unit, pv = player/AI hit, !pv.IsMine = the local client
+            if (PV.IsMine) // Bullet hits player or AI Unit, pv = player/AI hit, !pv.IsMine = the local client
             {
-                other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>()?.DisplayFloatingText(((WeaponInfo)gunInfo).damage); // Display damage on all clients
+                other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)gunInfo).damage);
+
 
             }
             else // Take damage on local client
             {
-                other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)gunInfo).damage);
+                other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>()?.DisplayFloatingText(((WeaponInfo)gunInfo).damage); // Display damage on all clients
 
 
             }
