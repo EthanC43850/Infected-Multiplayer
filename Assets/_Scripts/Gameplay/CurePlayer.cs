@@ -5,9 +5,6 @@ using UnityEngine;
 public class CurePlayer : MonoBehaviour
 {
     
-
-
-
     public void OnTriggerEnter(Collider other)
     {
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
@@ -17,14 +14,10 @@ public class CurePlayer : MonoBehaviour
         if(player.PV.IsMine)
         {
             Debug.Log("ENTERED TRIGGER:  " + player.gameObject.name);
-            player.playerManager.foundCure = true;
-            player.Die();
-
+            player.playerManager.RespawnAsSurvivor();    
         }
-
-
 
     }
 
 
-}
+} // END Class

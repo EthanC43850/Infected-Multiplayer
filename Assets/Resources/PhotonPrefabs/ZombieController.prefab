@@ -5832,12 +5832,11 @@ MonoBehaviour:
   cam: {fileID: 7099135312526158825}
   birdEyeCam: {fileID: 0}
   groundCheckTransform: {fileID: 7099135313252423536}
-  rightHandParent: {fileID: 0}
   playerHitBox: {fileID: 7099135312935989108}
   playerAnimator: {fileID: 291041162675634456}
   playerManager: {fileID: 0}
-  moveInput: {x: 0, y: 0, z: 0}
   currentItemIndex: 0
+  moveInput: {x: 0, y: 0, z: 0}
   airstrikePhone: {fileID: 0}
   isPossessed: 1
 --- !u!114 &7099135312935989116

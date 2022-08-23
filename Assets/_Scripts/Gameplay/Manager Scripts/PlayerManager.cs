@@ -12,24 +12,27 @@ public class PlayerManager : MonoBehaviour
 {
     #region Variables
 
+    [Header("Player Stats")]
+    int kills;
+    int deaths;
+    public bool foundCure = false;
+
+    [Header("Managers")]
+    ZombieSpawnManager zombieSpawnManager;
+
+    [Header("Additional Components")]
     PhotonView PV;
     GameObject controller;
 
-    ZombieSpawnManager zombieSpawner;
+    #endregion
 
-    int kills;
-    int deaths;
 
-    public bool foundCure = false;
-
-    //public delegate void AddToAIEnemyLists(Targetable target);
-    //public static event AddToAIEnemyLists AddEnemyToAILists;
+    #region Monobehaviours
 
     private void Awake()
     {
         PhotonNetwork.RunRpcCoroutines = true;
         PV = GetComponent<PhotonView>();
-
     }
 
     void Start()
@@ -42,15 +45,14 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
-    #region Methods
 
+    #region Methods
 
 
     //-------------------------------------------//
     public void CreateController()
     {
         Transform spawnpoint = SpawnManager.Instance.GetSpawnpoint();
-
 
         if (SceneManager.GetActiveScene().buildIndex == 1) // Turned GameMode
         {
@@ -74,42 +76,14 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Ethan - NO CONTROLLERS CREATED, WRONG SCENE INDEX");
         }
 
-
-
-
-        // Is punRPC and network.instantiate the same?
-        // No, Network.instantiate properly assigns a PhotonView to the object
-
-        //PV.RPC("AddPlayersToTargetLists", RpcTarget.All); // Test for adding players to zombie spawner list
-        //StartCoroutine(IWaitForObjects());
-
     } // END CreateController
-
-
-    /*[PunRPC]
-    public void AddPlayersToTargetLists()
-    {
-        Debug.Log("ABOUT TO ADD PLAYER TO TARGET LIST AND IS PHOTON VIEW MINE? : " + PV.IsMine);
-        if (!PV.IsMine) { return; }
-        ZombieSpawnManager.Instance.AddTargetToList(controller.GetComponent<Targetable>());   // This could be an issue when loading different levels
-        //zombieSpawner.AddTargetToList(controller.GetComponent<Targetable>());
-
-    }
-
-
-    //-------------------------------------------//
-    IEnumerator IWaitForObjects()
-    {
-        zombieSpawner = FindObjectOfType<ZombieSpawnManager>();
-        yield return new WaitUntil(() => zombieSpawner != null);
-
-
-    }*/
 
 
     //-------------------------------------------//
     public void Die()
     {
+        foundCure = false;
+
         PhotonNetwork.Destroy(controller);
         CreateController();
 
@@ -118,14 +92,12 @@ public class PlayerManager : MonoBehaviour
         hash.Add("deaths", deaths);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-
-    } // End Die
+    }
 
     //-------------------------------------------//
     public void GetKill()
     {
         PV.RPC(nameof(RPC_GetKill), PV.Owner);
-
     }
 
 
@@ -138,23 +110,21 @@ public class PlayerManager : MonoBehaviour
         hash.Add("kills", kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
-        // Turned Gamemode
+        // Turned Gamemode 
         if (!foundCure && SceneManager.GetActiveScene().buildIndex == 1)
         {
-            FoundCure();
+            RespawnAsSurvivor();
         }
-
-    } // END RPC_GetKill
+    } 
 
 
     //-------------------------------------------//
-    public void FoundCure()     // Respawn Zombie as a Survivor
+    public void RespawnAsSurvivor()     // Respawn Zombie as a Survivor
     {
         foundCure = true;
         PhotonNetwork.Destroy(controller);
         CreateController();
-
-    } // END FoundCure
+    } 
 
 
 

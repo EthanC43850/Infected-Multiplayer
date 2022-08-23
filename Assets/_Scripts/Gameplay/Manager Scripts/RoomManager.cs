@@ -36,8 +36,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-
-
         if (scene.buildIndex == 1)   //If in the game scene, create player manager
         {
             Debug.Log("Spawn player manager");
@@ -45,15 +43,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
 
+    } 
 
-    }
-
-
-
-
-
-
-
-
-
-}
+} // END Class

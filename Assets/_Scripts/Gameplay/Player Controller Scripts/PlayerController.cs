@@ -14,8 +14,6 @@ public class PlayerController : Targetable, IDamageable
 
     public static bool debugMode = false;
 
-    //public const byte OnAirstrikeAimEventCode = 1;
-
     [Header("Player Properties")]
     public int maxHealth = 100;
     public int currentHealth;
@@ -28,9 +26,10 @@ public class PlayerController : Targetable, IDamageable
     public float speed;
     public float jumpHeight = 3;
     public float gravity = -9.81f;
-    private bool isGrounded;
+    [Tooltip("How far the player is from the ground to be considered grounded")]
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+    private bool isGrounded;
 
 
     [Header("Connections:")]
@@ -38,36 +37,25 @@ public class PlayerController : Targetable, IDamageable
     [SerializeField] GameObject playerUI;       // Eventually delete and start calling worldspaceUI.gameobject in functions
     [SerializeField] Transform cam;
     [SerializeField] CinemachineVirtualCamera birdEyeCam;
-    public Transform groundCheckTransform;
-    [SerializeField] GameObject rightHandParent;
-
-    public Collider playerHitBox;
-
+    [SerializeField] Transform groundCheckTransform;
+    [SerializeField] Collider playerHitBox;
     public Animator playerAnimator;
+    [HideInInspector] public PlayerManager playerManager;
 
 
-    [HideInInspector]
-    public PlayerManager playerManager;
-
-
-
-
+    [Header("Helper Variables")]
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity = 1f;
-    [HideInInspector] public Vector3 moveInput;
     private Vector3 velocity;
     private Vector3 currentMoveInput;
     private Vector3 smoothInputVelocity;
     private float smoothInputSpeed = 0.1f;
-
-    [HideInInspector] public int currentItemIndex;
     private int previousItemIndex = -1;
-
     private float grenadeThrowDistance;
     private Vector3 airStrikePositionInput;
-
-    [HideInInspector]
-    public AirstrikePhone airstrikePhone;
+    [HideInInspector] public int currentItemIndex;
+    [HideInInspector] public Vector3 moveInput;
+    [HideInInspector] public AirstrikePhone airstrikePhone;
 
 
     #endregion
@@ -75,15 +63,6 @@ public class PlayerController : Targetable, IDamageable
 
     #region Monobehaviours
 
-    /*private new void OnEnable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
-    }
-
-    private new void OnDisable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
-    }*/
 
     public override void Awake()
     {
@@ -92,11 +71,10 @@ public class PlayerController : Targetable, IDamageable
         if (!debugMode)
         {
             playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>(); // InstantiationData [0] is simply the view ID which was passed
-                                                                                                         // 
         }
 
-
     } // END Awake
+
 
     private void Start()
     {
@@ -113,11 +91,6 @@ public class PlayerController : Targetable, IDamageable
             Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);     //Ensure that each player is using their correct camera
 
             Destroy(GetComponentInChildren<PlayerInput>());                             //Allows controllers to work when multiple people connect  
-
-            //Destroy(playerUI);
-
-
-
         }
 
     } // END Start
@@ -219,7 +192,7 @@ public class PlayerController : Targetable, IDamageable
 
         #endregion
 
-        if (transform.position.y < -70f) // Fell to death
+        if (transform.position.y < -5f) // Fell to death
         {
             Die();
         }
@@ -227,7 +200,6 @@ public class PlayerController : Targetable, IDamageable
     } // END Update
 
 
-    //-------------------------------------------//
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
 
@@ -236,25 +208,19 @@ public class PlayerController : Targetable, IDamageable
         {
             //Debug.Log("Player item changed!");
             EquipItem((int)changedProps["itemIndex"]);
-
-
         }
 
         if (!PV.IsMine && targetPlayer == PV.Owner && changedProps["DeathState"] != null) // Make sure this specific players UI and hitbox is turned off
         {
             playerUI.SetActive(false);
             playerHitBox.enabled = false;
-
         }
-
-
 
         if (!PV.IsMine && targetPlayer == PV.Owner && changedProps["airstrikeActive"] != null)
         {
             //Debug.Log("AIR STRIKE BROADCASTED ACROSS NETWORK");
             airstrikePhone.airStrikeIndicator.SetActive((bool)changedProps["airstrikeActive"]);
             airstrikePhone.airStrikeIndicator.transform.position = transform.position;
-
         }
 
 
@@ -590,7 +556,6 @@ public class PlayerController : Targetable, IDamageable
     {
         // Increase denominator to slow down the change in speed of the line renderer
 
-        //Debug.Log("grenade is aiming and value is " + value.ReadValue<Vector2>().y);
         grenadeThrowDistance = value.ReadValue<Vector2>().y / 8;
 
 
@@ -600,6 +565,15 @@ public class PlayerController : Targetable, IDamageable
 
     //-------------------------------------------//
     public void OnAirstrikeAim(InputAction.CallbackContext value)
+    {
+        Vector2 airStrikeInputMovement = value.ReadValue<Vector2>();
+        airStrikePositionInput = new Vector3(airStrikeInputMovement.x, 0, airStrikeInputMovement.y).normalized;
+
+    } // END OnAirstrikeAim
+
+
+    //-------------------------------------------//
+    public void ToggleScoreboard(InputAction.CallbackContext value)
     {
         Vector2 airStrikeInputMovement = value.ReadValue<Vector2>();
         airStrikePositionInput = new Vector3(airStrikeInputMovement.x, 0, airStrikeInputMovement.y).normalized;

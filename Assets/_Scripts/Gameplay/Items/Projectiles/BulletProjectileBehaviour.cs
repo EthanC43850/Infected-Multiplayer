@@ -9,7 +9,7 @@ public class BulletProjectileBehaviour : MonoBehaviour
     [HideInInspector] public GunInfo gunInfo;
     private Rigidbody bulletRigidBody;
     private PhotonMessageInfo bulletOwner;
-
+    
 
     public void Init(GunInfo _gunInfo)
     {
@@ -71,10 +71,6 @@ public class BulletProjectileBehaviour : MonoBehaviour
             other.gameObject.GetComponentInChildren<WorldSpacePlayerUI>()?.DisplayFloatingText(((WeaponInfo)gunInfo).damage);
 
         }
-
-
-
-
 
     }
 
