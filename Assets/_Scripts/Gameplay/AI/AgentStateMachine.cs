@@ -34,9 +34,9 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     public AttackType attackType;
     public float attackRange;
     [Tooltip("Seconds between attacks")]
-    public float attackCoolDown; // Seconds between attacks
+    public float attackCoolDown; 
     public int damagePerAttack;
-    public float speed = 3.5f; // Movement speed
+    public float speed = 3.5f; 
 
     public WorldSpacePlayerUI worldSpaceUI; // Move this to its own script. this breaks SOLID Rule
 
@@ -70,20 +70,8 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     #region Monobehaviours
 
-
-
     public virtual void Start()
     {
-        if(faction == Faction.Zombie)
-        {
-            spawnPosition = FindObjectOfType<ZombieSpawnPoint>().transform;
-        }
-
-
-        //Subscribe function
-        //PlayerManager.AddEnemyToAILists += AddEnemyToList;
-
-
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
 
@@ -91,8 +79,23 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         ChangeState(idleState);
     }
 
+    #endregion
 
-    
+
+    #region Statemachine Methods
+
+
+    public void ChangeState(IAgentState newState)
+    {
+        if (currentAgentState != null)
+        {
+            currentAgentState.Exit();
+        }
+        currentAgentState = newState;
+        currentAgentState.Enter();
+
+    } 
+
 
     public virtual void Update()
     {
@@ -106,33 +109,16 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         if (currentAgentState != null)
         {
             currentAgentState.Update();
-
         }
-
-        
     }
 
     #endregion
 
 
-    #region Methods
-
-    //-------------------------------------------//
-    public void ChangeState(IAgentState newState)
-    {
-        if(currentAgentState != null)
-        {
-            currentAgentState.Exit();
-        }
-        currentAgentState = newState;
-        currentAgentState.Enter();
-
-    } // END ChangeState
+    #region Helper Methods
 
 
-
-
-
+    // BREAKS RULE OF SOLID, ONLY STATEMACHINE RELATED FUNCTIONS SHOULD BE HERE
     //-------------------------------------------//
     public virtual void DealBlow()
     {
@@ -160,11 +146,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
                 }
             }
-
-            
-
         }
-
 
     } // END DealBlow
 
@@ -254,9 +236,6 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
 
     #endregion
-
-
-
 
 
 } // END Abstract Class

@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/_Level/_Scenes/0_MainMenuScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/_Level/_Scenes/1_Test_GameScene.unity
+    path: Assets/_Level/_Scenes/Cinematic Photos Scene.unity
     guid: 7208af0f8635e3d4e9dbbbcd1e033eaf
   - enabled: 1
     path: Assets/_Level/_Scenes/Testing Scenes/GameScene.unity

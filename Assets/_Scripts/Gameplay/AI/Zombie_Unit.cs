@@ -17,7 +17,15 @@ public class Zombie_Unit : AgentStateMachine
 
     #region Monobehaviours
 
+    public override void Start()
+    {
+        base.Start();
+        if (faction == Faction.Zombie)
+        {
+            spawnPosition = FindObjectOfType<ZombieSpawnPoint>().transform;
+        }
 
+    }
 
 
 
