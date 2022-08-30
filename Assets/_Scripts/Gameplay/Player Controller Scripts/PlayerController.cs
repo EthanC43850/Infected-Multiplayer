@@ -12,7 +12,7 @@ public class PlayerController : Targetable, IDamageable
 
     #region Variables
 
-    public static bool debugMode = true;
+    public static bool debugMode = false;
 
     [Header("Player Properties")]
     public int maxHealth = 100;

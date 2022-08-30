@@ -2718,7 +2718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.80399513, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.4672657, b: 0.3443396, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3093,6 +3093,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b0313cd0-acb8-40b6-af4e-60591cc8da28
     m_ActionName: Player Controls/Switch to Secondary Item[/Keyboard/2,/XInputControllerWindows/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a979fae8-5d82-4e6b-b2e1-d82527321092
+    m_ActionName: Player Controls/Open Scoreboard[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Controls

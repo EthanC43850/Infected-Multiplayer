@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SingleShotGun
   m_EditorClassIdentifier: 
   itemName: Rifle V2
-  damage: 25
+  damage: 20
   shootRate: 0.2
   bulletSpeed: 45
   bulletLifeTime: 1

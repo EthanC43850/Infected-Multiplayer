@@ -11,6 +11,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 {
 
     #region Variables
+
     [Header("Player Connections")]
     //[SerializeField] PlayerController player;
     [SerializeField] Text userNameText;
@@ -26,13 +27,15 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
 
     private float changeInHealthBarDuration = 2.0f;
-    private int correctHealthAmt; // Could most likely delete
     private int currentHealth;
     private int damageTaken;
 
     PhotonView pv;
 
     #endregion
+
+
+    #region Monobehaviors
 
     private void Awake()
     {
@@ -43,14 +46,37 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     {
         PlayerController player = gameObject.GetComponentInParent<PlayerController>();
 
-
-        //Debug.Log("THE PLAYER OBJECT NAME IS " + player.name);
         if (!PlayerController.debugMode && player != null)
         {
             userNameText.text = player.PV.Owner.NickName;
         }
 
     } // END Start
+
+    #endregion
+
+    #region Methods
+
+    //-------------------------------------------//
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)  
+    {
+        // This changes the health values of the target player in the lobby
+        if (!pv.IsMine && targetPlayer == pv.Owner && changedProps["currentHealth"] != null)
+        {
+            UpdateHealthUI((int)changedProps["currentHealth"]);
+
+            StopAllCoroutines();
+
+            StartCoroutine(LerpHealthValue());
+
+        }
+
+        if (!pv.IsMine && targetPlayer == pv.Owner && changedProps["setHealthMax"] != null)
+        {
+            SetHealthBarMax((int)changedProps["setHealthMax"]);
+        }
+
+    } // END OnPlayerPropertiesUpdate
 
 
     public void SetHealthBarMax(int _maxHealth)
@@ -62,13 +88,13 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
         backHealthBar_Slider.value = _maxHealth;
 
         if (gameObject.GetComponent<PlayerController>() == null) { return; }
+
         if (pv.IsMine && !PlayerController.debugMode)
         {
             Hashtable hash = new Hashtable();
             hash.Add("setHealthMax", _maxHealth);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         }
-
 
     } // END SetMaxHealth
 
@@ -138,35 +164,13 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     #endregion
 
 
-
-
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
-    {
-
-        if (!pv.IsMine && targetPlayer == pv.Owner && changedProps["currentHealth"] != null)
-        {
-            UpdateHealthUI((int)changedProps["currentHealth"]);
-
-            StopAllCoroutines();
-
-            StartCoroutine(ChangeHealthValue());
-
-        }
-
-        if (!pv.IsMine && targetPlayer == pv.Owner && changedProps["setHealthMax"] != null)
-        {
-            SetHealthBarMax((int)changedProps["setHealthMax"]);
-        }
-
-    } // END OnPlayerPropertiesUpdate
-
-
+    //-------------------------------------------//
     public void UpdateHealthUI(int _currentHealth)
     {
         //Debug.Log("Update Health");
         currentHealth = _currentHealth;
         StopAllCoroutines();
-        StartCoroutine(ChangeHealthValue());
+        StartCoroutine(LerpHealthValue());
 
         if (!PlayerController.debugMode && pv.IsMine)
         {
@@ -179,11 +183,11 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
     } // END SetHealthBar
 
 
-    IEnumerator ChangeHealthValue()
+    //-------------------------------------------//
+    IEnumerator LerpHealthValue()
     {
-        //Debug.Log("Entered Coroutine");
+        // Lerp the movement of health bars for increasing and decreasing health and change color of health bar for healing or taking damage 
         float lerpTimer = 0;
-
 
         while (lerpTimer < changeInHealthBarDuration)
         {
@@ -192,17 +196,17 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
             float fillBack = backHealthBar_Slider.value;
 
             lerpTimer += Time.deltaTime;
-            // If lose health
+
+            // If took damage
             if (fillBack > currentHealth)
             {
                 backHealthBar_Fill.color = Color.white;
                 frontHealthBar_Slider.value = currentHealth;
-                float percentComplete = lerpTimer / changeInHealthBarDuration;
 
-                percentComplete *= percentComplete; //* percentComplete;           // The more you square this, the slower health will drop
+                float percentComplete = lerpTimer / changeInHealthBarDuration;
+                percentComplete *= percentComplete; //* percentComplete;           // The more you square this, the slower the health bar movement will be
 
                 backHealthBar_Slider.value = Mathf.Lerp(fillBack, currentHealth, percentComplete);
-
             }
 
             // For Healing
@@ -210,21 +214,22 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
             {
                 backHealthBar_Fill.color = new Color32(101, 255, 23, 255); // Light green
                 backHealthBar_Slider.value = currentHealth;
+
                 lerpTimer += Time.deltaTime;
                 float percentComplete = lerpTimer / changeInHealthBarDuration *0.5f;  // Add me to slow down health bar regen fill speed.
                 percentComplete *= percentComplete;
-                frontHealthBar_Slider.value = Mathf.Lerp(fillFront, backHealthBar_Slider.value, percentComplete);
 
+                frontHealthBar_Slider.value = Mathf.Lerp(fillFront, backHealthBar_Slider.value, percentComplete);
             }
 
-            //backHealthBar_Slider.value = hFraction;
 
             yield return null;
         }
 
-    }// END ChangeHealthValue
+    } // END ChangeHealthValue
 
 
+    //-------------------------------------------//
     public void DisplayFloatingText(int damage)
     {
         damageTaken = damage;
@@ -234,6 +239,7 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
         //For testing different positions of floating numbers
         //if (PlayerController.debugMode == true)
         //{
+
         GameObject _floatingText = Instantiate(floatingText, transform.position, Quaternion.identity, worldCanvas.transform);
 
         TextMeshProUGUI textAttributes = _floatingText.GetComponent<TextMeshProUGUI>();
@@ -243,11 +249,13 @@ public class WorldSpacePlayerUI : MonoBehaviourPunCallbacks
 
         _floatingText.transform.localRotation = Quaternion.Euler(0, 0, 0);
         Destroy(_floatingText, 1.5f);
+
         //}
         ///////////////////////////////////////////
 
 
     } // END DisplayFloatingText
 
+    #endregion
 
-}
+} // END Class
