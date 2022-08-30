@@ -13,7 +13,6 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         Retreating,
         Fighting
 
-
     }
 
     // NOTE: Add functionality where, if player enters combat he'll keep fighting until the player decides to run away
@@ -63,21 +62,15 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
     void IAgentState.Update()
     {
-
-
-
-        ReturnToPlayerRadius();
-
         AnimateAgent();
 
+        ReturnToPlayerRadius();
 
         // Protect Player
         if (isEnemyInRange())
         {
             AttackClosestTarget();
-
         }
-
 
     }
 
@@ -105,7 +98,6 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     //-------------------------------------------//
     bool isEnemyInRange() // Check for enemies in the range of spherecast
     {
-
 
         // If zombie comes close enough to player, add zombie to AI enemies list
         Collider[] hitColliders = Physics.OverlapSphere(host.position, guardDistance); // Put layermask later
@@ -212,7 +204,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         }
         else
         {
-            isReturningToPlayer = true; // Forget attack and move to player
+            isReturningToPlayer = true; // Forget attack and move back to host for protecting
             stateMachineScript.navMeshAgent.isStopped = false;
             stateMachineScript.navMeshAgent.SetDestination(host.transform.position);
 

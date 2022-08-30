@@ -9,17 +9,15 @@ public class AI_Data : ScriptableObject
     public string unitName;
 
     [Header("AI Unit Properties")]
+    public int maxHealth;
+    public float speed;     // Movement speed
     public AgentStateMachine.AttackType attackType;
     public float attackRange;
     public float attackRatio;   // Time between attacks
     public float damagePerAttack;
-    public int health;
-    public float speed;     // Movement speed
 
     [Header("Sound FX")]
     [HideInInspector] public AudioClip attackAudioClip;
     [HideInInspector] public AudioClip dieAudioClip;
-
-
 
 } // END Class

@@ -26,6 +26,8 @@ public class ZombieFistCollider : MonoBehaviour
         {
             other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)zombieFistsScript.itemInfo).damage);
 
+            Debug.Log("dealing " + ((WeaponInfo)zombieFistsScript.itemInfo).damage + " DAMAGE");
+
             if (target.isDead)
             {
                 Debug.Log("Killed target!");
@@ -46,9 +48,6 @@ public class ZombieFistCollider : MonoBehaviour
             this.gameObject.SetActive(false); // Allow only each hand to hit once
         }
         
-
-        
-
     }
 
 

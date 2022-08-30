@@ -33,7 +33,7 @@ public class SingleShotGun : Gun
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
-        // Attempted to animate gun with right hand, when running backwards the gun gets aimed up
+        // Attempted to animate gun with right hand, when running backwards the gun actually gets aimed up
         /*if(rightHandTransform != null)
         {
             transform.SetParent(rightHandTransform, true);

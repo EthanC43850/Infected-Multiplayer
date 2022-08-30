@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Zombie
   m_EditorClassIdentifier: 
   unitName: Zombie
-  health: 50
+  maxHealth: 75
+  speed: 5
   attackType: 0
   attackRange: 3
   attackRatio: 1.5
   damagePerAttack: 5
-  speed: 5
-  worldSpaceUI: {fileID: 0}
   attackAudioClip: {fileID: 0}
   dieAudioClip: {fileID: 0}

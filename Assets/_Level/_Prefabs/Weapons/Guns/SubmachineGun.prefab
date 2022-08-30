@@ -161,7 +161,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemInfo: {fileID: 11400000, guid: f9b7420f2f0111443b66f7491b7ccd4f, type: 2}
   itemGameObject: {fileID: 2131816002080950128}
-  rightHandTransform: {fileID: 0}
   bulletSpawnPoint: {fileID: 4771378538154901427}
   spawnParticles: {fileID: 3697749204597194082}
   spawnAudioSource: {fileID: 8180894932685965493}
@@ -294,6 +293,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gun_Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 1940935790731117831, guid: 251ba36db94af1a4d8769d99ec10e075, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4059003062202313688, guid: 251ba36db94af1a4d8769d99ec10e075, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -337,6 +340,18 @@ PrefabInstance:
     - target: {fileID: 4059003062202313688, guid: 251ba36db94af1a4d8769d99ec10e075, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4730684875356349684, guid: 251ba36db94af1a4d8769d99ec10e075, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6089355373273521279, guid: 251ba36db94af1a4d8769d99ec10e075, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7868689695775584658, guid: 251ba36db94af1a4d8769d99ec10e075, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 251ba36db94af1a4d8769d99ec10e075, type: 3}

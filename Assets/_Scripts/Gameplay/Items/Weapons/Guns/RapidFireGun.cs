@@ -10,17 +10,15 @@ public class RapidFireGun : Gun
 
     [Header("Projectile Settings")]
     [SerializeField] Transform bulletSpawnPoint;
-    [serializefield] GameObject projectilePrefab;
-
-    private float timer;
+    [SerializeField] GameObject projectilePrefab;
 
     [Header("Particles")]
-    [serializefield] ParticleSystem spawnParticles;
+    [SerializeField] ParticleSystem spawnParticles;
 
     [Header("Audio")]
-    [serializefield] AudioSource spawnAudioSource;
+    [SerializeField] AudioSource spawnAudioSource;
 
-
+    private float timer;
 
     PhotonView PV;
 
@@ -136,4 +134,4 @@ public class RapidFireGun : Gun
 
     #endregion
 
-}
+} // END Class

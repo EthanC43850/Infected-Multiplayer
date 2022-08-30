@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class ZombieSpawnPoint : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+
+    [SerializeField] bool isSpawning;
+    [SerializeField] float zombieSpawnRate;
+    [SerializeField] GameObject zombiePrefab;
+
+
     void Start()
     {
+        StartCoroutine(ISpawnZombies());
+    }
+
+
+    IEnumerator ISpawnZombies()
+    {
+        while (isSpawning)
+        {
+            yield return new WaitForSeconds(zombieSpawnRate);
+            Instantiate(zombiePrefab, transform.position, transform.rotation);
+        }
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
+
+} // END Class

@@ -10,16 +10,16 @@ public class Shotgun : Gun
 
     [Header("Projectile Settings")]
     [SerializeField] Transform bulletSpawnPoint;
-    [serializefield] GameObject projectilePrefab;
+    [SerializeField] GameObject projectilePrefab;
 
-    [serializefield] float shootRate;
+    [SerializeField] float shootRate;
     private float timer;
 
     [Header("Particles")]
-    [serializefield] ParticleSystem spawnParticles;
+    [SerializeField] ParticleSystem spawnParticles;
 
     [Header("Audio")]
-    [serializefield] AudioSource spawnAudioSource;
+    [SerializeField] AudioSource spawnAudioSource;
 
 
 
@@ -68,7 +68,7 @@ public class Shotgun : Gun
         {
             spawnAudioSource.Play();
         }
-*/
+        */
 
 
         #region Shooting Method Through Raycast (Could be useful for fast shortranged shotguns)

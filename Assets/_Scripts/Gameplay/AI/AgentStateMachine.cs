@@ -20,8 +20,6 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     }
 
 
-
-
     #endregion
 
 
@@ -29,21 +27,19 @@ public abstract class AgentStateMachine : Targetable, IDamageable
      IAgentState currentAgentState;
 
     [Header("AI Unit Properties")]
-    public int health;
-    public int maxHealth = 50;
+    public int currentHealth;
+    public int maxHealth;
     public AttackType attackType;
     public float attackRange;
     [Tooltip("Seconds between attacks")]
     public float attackCoolDown; 
     public int damagePerAttack;
-    public float speed = 3.5f; 
+    public float speed = 3.5f;
+    public Item[] items;
 
-    public WorldSpacePlayerUI worldSpaceUI; // Move this to its own script. this breaks SOLID Rule
 
     [Header("VFX")]
     public Animator animator;
-    //public float maxSpeedForWalkAnimation;
-
 
     [Header("Sound FX")]
     [HideInInspector] public AudioClip attackAudioClip;
@@ -52,17 +48,20 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     public Targetable target;
     public List<Targetable> enemies;
 
-    public Transform spawnPosition;
-
-    [HideInInspector] public NavMeshAgent navMeshAgent;
-
     [Header("AI Behaviour Scripts")]
-    public PlayerController AIController;
+    //public PlayerController AIController;
     public AgentStateIdle idleState;
     public AgentStateChase chaseState;
     public AgentStateAttack attackState;
     public AgentStateDie dieState;
+
+    [Header("Additional Connections")]
+    public WorldSpacePlayerUI worldSpaceUI; // Move this to its own script. this breaks SOLID Rule
     public Transform damageOutputPoint;
+    public Transform spawnPosition;
+
+
+    [HideInInspector] public NavMeshAgent navMeshAgent;
 
 
     #endregion
@@ -75,7 +74,9 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
 
+        currentHealth = maxHealth;
         worldSpaceUI.SetHealthBarMax(maxHealth);
+
         ChangeState(idleState);
     }
 
@@ -136,15 +137,17 @@ public abstract class AgentStateMachine : Targetable, IDamageable
                 animator.SetTrigger("Attack"); // Damage caused by animation event
 
             }
-            else
+            else if(attackType == AttackType.Ranged)
             {
-                // test attack
+                items[0].Use();
+
+                /* //test attack
                 if (Physics.Raycast(damageOutputPoint.position, transform.forward, out RaycastHit hit, attackRange)) // Extended attack range a little more because nav mesh stops right at the range
                 {
                     hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(damagePerAttack);
                     //animator.SetTrigger("Attack");
 
-                }
+                }*/
             }
         }
 
@@ -158,10 +161,10 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     {
         if (PlayerController.debugMode)
         {
-            health -= damage;
-            worldSpaceUI.UpdateHealthUI(health);
+            currentHealth -= damage;
+            worldSpaceUI.UpdateHealthUI(currentHealth);
             worldSpaceUI.DisplayFloatingText(damage);
-            if (health <= 0)
+            if (currentHealth <= 0)
             {
                 ChangeState(dieState);
                 isDead = true;
@@ -169,7 +172,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
         }
         else
         {
-            PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+            PV.RPC(nameof(RPC_TakeDamage), PV.Owner, damage);
         }
 
     } // END TakeDamage
@@ -179,13 +182,10 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     [PunRPC]
     public void RPC_TakeDamage(int damage)
     {
+        currentHealth -= damage;    // In the multiplayer tutorial, this function is placed after !PV.IsMine. Keep this in mind if problems arise in the future.
+        worldSpaceUI.UpdateHealthUI(currentHealth);
 
-        if (!PV.IsMine) { return; }         // Pun RPC runs on everyones computer, but the !pv.ismine makes sure the function only runs on the victims computer
-
-        health -= damage;    // In the multiplayer tutorial, this function is placed after !PV.IsMine. Keep this in mind if problems arise in the future.
-        worldSpaceUI.UpdateHealthUI(health);
-
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             ChangeState(dieState);
             isDead = true;
@@ -198,8 +198,8 @@ public abstract class AgentStateMachine : Targetable, IDamageable
     //-------------------------------------------//
     void ResetZombie()
     {
-        health = maxHealth;
-        worldSpaceUI.UpdateHealthUI(health);
+        currentHealth = maxHealth;
+        worldSpaceUI.UpdateHealthUI(currentHealth);
         transform.position = spawnPosition.position;
     }
 
