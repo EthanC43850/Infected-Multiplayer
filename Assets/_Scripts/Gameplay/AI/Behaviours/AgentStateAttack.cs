@@ -6,8 +6,10 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
 {
 
     #region Variables
+
     AgentStateMachine stateMachineScript;
     public GameObject debugCube;
+
     #endregion
 
 
@@ -45,18 +47,21 @@ public class AgentStateAttack : MonoBehaviour, IAgentState
 
         if (!IsTargetInRangeOrDead()) // Back to chasing if target is out of range or dies
         {
-            Debug.Log("TARGET GOT OUT OF RANGE OR DIED");
+            //Debug.Log("TARGET GOT OUT OF RANGE OR DIED");
             stateMachineScript.ChangeState(stateMachineScript.chaseState);
         }
+
+        stateMachineScript.LookAtTarget();
 
         stateMachineScript.DealBlow();
 
 
-    } 
+    }
 
     #endregion
 
     #region Methods
+
 
     //-------------------------------------------//
     public bool IsTargetInRangeOrDead()

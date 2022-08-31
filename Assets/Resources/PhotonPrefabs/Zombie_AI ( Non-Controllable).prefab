@@ -2838,28 +2838,29 @@ MonoBehaviour:
   faction: 1
   isDead: 0
   PV: {fileID: 0}
-  health: 50
+  currentHealth: 0
   maxHealth: 50
   attackType: 0
   attackRange: 1.5
   attackCoolDown: 2
   damagePerAttack: 5
   speed: 2
-  worldSpaceUI: {fileID: 7035429300398646453}
+  items: []
   animator: {fileID: 4887498196904483066}
   attackAudioClip: {fileID: 0}
   dieAudioClip: {fileID: 0}
   lastBlowTime: -1000
   target: {fileID: 0}
   enemies: []
-  spawnPosition: {fileID: 0}
-  navMeshAgent: {fileID: 0}
-  AIController: {fileID: 0}
   idleState: {fileID: 2692919646015583889}
   chaseState: {fileID: 2692919646015583888}
   attackState: {fileID: 2692919646015583903}
   dieState: {fileID: 2692919646015583891}
+  worldSpaceUI: {fileID: 7035429300398646453}
+  playerModelTransform: {fileID: 3267892003833001344}
   damageOutputPoint: {fileID: 6706828033193559683}
+  spawnPosition: {fileID: 0}
+  navMeshAgent: {fileID: 0}
 --- !u!114 &2692919646015583902
 MonoBehaviour:
   m_ObjectHideFlags: 0

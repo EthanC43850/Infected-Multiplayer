@@ -1940,7 +1940,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6146091803370001290}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.48
   m_Speed: 3.5
   m_Acceleration: 20
   avoidancePriority: 50
@@ -1952,7 +1952,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 1.28
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 1
 --- !u!136 &6146091803370001293
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2024,6 +2024,7 @@ MonoBehaviour:
   attackState: {fileID: 6146091803370001288}
   dieState: {fileID: 6146091803370001296}
   worldSpaceUI: {fileID: 6146091805133602761}
+  playerModelTransform: {fileID: 8535692161116021574}
   damageOutputPoint: {fileID: 6146091803739225123}
   spawnPosition: {fileID: 0}
   navMeshAgent: {fileID: 0}
@@ -2078,9 +2079,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  patrolDistance: 5.99
-  guardDistance: 16.32
-  isReturningToPlayer: 0
+  minPatrolDistance: 4
+  maxPatrolDistance: 16
+  enemyDetectionRadius: 16
+  isHostOutOfRange: 0
   host: {fileID: 0}
   stateMachineScript: {fileID: 6146091803370001295}
 --- !u!114 &6146091803370001296

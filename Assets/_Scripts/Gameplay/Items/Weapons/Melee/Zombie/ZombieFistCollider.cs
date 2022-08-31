@@ -15,7 +15,7 @@ public class ZombieFistCollider : MonoBehaviour
 
         Targetable target = other.gameObject.GetComponent<Targetable>();
 
-        Debug.Log("trigger detected " + other.name);
+        //Debug.Log("trigger detected " + other.name);
 
         if(target.faction == zombieControllerScript.faction) // Avoid hitting self, as well as teammates
         {
@@ -26,8 +26,6 @@ public class ZombieFistCollider : MonoBehaviour
         {
             other.gameObject.GetComponent<IDamageable>()?.TakeDamage(((WeaponInfo)zombieFistsScript.itemInfo).damage);
 
-            Debug.Log("dealing " + ((WeaponInfo)zombieFistsScript.itemInfo).damage + " DAMAGE");
-
             if (target.isDead)
             {
                 Debug.Log("Killed target!");
@@ -35,7 +33,7 @@ public class ZombieFistCollider : MonoBehaviour
             }
             else
             {
-                Debug.Log("Did not kill target");
+                //Debug.Log("Did not kill target");
 
             }
 

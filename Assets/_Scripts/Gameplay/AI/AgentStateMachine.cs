@@ -57,6 +57,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     [Header("Additional Connections")]
     public WorldSpacePlayerUI worldSpaceUI; // Move this to its own script. this breaks SOLID Rule
+    public Transform playerModelTransform;
     public Transform damageOutputPoint;
     public Transform spawnPosition;
 
@@ -100,7 +101,7 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     public virtual void Update()
     {
-        Debug.Log("master client is " + PhotonNetwork.IsMasterClient);
+        //Debug.Log("master client is " + PhotonNetwork.IsMasterClient);
         if (!PhotonNetwork.IsMasterClient && PlayerController.debugMode == false) // Might need to add a "isPossessed" bool
         {
             return;
@@ -118,6 +119,8 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     #region Helper Methods
 
+ 
+
 
     // BREAKS RULE OF SOLID, ONLY STATEMACHINE RELATED FUNCTIONS SHOULD BE HERE
     //-------------------------------------------//
@@ -128,9 +131,6 @@ public abstract class AgentStateMachine : Targetable, IDamageable
             Debug.Log(gameObject.name + " JUST THREW A PUNCH");
 
             lastBlowTime = Time.time;
-            Vector3 lookPos = (target.transform.position - transform.position);
-            lookPos.y = 0; // Avoid weird glitch with AI facing sky
-            transform.forward = lookPos; // turn towards the target
 
             if(attackType == AttackType.Melee)
             {
@@ -153,6 +153,17 @@ public abstract class AgentStateMachine : Targetable, IDamageable
 
     } // END DealBlow
 
+     
+    //-------------------------------------------//
+    public void LookAtTarget()
+    {
+        Quaternion lookRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 4);
+
+
+
+    } // END LookAt
 
 
     // BREAKS RULE OF SOLID, ONLY STATEMACHINE RELATED FUNCTIONS SHOULD BE HERE

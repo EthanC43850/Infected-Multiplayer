@@ -21,14 +21,13 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     [Header("Player Protect Properties")]
     public ProtectActions currentState;
 
-/*    [Tooltip("Distance from player to run to once out of radius")]
-    public float maxStoppingDistance = 7;*/
-    [Tooltip("Radius to guard player from")]
-    public float patrolDistance = 7;  // Distance to 
-    [Tooltip("Enemy distance from host to begin attacking")]
-    public float guardDistance = 7;
+    [Tooltip("Closest distance to follow player at")]
+    public float minPatrolDistance = 7; 
+    public float maxPatrolDistance = 16;
+    [Tooltip("Attack enemies in this range")]
+    public float enemyDetectionRadius = 7;
 
-    public bool isReturningToPlayer;
+    public bool isHostOutOfRange;
 
     [Header("Additional Components")]
     public Transform host;
@@ -64,11 +63,13 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     {
         AnimateAgent();
 
-        ReturnToPlayerRadius();
+        StayInRadiusOfHost();
 
         // Protect Player
         if (isEnemyInRange())
         {
+            stateMachineScript.LookAtTarget();
+
             AttackClosestTarget();
         }
 
@@ -88,7 +89,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         }
 
 
-    }
+    } 
 
     #endregion
 
@@ -100,7 +101,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     {
 
         // If zombie comes close enough to player, add zombie to AI enemies list
-        Collider[] hitColliders = Physics.OverlapSphere(host.position, guardDistance); // Put layermask later
+        Collider[] hitColliders = Physics.OverlapSphere(host.position, enemyDetectionRadius); // Put layermask later
         foreach (var hitCollider in hitColliders)
         {
             Targetable enemy = hitCollider.gameObject.GetComponent<Targetable>();
@@ -120,7 +121,7 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
                 stateMachineScript.enemies.Remove(_target);
 
             }
-            else if (Vector3.Distance(host.position, _target.transform.position) > guardDistance)
+            else if (Vector3.Distance(host.position, _target.transform.position) > enemyDetectionRadius)
             {
                 stateMachineScript.enemies.Remove(_target);
 
@@ -153,7 +154,6 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
         {
             return true;
 
-
         }
         else
         {
@@ -172,14 +172,15 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
     public void AttackClosestTarget() // Should AI always attack closest target?
     {
 
+        // Go closer to target if out of attack range, otherwise, attack target
         if (Vector3.Distance(stateMachineScript.target.transform.position, transform.position) > stateMachineScript.attackRange)
         {
-            //Debug.Log("Distance between guard and target is " + Vector3.Distance(stateMachineScript.target.transform.position, transform.position));
+            Debug.Log("Distance between guard and target is " + Vector3.Distance(stateMachineScript.target.transform.position, transform.position));
             stateMachineScript.navMeshAgent.isStopped = false;
 
             stateMachineScript.navMeshAgent.SetDestination(stateMachineScript.target.transform.position);
         }
-        else if (!isReturningToPlayer) // 
+        else
         {
             stateMachineScript.navMeshAgent.isStopped = true;
             stateMachineScript.DealBlow();
@@ -192,26 +193,22 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
 
     //-------------------------------------------//
-    void ReturnToPlayerRadius()
+    void StayInRadiusOfHost()
     {
-        //Debug.Log(host.position);
-        if (Vector3.Distance(transform.position, host.position) < patrolDistance) //close enough
+        // If too far away or not in combat, return to host position
+        if(Vector3.Distance(transform.position, host.position) > maxPatrolDistance || (stateMachineScript.target == null && Vector3.Distance(transform.position, host.position) > minPatrolDistance))
         {
-            isReturningToPlayer = false;
-            stateMachineScript.navMeshAgent.isStopped = true;
-
-
-        }
-        else
-        {
-            isReturningToPlayer = true; // Forget attack and move back to host for protecting
+            isHostOutOfRange = true; // Forget attack and move back to host for protecting
             stateMachineScript.navMeshAgent.isStopped = false;
             stateMachineScript.navMeshAgent.SetDestination(host.transform.position);
-
-
+            Debug.Log("HOST OUT OF RANGE: " + Vector3.Distance(transform.position, host.position));
+        }
+        else if (Vector3.Distance(transform.position, host.position) < minPatrolDistance) //close enough
+        {
+            isHostOutOfRange = false;
+            stateMachineScript.navMeshAgent.isStopped = true;
 
         }
-
 
     } // END isInGuardRange
 
@@ -223,10 +220,10 @@ public class AgentStateProtectPlayer : MonoBehaviour, IAgentState
 
         Gizmos.color = Color.red;
 
-        Gizmos.DrawWireSphere(host.position, guardDistance);
+        Gizmos.DrawWireSphere(host.position, enemyDetectionRadius);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(host.position, patrolDistance);
+        Gizmos.DrawWireSphere(host.position, minPatrolDistance);
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, stateMachineScript.attackRange);

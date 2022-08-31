@@ -21,7 +21,7 @@ public class AgentStateChase : MonoBehaviour, IAgentState
 
     public void Enter()
     {
-        Debug.Log("Entered Chase");
+        //Debug.Log("Entered Chase");
         stateMachineScript.navMeshAgent.isStopped = false;
         stateMachineScript.animator.SetBool("IsMoving", true);
 
@@ -38,6 +38,7 @@ public class AgentStateChase : MonoBehaviour, IAgentState
 
         ChaseClosestTarget();
 
+        stateMachineScript.LookAtTarget();
 
         if (IsTargetInRange())
         {
@@ -53,11 +54,12 @@ public class AgentStateChase : MonoBehaviour, IAgentState
 
     #region Helper Methods
 
+
+
     //-------------------------------------------//
-    public void ChaseClosestTarget() // Should AI always attack closest target?
+    public void ChaseClosestTarget() 
     {
         
-        //Debug.Log("looking for closest target");
         float closestDistance = Mathf.Infinity; // Anything closer than this will become the new target
         Targetable closestTarget = null;
 
