@@ -48,7 +48,5 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
         }
     }
 
-    
-
 
 } // END Class

@@ -157,4 +157,12 @@ public class Launcher : MonoBehaviourPunCallbacks
         Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
     }
 
-}
+
+    public void ExitApplication()
+    {
+        Application.Quit();
+
+    }
+
+
+} // END Class

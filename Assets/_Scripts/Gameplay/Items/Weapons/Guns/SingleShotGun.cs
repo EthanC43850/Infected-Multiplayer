@@ -43,12 +43,6 @@ public class SingleShotGun : Gun
         }*/
     }
 
-    private void Start()
-    {
-
-
-    }
-
 
     public void Update()
     {
@@ -66,7 +60,6 @@ public class SingleShotGun : Gun
         if(timer >= ((GunInfo)itemInfo).shootRate)
         {
             Shoot();
-
         }
 
     } // END Use
@@ -85,9 +78,31 @@ public class SingleShotGun : Gun
         {
             BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<BulletProjectileBehaviour>();
             _bulletInfo.Init((GunInfo)itemInfo);
+
+            if (spawnParticles)
+            {
+                spawnParticles.Play();
+            }
+
+            if (spawnAudioSource)
+            {
+                spawnAudioSource.Play();
+            }
         }
         
 
+
+
+    } // END Shoot
+
+
+    [PunRPC]
+    void RPC_Shoot(Vector3 initialPosition, Quaternion initialRotation, PhotonMessageInfo info)
+    {
+        BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, initialPosition, initialRotation).GetComponent<BulletProjectileBehaviour>();
+        _bulletInfo.Init((GunInfo)itemInfo);   
+        // Helps keep track of kills and avoids having bullets collide with the shooter
+        _bulletInfo.InitBulletOwner(PV, gameObject.GetComponentInParent<PlayerController>().gameObject);
 
         if (spawnParticles)
         {
@@ -99,19 +114,7 @@ public class SingleShotGun : Gun
             spawnAudioSource.Play();
         }
 
-
-    } // END Shoot
-
-
-    [PunRPC]
-    void RPC_Shoot(Vector3 initialPosition, Quaternion initialRotation, PhotonMessageInfo info)
-    {
-        BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, initialPosition, initialRotation).GetComponent<BulletProjectileBehaviour>();
-        _bulletInfo.Init((GunInfo)itemInfo);        // TRYING TO INITIALIZE BULLETS WITH PHOTON VIEW TO FIGURE OUT WHO SHOT, AND WHO GOT THE KILL 
-        _bulletInfo.InitBulletOwner(PV);
-
     } // END RPC_Shoot
-
 
 
     public override void FinishedUse()

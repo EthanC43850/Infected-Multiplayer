@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Grenade
   m_EditorClassIdentifier: 
   itemName: Grenade
-  damage: 20
+  damage: 100
   radius: 2.3
   radiusIndicatorOffset: 1
   detonationTime: 2

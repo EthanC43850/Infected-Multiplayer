@@ -13,18 +13,20 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     [SerializeField] Transform container;
     [SerializeField] GameObject scoreBoardItemPrefab;
-
     Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
+
 
     private void Start()
     {
         foreach(Player player in PhotonNetwork.PlayerList)
         {
             AddScoreboardItem(player);
-
         }
+
     }
 
+
+    //-------------------------------------------//
     void AddScoreboardItem(Player player)
     {
         ScoreboardItem item = Instantiate(scoreBoardItemPrefab, container).GetComponent<ScoreboardItem>();
@@ -32,6 +34,8 @@ public class Scoreboard : MonoBehaviourPunCallbacks
         scoreboardItems[player] = item;
     }
 
+
+    //-------------------------------------------//
     void RemoveScoreboardItem(Player player)
     {
         Destroy(scoreboardItems[player].gameObject);
@@ -40,11 +44,14 @@ public class Scoreboard : MonoBehaviourPunCallbacks
     }
 
 
+    //-------------------------------------------//
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         AddScoreboardItem(newPlayer);
     }
 
+
+    //-------------------------------------------//
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         RemoveScoreboardItem(otherPlayer);

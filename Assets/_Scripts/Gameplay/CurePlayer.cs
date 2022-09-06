@@ -1,24 +1,46 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PhotonView))]
 public class CurePlayer : MonoBehaviour
 {
-    
+    PhotonView pv;
+    Collider collider;
+    GameObject meshPieces;
+
+    private void Awake()
+    {
+        pv = gameObject.GetComponent<PhotonView>();
+        collider = gameObject.GetComponent<Collider>();
+    }
+
     public void OnTriggerEnter(Collider other)
     {
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
 
         if (player == null) { return; }
         
-        if(player.PV.IsMine)
+        if (player.PV.IsMine)
         {
-            Debug.Log("ENTERED TRIGGER:  " + player.gameObject.name);
-            player.playerManager.RespawnAsSurvivor();    
+            player.playerManager.RespawnAsSurvivor();
+            pv.RPC(nameof(RPC_DestroyCure), RpcTarget.All);
+        }
+    }
+
+
+    //-------------------------------------------//
+    [PunRPC]
+    public void RPC_DestroyCure()
+    {
+        collider.enabled = false;
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
         }
 
-        Destroy(this.gameObject);
-
+        Debug.Log("Collided with cure");
     }
 
 

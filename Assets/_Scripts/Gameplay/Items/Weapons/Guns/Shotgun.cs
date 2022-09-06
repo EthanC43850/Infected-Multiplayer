@@ -21,8 +21,6 @@ public class Shotgun : Gun
     [Header("Audio")]
     [SerializeField] AudioSource spawnAudioSource;
 
-
-
     PhotonView PV;
 
 
@@ -30,6 +28,7 @@ public class Shotgun : Gun
      
 
     #region Monobehaviours
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();

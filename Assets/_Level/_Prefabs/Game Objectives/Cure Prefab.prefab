@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 8082735114498712122}
   - component: {fileID: 8082735114498712117}
   - component: {fileID: 8082735114498712116}
+  - component: {fileID: 7855900400243080902}
   m_Layer: 0
   m_Name: Cure Prefab
   m_TagString: Untagged
@@ -327,3 +328,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33202c9d4133de244aecd3d38528b462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7855900400243080902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8082735114498712119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
