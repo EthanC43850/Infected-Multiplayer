@@ -13,6 +13,6 @@ public class GunInfo : WeaponInfo
     public GameObject bulletPrefab;
     public GameObject hitEnemyParticles;
     public GameObject hitWallParticles;
-
+   
 
 } // END Class

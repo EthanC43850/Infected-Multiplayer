@@ -33,6 +33,7 @@ public class SingleShotGun : Gun
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+
         // Attempted to animate gun with right hand, when running backwards the gun actually gets aimed up
         /*if(rightHandTransform != null)
         {
@@ -41,13 +42,13 @@ public class SingleShotGun : Gun
             transform.rotation = rightHandLocalTransformValues.rotation;
             transform.localScale = rightHandLocalTransformValues.localScale;
         }*/
+
     }
 
 
     public void Update()
     {
         timer += Time.deltaTime;
-        //Debug.DrawRay(bulletSpawnPoint.position, bulletSpawnPoint.transform.forward * 4, Color.red);
     }
 
     #endregion
@@ -79,6 +80,7 @@ public class SingleShotGun : Gun
             BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation).GetComponent<BulletProjectileBehaviour>();
             _bulletInfo.Init((GunInfo)itemInfo);
 
+
             if (spawnParticles)
             {
                 spawnParticles.Play();
@@ -101,8 +103,9 @@ public class SingleShotGun : Gun
     {
         BulletProjectileBehaviour _bulletInfo = Instantiate(((GunInfo)itemInfo).bulletPrefab, initialPosition, initialRotation).GetComponent<BulletProjectileBehaviour>();
         _bulletInfo.Init((GunInfo)itemInfo);   
+
         // Helps keep track of kills and avoids having bullets collide with the shooter
-        _bulletInfo.InitBulletOwner(PV, gameObject.GetComponentInParent<PlayerController>().gameObject);
+        _bulletInfo.InitBulletOwner(PV, gameObject.GetComponentInParent<PlayerController>().faction);
 
         if (spawnParticles)
         {

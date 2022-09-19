@@ -9,7 +9,7 @@ public class BulletProjectileBehaviour : MonoBehaviour
     [HideInInspector] public GunInfo gunInfo;
     private Rigidbody bulletRigidBody;
     public PhotonView PV;
-    GameObject shooterPlayer;
+    Targetable.Faction shooterFaction;
 
     public void Init(GunInfo _gunInfo)
     {
@@ -19,11 +19,11 @@ public class BulletProjectileBehaviour : MonoBehaviour
 
     } // END Init
 
-    public void InitBulletOwner(PhotonView _PV, GameObject _shooterPlayer) 
+    public void InitBulletOwner(PhotonView _PV, Targetable.Faction _shooterFaction) 
     {
         // Track which bullets belong to which player
         PV = _PV;
-        shooterPlayer = _shooterPlayer;
+        shooterFaction = _shooterFaction;
     }
 
 
@@ -38,7 +38,7 @@ public class BulletProjectileBehaviour : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Avoid having bullet collide with shooter himself
-        if (other.gameObject == shooterPlayer)
+        if (shooterFaction != null && other.gameObject.GetComponent<Targetable.Faction>() == shooterFaction)
         {
             return;
         }
@@ -48,7 +48,7 @@ public class BulletProjectileBehaviour : MonoBehaviour
         Destroy(gameObject);
 
 
-        Debug.Log("hit collider " + other.name + " SHOOTER OBJECT IS: " + shooterPlayer.name);
+        //Debug.Log("hit collider " + other.name + " SHOOTER OBJECT IS: " + shooterPlayer.name);
         //Debug.Log(pv.name);
 
         if (PV != null)

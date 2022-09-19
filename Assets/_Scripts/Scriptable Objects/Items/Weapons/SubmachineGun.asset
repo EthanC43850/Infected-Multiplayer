@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Submachine Gun
   damage: 20
-  shootRate: 0.2
+  shootRate: 0.04
   bulletSpeed: 45
   bulletLifeTime: 1
   bulletPrefab: {fileID: 1218724716591446, guid: c4b4b81382c254a999d09f9375fbe2c7, type: 3}
