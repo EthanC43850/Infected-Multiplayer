@@ -35,13 +35,23 @@ public class BulletProjectileBehaviour : MonoBehaviour
     }
 
 
+
+    // Original collison
+
+
     private void OnTriggerEnter(Collider other)
     {
         // Avoid having bullet collide with shooter himself
-        if (shooterFaction != null && other.gameObject.GetComponent<Targetable.Faction>() == shooterFaction)
+        Targetable targetHit = other.gameObject.GetComponent<Targetable>();
+        if (targetHit != null)
         {
-            return;
+            // Don't deal damage if on same team
+            if (targetHit.faction == shooterFaction)
+            {
+                return;
+            }
         }
+        
 
         // Can instantiate different impact particles based on what object was hit
         Instantiate(gunInfo.hitWallParticles, transform.position, Quaternion.identity);

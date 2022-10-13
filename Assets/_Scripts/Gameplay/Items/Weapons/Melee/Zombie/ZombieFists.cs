@@ -35,6 +35,19 @@ public class ZombieFists : Item
 
     }
 
+    // Functionality for zombie king fists, Assign 
+    public void EnableRightHandDamageCollider()
+    {
+        damageColliders[0].SetActive(true);
+    }
+
+    public void EnableLeftHandDamageCollider()
+    {
+        damageColliders[1].SetActive(true);
+    }
+
+
+
     public void EnableDamageColliders()
     {
         foreach (GameObject collider in damageColliders)

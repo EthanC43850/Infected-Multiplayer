@@ -6,14 +6,27 @@ using Photon.Pun;
 
 public class ZombieFistCollider : MonoBehaviour
 {
+    // This could be melee functionality for anything
+    // Soon I will change zombie controller script to targetable
     public ZombieController zombieControllerScript;
+
+    // Need to create a melee type of item instead of zombie and create abstract functinality
     public ZombieFists zombieFistsScript;
+
+    Rigidbody playerRigidbody;
+
+    private void Awake()
+    {
+        playerRigidbody = gameObject.GetComponentInParent<Rigidbody>();
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (!zombieFistsScript.PV.IsMine && PlayerController.debugMode == false) { return; }
 
         Targetable target = other.gameObject.GetComponent<Targetable>();
+
+        if (target == null) { return; }
 
         //Debug.Log("trigger detected " + other.name);
 
@@ -43,7 +56,14 @@ public class ZombieFistCollider : MonoBehaviour
                 worldSpaceUI.DisplayFloatingText(((WeaponInfo)zombieFistsScript.itemInfo).damage);
 
             }
+
             this.gameObject.SetActive(false); // Allow only each hand to hit once
+
+            // Add knockback force relative to player
+            Vector3 moveDirection = playerRigidbody.transform.position - other.transform.position;
+            playerRigidbody.AddForce(moveDirection.normalized * -500f);
+
+
         }
         
     }
